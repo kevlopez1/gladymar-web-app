@@ -1,0 +1,117 @@
+[
+ {
+  "nombre": "Inicio: legado",
+  "ruta": "/img/historia-sin-sello-800.webp",
+  "ancho": 800
+ },
+ {
+  "nombre": "Inicio: innovación",
+  "ruta": "/img/fabrica-laboratorio-1400.webp",
+  "ancho": 1400
+ },
+ {
+  "nombre": "Inicio: Diseña",
+  "ruta": "/img/casacor-bar-1600.webp",
+  "ancho": 1600
+ },
+ {
+  "nombre": "Inicio: dónde comprar",
+  "ruta": "/img/tienda-fachada-1000.webp",
+  "ancho": 1000
+ },
+ {
+  "nombre": "Gladymar: portada del artículo",
+  "ruta": "/img/fabrica-piezas-1400.webp",
+  "ancho": 1400
+ },
+ {
+  "nombre": "Diseña: antes",
+  "ruta": "/img/antes-1400.webp",
+  "ancho": 1400
+ },
+ {
+  "nombre": "Diseña: después",
+  "ruta": "/img/sala-1400.webp",
+  "ancho": 1400
+ },
+ {
+  "nombre": "Gladymar: fábrica 1",
+  "ruta": "/img/fabrica-laboratorio-900.webp",
+  "ancho": 900
+ },
+ {
+  "nombre": "Gladymar: fábrica 2",
+  "ruta": "/img/fabrica-linea-900.webp",
+  "ancho": 900
+ },
+ {
+  "nombre": "Gladymar: fábrica 3",
+  "ruta": "/img/fabrica-mano-900.webp",
+  "ancho": 900
+ },
+ {
+  "nombre": "Gladymar: equipo 1",
+  "ruta": "/img/equipo-petra-900.webp",
+  "ancho": 900
+ },
+ {
+  "nombre": "Gladymar: equipo 2",
+  "ruta": "/img/gente-evento-900.webp",
+  "ancho": 900
+ },
+ {
+  "nombre": "Diseña: CasaCor 1",
+  "ruta": "/img/casacor-fuente-1200.webp",
+  "ancho": 1200
+ },
+ {
+  "nombre": "Diseña: CasaCor 2",
+  "ruta": "/img/casacor-salon-1200.webp",
+  "ancho": 1200
+ },
+ {
+  "nombre": "Diseña: CasaCor 3",
+  "ruta": "/img/casacor-terraza-1200.webp",
+  "ancho": 1200
+ },
+ {
+  "nombre": "Diseña: CasaCor 4",
+  "ruta": "/img/casacor-beso-de-miel-1200.webp",
+  "ancho": 1200
+ },
+ {
+  "nombre": "Diseña: CasaCor 5",
+  "ruta": "/img/equipo-evento-expo-1000.webp",
+  "ancho": 1000
+ },
+ {
+  "nombre": "Productos: Porcelanato",
+  "ruta": "/img/f5-1-1200.webp",
+  "ancho": 1200
+ },
+ {
+  "nombre": "Productos: Eleganza",
+  "ruta": "/img/a-atlas-grey-2-1200.webp",
+  "ancho": 1200
+ },
+ {
+  "nombre": "Productos: Platinum",
+  "ruta": "/img/a-taj-mahal-1200.webp",
+  "ancho": 1200
+ },
+ {
+  "nombre": "Productos: Terraforte",
+  "ruta": "/img/a-rovere-toscano-1200.webp",
+  "ancho": 1200
+ },
+ {
+  "nombre": "Productos: Artema",
+  "ruta": "/img/l-artema-1200.webp",
+  "ancho": 1200
+ },
+ {
+  "nombre": "Productos: Kaiser",
+  "ruta": "/img/f2-1-1200.webp",
+  "ancho": 1200
+ }
+]

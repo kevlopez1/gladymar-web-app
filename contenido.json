@@ -1,0 +1,193 @@
+{
+  "_nota": "Textos de la web. Se editan desde el panel (/panel). Los campos marcados como provisorios esperan el texto final.",
+  "menu": [
+    "Productos",
+    "Catálogos",
+    "Diseña",
+    "Gladymar",
+    "Dónde comprar"
+  ],
+  "inicio": {
+    "hero": {
+      "titulo": "Diseño que inspira.",
+      "bajada": "Pisos y revestimientos hechos en Bolivia desde 1984.",
+      "boton": "Ver productos"
+    },
+    "legado": {
+      "antetitulo": "Desde 1984",
+      "titulo": "Tres generaciones.",
+      "texto": "Don Cristóbal Roda Daza y Gladys Vaca El Hage fundaron Gladymar en Santa Cruz en 1984. Desde entonces, tres generaciones de una misma familia hacen los pisos y revestimientos que acompañan las obras de todo el país.",
+      "boton": "Nuestra historia"
+    },
+    "innovacion": {
+      "antetitulo": "Innovación",
+      "titulo": "Innovación que transforma espacios.",
+      "texto": "Cada colección se prueba en nuestro laboratorio y cada pieza se revisa antes de entrar a la caja."
+    },
+    "productos": {
+      "antetitulo": "Productos",
+      "titulo": "Hecho en Bolivia.",
+      "texto": "Porcelanato, Eleganza, Platinum, Terraforte, Artema y Kaiser.",
+      "boton": "Ver todos los productos"
+    },
+    "disena": {
+      "antetitulo": "Diseña",
+      "titulo": "Imagine su espacio.",
+      "texto": "Ambientes para inspirarse, CasaCor Bolivia y el simulador para probar el piso en la foto de su casa.",
+      "boton": "Ir a Diseña"
+    },
+    "voz": {
+      "cita": "Superficies diseñadas no solo para verse, sino para sentirse.",
+      "firma": "Colección Dimensión Viva",
+      "_provisorio": "Gladymar entrega el texto final de la voz experta (roadmap, 'Qué entrega Gladymar')."
+    },
+    "donde": {
+      "antetitulo": "Dónde comprar",
+      "titulo": "Cerca de su obra.",
+      "boton": "Ver tiendas"
+    }
+  },
+  "productos": {
+    "titulo": "Productos",
+    "bajada": "Nuestras líneas nacionales, con sus formatos y acabados. Elija una pieza, calcule sus cajas y pida su proforma a un asesor.",
+    "lineas": [
+      {
+        "id": "porcelanato",
+        "nombre": "Porcelanato",
+        "texto": "Grandes formatos y piezas de 60 × 60 para interiores y exteriores."
+      },
+      {
+        "id": "eleganza",
+        "nombre": "Eleganza",
+        "texto": "Porcelanato 60 × 60 en acabado mate, con vetas suaves de piedra."
+      },
+      {
+        "id": "platinum",
+        "nombre": "Platinum",
+        "texto": "Mármoles en porcelanato 60 × 60, en brillo y mate."
+      },
+      {
+        "id": "terraforte",
+        "nombre": "Terraforte",
+        "texto": "Maderas, mármoles y cementos en porcelanato 60 × 60."
+      },
+      {
+        "id": "artema",
+        "nombre": "Artema",
+        "texto": "Semigres en colores tierra, piedra y mármol."
+      },
+      {
+        "id": "kaiser",
+        "nombre": "Kaiser",
+        "texto": "Pisos rústicos en tonos de terracota."
+      }
+    ],
+    "otras": [
+      {
+        "nombre": "Griferías y sanitarios",
+        "texto": "Lozas, griferías y accesorios de las marcas que representamos."
+      },
+      {
+        "nombre": "Complementos",
+        "texto": "Perfiles, herramientas y lo necesario para terminar su obra."
+      }
+    ],
+    "marcas": [
+      "Noventia",
+      "Porcelanato",
+      "Eleganza",
+      "Platinum",
+      "Terraforte",
+      "Artema",
+      "Importados"
+    ]
+  },
+  "catalogos": {
+    "titulo": "Catálogos",
+    "bajada": "Hojee cada catálogo en la pantalla o descargue el PDF original."
+  },
+  "disena": {
+    "titulo": "Diseña",
+    "bajada": "Ideas por espacio, lo que mostramos en CasaCor Bolivia y su piso nuevo en la foto de su casa.",
+    "espacios": {
+      "Sala": [
+        "taj-mahal",
+        "oro-bianco",
+        "toronto-white"
+      ],
+      "Dormitorio": [
+        "onix-aura",
+        "urban-graffito-2"
+      ],
+      "Cocina y comedor": [
+        "ebano-venato",
+        "rovere-toscano"
+      ],
+      "Terraza": [
+        "atlas-grey-2",
+        "moon-white",
+        "urban-graffito"
+      ],
+      "Comercial": [
+        "calacatta-silver",
+        "onix-royal",
+        "portland-soft",
+        "basalto-gris"
+      ]
+    },
+    "casacor": {
+      "titulo": "CasaCor Bolivia",
+      "texto": "El Jardín del Achachairú, de Adriana Cirbián y Bruna Añez, y nuestra noche en CasaCor."
+    },
+    "antes": {
+      "titulo": "Antes y después",
+      "texto": "Deslice para ver la misma sala con otro piso."
+    },
+    "roomvo": {
+      "titulo": "Pruébelo en su casa",
+      "texto": "Suba una foto de su ambiente y vea cómo queda con nuestros pisos.",
+      "boton": "Probar con la foto de mi casa"
+    }
+  },
+  "gladymar": {
+    "antetitulo": "Gladymar",
+    "titulo": "Desde 1984, en Santa Cruz.",
+    "parrafos": [
+      "Gladymar nació en 1984 del esfuerzo de Don Cristóbal Roda Daza y su esposa, Gladys Vaca El Hage. Don Cristóbal, arquitecto de profesión, empezó en la construcción y su espíritu emprendedor lo llevó a crear empresas en muchos sectores.",
+      "Fue un actor importante en la transformación de Santa Cruz y participó en la creación de sus principales instituciones gremiales y empresariales.",
+      "Hoy Cerámica Gladymar S.A. forma parte del Grupo Industrial Roda y la tercera generación de la familia sigue haciendo pisos y revestimientos para las obras de todo el país."
+    ],
+    "fabrica": {
+      "titulo": "Cómo se hace una pieza",
+      "pasos": [
+        {
+          "nombre": "Laboratorio",
+          "texto": "Se prueban la pasta y el esmalte de cada colección."
+        },
+        {
+          "nombre": "Línea",
+          "texto": "Prensado, esmaltado y horno, controlados desde el tablero de la línea."
+        },
+        {
+          "nombre": "Revisión",
+          "texto": "Cada pieza se mira antes de entrar a la caja."
+        }
+      ]
+    },
+    "calidad": "Trabajamos con un Sistema de Gestión de Calidad que revisamos de forma continua en todos nuestros procesos.",
+    "mision": "Ofrecer productos cerámicos, servicio y asesoramiento para crear estilo, belleza y confort en cada ambiente.",
+    "vision": "Mantener el liderazgo nacional y ser reconocidos en el exterior por la calidad de nuestras piezas.",
+    "equipo": "La gente de Gladymar, en la fábrica, en el showroom y con sus clientes."
+  },
+  "donde": {
+    "titulo": "Dónde comprar",
+    "bajada": "11 tiendas y la fábrica, en Santa Cruz, La Paz, Cochabamba, Sucre, Tarija, Oruro y Potosí.",
+    "_provisorio": "Gladymar confirma la cantidad de tiendas y las direcciones antes de publicar (roadmap, 'Decisiones comerciales').",
+    "formulario": {
+      "titulo": "Pida su proforma",
+      "texto": "Déjenos sus datos y un asesor de la tienda de su ciudad le manda la proforma con precio."
+    },
+    "app": "Descargue la app de Gladymar: catálogo, cotización y el seguimiento de su pedido."
+  },
+  "pie": "Cerámica Gladymar S.A."
+}

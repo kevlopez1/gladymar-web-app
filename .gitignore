@@ -1,0 +1,5 @@
+node_modules/
+.vercel/
+.env*
+# Lo arma build.mjs en cada publicación.
+public/index.html

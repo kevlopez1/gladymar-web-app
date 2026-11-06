@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>Panel de la web · Gladymar</title>
+<style>
+:root{--rojo:#C8102E;--pizarra:#54585A;--beige:#D1CCBD;--crema:#F5F3EE;--blanco:#fff;--suave:#7A7E80;--linea:rgba(84,88,90,.16);--ok:#2E7D4F;
+  --letra:"Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",sans-serif;color-scheme:light}
+*{box-sizing:border-box}[hidden]{display:none!important}
+body{margin:0;background:var(--crema);color:var(--pizarra);font-family:var(--letra);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
+button,input,textarea,select{font:inherit;color:inherit}
+.env{max-width:880px;margin:0 auto;padding:0 max(16px,env(safe-area-inset-left,0px))}
+header{background:var(--blanco);position:sticky;top:0;z-index:5;border-bottom:1px solid var(--linea)}
+header .env{display:flex;align-items:center;gap:16px;height:60px}
+header b{font-size:17px;letter-spacing:-.01em}header b i{font-style:normal;color:var(--rojo)}
+header a{margin-left:auto;font-size:14px;color:var(--suave)}
+.tabs{display:flex;gap:4px;margin:20px 0 8px;overflow-x:auto}
+.tabs button{border:0;background:none;padding:10px 16px;border-radius:999px;font-weight:600;color:var(--suave);white-space:nowrap}
+.tabs button[aria-selected="true"]{background:var(--pizarra);color:#fff}
+h2{font-size:15px;text-transform:uppercase;letter-spacing:.08em;color:var(--suave);margin:32px 0 10px;font-weight:600}
+.caja{background:var(--blanco);border-radius:10px;padding:18px;display:grid;gap:14px}
+label{display:grid;gap:6px;font-size:14px;font-weight:600}
+label small{font-weight:400;color:var(--suave)}
+input,textarea{width:100%;border:1px solid var(--linea);border-radius:8px;padding:11px 12px;background:var(--blanco);font-size:16px;font-weight:400}
+textarea{resize:vertical;min-height:84px}
+input[type=checkbox]{width:20px;height:20px;padding:0;margin:0;accent-color:var(--pizarra)}
+.chk{display:flex;align-items:center;gap:8px;font-weight:400}
+input:focus,textarea:focus{outline:2px solid var(--pizarra);outline-offset:1px;border-color:transparent}
+.cambiado input,.cambiado textarea{border-color:var(--rojo)}
+.nota{font-size:13px;color:#8a6d1f;background:#FBF3DF;border-radius:8px;padding:8px 12px;font-weight:400}
+.bt{border:0;border-radius:999px;background:var(--rojo);color:#fff;font-weight:600;padding:12px 22px;cursor:pointer}
+.bt:disabled{opacity:.5;cursor:default}
+.bt2{border:1px solid var(--linea);border-radius:999px;background:var(--blanco);font-weight:600;padding:9px 16px;cursor:pointer;font-size:14px}
+.fila{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.mini{border:1px solid var(--linea);background:var(--blanco);border-radius:8px;width:36px;height:36px;cursor:pointer;font-size:16px}
+.fotos{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px}
+.foto{background:var(--blanco);border-radius:10px;overflow:hidden}
+.foto img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;background:var(--beige)}
+.foto div{padding:12px;display:grid;gap:8px;font-size:14px}.foto b{font-weight:600}
+.foto.cambiado{outline:2px solid var(--rojo)}
+.cat{background:var(--blanco);border-radius:10px;padding:14px;display:grid;grid-template-columns:72px 1fr;gap:14px;align-items:start}
+.cat img{width:72px;aspect-ratio:3/4;object-fit:cover;border-radius:4px;background:var(--beige)}
+.cat.oculto img{opacity:.35}.cat .campos{display:grid;gap:10px}
+.cat.cambiado{outline:2px solid var(--rojo)}
+.cats{display:grid;gap:12px}
+.barra{position:sticky;bottom:0;background:var(--blanco);border-top:1px solid var(--linea);padding:12px 0 calc(12px + env(safe-area-inset-bottom,0px));margin-top:40px}
+.barra .env{display:flex;align-items:center;gap:14px}.barra p{margin:0;font-size:14px;color:var(--suave);flex:1}
+.entrar{min-height:100vh;display:grid;place-items:center;padding:24px}
+.entrar form{background:var(--blanco);border-radius:12px;padding:28px;width:min(380px,100%);display:grid;gap:16px}
+.entrar h1{margin:0;font-size:22px;letter-spacing:-.01em}.entrar p{margin:0;color:var(--suave);font-size:14px}
+.err{color:var(--rojo);font-size:14px;min-height:1.2em;margin:0}
+.prog{height:6px;background:var(--crema);border-radius:99px;overflow:hidden}.prog i{display:block;height:100%;width:0;background:var(--rojo);transition:width .2s}
+.ayuda{font-size:14px;color:var(--suave);margin:4px 0 0}
+</style>
+</head><body>
+
+<div class="entrar" id="entrar">
+  <form id="f-entrar">
+    <h1>Panel de la web</h1>
+    <p>Cerámica Gladymar S.A. Escriba la clave del panel.</p>
+    <label>Clave<input type="password" id="clave" autocomplete="current-password" required></label>
+    <p class="err" id="e-entrar" role="alert"></p>
+    <button class="bt" type="submit">Entrar</button>
+  </form>
+</div>
+
+<div id="app" hidden>
+  <header><div class="env"><b>Gladymar <i>·</i> Panel de la web</b><a href="/" target="_blank" rel="noopener">Ver la web</a></div></header>
+  <main class="env">
+    <div class="tabs" role="tablist">
+      <button role="tab" data-tab="textos" aria-selected="true">Textos</button>
+      <button role="tab" data-tab="fotos" aria-selected="false">Fotos</button>
+      <button role="tab" data-tab="catalogos" aria-selected="false">Catálogos</button>
+    </div>
+    <section id="t-textos"></section>
+    <section id="t-fotos" hidden>
+      <p class="ayuda">Elija una foto nueva y se ajusta sola al tamaño de la web. Las fotos horizontales se ven mejor.</p>
+      <div class="fotos" id="fotos"></div>
+    </section>
+    <section id="t-catalogos" hidden>
+      <p class="ayuda">El orden de esta lista es el orden en la web. Un catálogo oculto no se muestra en Catálogos, pero los enlaces de Productos siguen abriéndolo.</p>
+      <div class="cats" id="cats"></div>
+      <h2>Agregar un catálogo</h2>
+      <form class="caja" id="f-nuevo">
+        <label>Nombre del catálogo<input name="titulo" required maxlength="80"></label>
+        <label>Rubro <small>(por ejemplo: Pisos y revestimientos)</small><input name="rubro" required maxlength="80"></label>
+        <label>Link para descargar el PDF <small>(Dropbox, Google Drive o su web)</small><input name="pdf" type="url" required placeholder="https://"></label>
+        <label>Archivo PDF <small>(sus páginas se convierten en imágenes para hojearlo en la web)</small><input name="archivo" type="file" accept="application/pdf" required></label>
+        <div class="prog" hidden id="p-nuevo"><i></i></div>
+        <p class="err" id="e-nuevo" role="alert"></p>
+        <div><button class="bt2" type="submit">Preparar el catálogo</button></div>
+      </form>
+    </section>
+  </main>
+  <div class="barra"><div class="env">
+    <p id="estado">Sin cambios.</p>
+    <button class="bt" id="guardar" disabled>Guardar y publicar</button>
+  </div></div>
+</div>
+
+<script>
+"use strict";
+const $ = (s, r = document) => r.querySelector(s);
+const el = (tag, attrs = {}, ...hijos) => { const n = document.createElement(tag); for (const [k, v] of Object.entries(attrs)) { if (k === "class") n.className = v; else if (k.startsWith("on")) n[k] = v; else if (v !== false && v != null) n.setAttribute(k, v === true ? "" : v); } for (const h of hijos) n.append(h); return n; };
+let CLAVE = ""; try { CLAVE = sessionStorage.getItem("gm-panel") || ""; } catch {}
+let C = null, INDICE = null, FOTOS = [], CAMPOS = [], VERSION = null;
+const cambios = { contenido: false, indice: false, blobs: new Map() };
+const VISTA = new Map(); // páginas nuevas todavía sin publicar: se muestran desde la memoria del navegador // blobs: ruta del repo → sha subido
+
+async function api(ruta, opciones = {}) {
+  const r = await fetch("/api/" + ruta, { ...opciones, headers: { "Content-Type": "application/json", "x-clave": CLAVE } });
+  const d = await r.json().catch(() => ({}));
+  if (!r.ok) { const err = new Error(d.error || "No se pudo conectar. Revise su internet."); err.status = r.status; err.reintentar = !!d.reintentar; throw err; }
+  return d;
+}
+
+// --- ENTRAR
+$("#f-entrar").onsubmit = async (ev) => { ev.preventDefault(); CLAVE = $("#clave").value; $("#e-entrar").textContent = ""; await cargar(); };
+async function cargar() {
+  try {
+    const [d, campos] = await Promise.all([api("leer"), fetch("/panel/campos.json").then((r) => r.json())]);
+    C = d.contenido; INDICE = d.indice; VERSION = d.version; FOTOS = d.fotos; CAMPOS = campos;
+    try { sessionStorage.setItem("gm-panel", CLAVE); } catch {}
+    $("#entrar").hidden = true; $("#app").hidden = false;
+    pintarTextos(); pintarFotos(); pintarCats();
+  } catch (err) {
+    try { sessionStorage.removeItem("gm-panel"); } catch {}
+    $("#entrar").hidden = false; $("#app").hidden = true;
+    $("#e-entrar").textContent = err.message;
+  }
+}
+if (CLAVE) cargar();
+
+document.querySelectorAll(".tabs button").forEach((b) => (b.onclick = () => {
+  document.querySelectorAll(".tabs button").forEach((x) => x.setAttribute("aria-selected", String(x === b)));
+  ["textos", "fotos", "catalogos"].forEach((t) => ($("#t-" + t).hidden = t !== b.dataset.tab));
+}));
+
+// --- TEXTOS: solo los que la web usa de verdad (campos.json, sale de la plantilla).
+const SECCION = {
+  "menu": "Menú", "inicio.hero": "Inicio · Portada con video", "inicio.legado": "Inicio · Legado", "inicio.innovacion": "Inicio · Innovación",
+  "inicio.productos": "Inicio · Productos", "inicio.disena": "Inicio · Diseña", "inicio.voz": "Inicio · Voz experta", "inicio.donde": "Inicio · Dónde comprar",
+  "productos": "Productos", "catalogos": "Catálogos", "disena": "Diseña", "gladymar": "Gladymar (historia)", "donde": "Dónde comprar", "pie": "Pie de página",
+};
+const NOMBRE = { titulo: "Título", bajada: "Texto bajo el título", antetitulo: "Texto chico arriba del título", boton: "Texto del botón", texto: "Texto",
+  cita: "Frase", firma: "Firma", nombre: "Nombre", calidad: "Calidad", mision: "Misión", vision: "Visión", equipo: "Equipo", app: "Bloque de la app", pie: "Texto del pie" };
+const valor = (ruta) => ruta.split(".").reduce((o, k) => (o == null ? undefined : o[k]), C);
+function poner(ruta, v) { const ks = ruta.split("."); const ult = ks.pop(); ks.reduce((o, k) => o[k], C)[ult] = v; }
+const SUB = { casacor: "CasaCor", antes: "Antes y después", roomvo: "Simulador de fotos", formulario: "Formulario", fabrica: "Fábrica" };
+const LISTA = { parrafos: "Párrafo", menu: "Entrada", marcas: "Marca", pasos: "Paso", lineas: "", otras: "" };
+function etiqueta(ruta, g) {
+  const ks = ruta.split("."), base = g.split(".").length;
+  if (ks.length === base) return NOMBRE[ks[ks.length - 1]] || "Texto";
+  const n = [];
+  for (let i = base; i < ks.length; i++) {
+    const k = ks[i], padre = ks[i - 1];
+    if (/^\d+$/.test(k)) { const o = valor(ks.slice(0, i + 1).join(".")); n.push(o && typeof o === "object" && o.nombre ? o.nombre : `${LISTA[padre] || ""} ${+k + 1}`.trim()); }
+    else if (!(k in LISTA)) n.push(NOMBRE[k] || SUB[k] || k);
+  }
+  return n.join(" · ");
+}
+function grupoDe(ruta) { const ks = ruta.split("."); for (let i = ks.length; i > 0; i--) { const g = ks.slice(0, i).join("."); if (SECCION[g]) return g; } return ks[0]; }
+function provisorio(grupo) { const o = valor(grupo); return o && typeof o === "object" && o._provisorio; }
+function pintarTextos() {
+  const raiz = $("#t-textos"); raiz.textContent = "";
+  const grupos = new Map();
+  for (const ruta of CAMPOS) { if (typeof valor(ruta) !== "string") continue; const g = grupoDe(ruta); if (!grupos.has(g)) grupos.set(g, []); grupos.get(g).push(ruta); }
+  for (const [g, rutas] of grupos) {
+    raiz.append(el("h2", {}, SECCION[g] || g));
+    const caja = el("div", { class: "caja" });
+    const nota = provisorio(g); if (nota) caja.append(el("p", { class: "nota" }, "Pendiente: " + nota));
+    for (const ruta of rutas) {
+      const v = valor(ruta), largo = v.length > 70;
+      const campo = el(largo ? "textarea" : "input", { maxlength: 1200, rows: largo ? Math.min(8, Math.ceil(v.length / 70) + 1) : false });
+      campo.value = v;
+      const lab = el("label", {}, etiqueta(ruta, g), campo);
+      campo.oninput = () => { poner(ruta, campo.value); lab.classList.add("cambiado"); cambios.contenido = true; estado(); };
+      caja.append(lab);
+    }
+    raiz.append(caja);
+  }
+}
+
+// --- FOTOS: el navegador la achica al ancho de la web y la pasa a WebP antes de subirla.
+async function aImagen(origen, ancho) {
+  const bmp = await createImageBitmap(origen);
+  const esc = Math.min(1, ancho / bmp.width);
+  const cv = document.createElement("canvas"); cv.width = Math.round(bmp.width * esc); cv.height = Math.round(bmp.height * esc);
+  cv.getContext("2d").drawImage(bmp, 0, 0, cv.width, cv.height);
+  return lienzoA(cv);
+}
+async function lienzoA(cv) {
+  let b = await new Promise((ok) => cv.toBlob(ok, "image/webp", 0.8));
+  // Safari no escribe WebP: va en JPEG. El archivo conserva su nombre y el navegador lo reconoce por su contenido.
+  if (!b || b.type !== "image/webp") b = await new Promise((ok) => cv.toBlob(ok, "image/jpeg", 0.82));
+  return b;
+}
+const aBase64 = (b) => new Promise((ok, mal) => { const r = new FileReader(); r.onload = () => ok(String(r.result).split(",")[1]); r.onerror = mal; r.readAsDataURL(b); });
+const espera = (ms) => new Promise((ok) => setTimeout(ok, ms));
+let ultimaSubida = 0;
+async function subir(rutaRepo, blob) {
+  const body = JSON.stringify({ ruta: rutaRepo, base64: await aBase64(blob) });
+  // GitHub admite unas 80 creaciones por minuto: una subida cada 0,8 s como mínimo, y si igual frena, se espera.
+  for (let intento = 0; ; intento++) {
+    await espera(Math.max(0, ultimaSubida + 800 - Date.now())); ultimaSubida = Date.now();
+    try { const { sha } = await api("subir", { method: "POST", body }); cambios.blobs.set(rutaRepo, sha); return; }
+    catch (err) { if (!err.reintentar || intento >= 4) throw err; $("#estado").textContent = "GitHub pidió esperar un momento…"; await espera(30000 * (intento + 1)); }
+  }
+}
+const aRepo = (url) => "public" + url.split("?")[0];
+function pintarFotos() {
+  const raiz = $("#fotos"); raiz.textContent = "";
+  for (const f of FOTOS) {
+    const img = el("img", { src: f.ruta + "?v=" + Date.now(), alt: "", loading: "lazy" });
+    const entrada = el("input", { type: "file", accept: "image/*", hidden: true });
+    const aviso = el("span", { class: "ayuda" });
+    const tarjeta = el("div", { class: "foto" }, img, el("div", {}, el("b", {}, f.nombre), el("div", { class: "fila" }, el("button", { type: "button", class: "bt2", onclick: () => entrada.click() }, "Cambiar foto"), entrada), aviso));
+    entrada.onchange = async () => {
+      const arch = entrada.files[0]; if (!arch) return;
+      aviso.textContent = "Preparando…";
+      try {
+        const b = await aImagen(arch, f.ancho);
+        await subir(aRepo(f.ruta), b);
+        img.src = URL.createObjectURL(b); tarjeta.classList.add("cambiado"); aviso.textContent = "Lista para publicar."; estado();
+      } catch (err) { aviso.textContent = err.message || "No se pudo preparar la foto."; }
+    };
+    raiz.append(tarjeta);
+  }
+}
+
+// --- CATÁLOGOS
+function pintarCats() {
+  const raiz = $("#cats"); raiz.textContent = "";
+  INDICE.forEach((c, i) => {
+    const marca = () => { fila.classList.add("cambiado"); cambios.indice = true; estado(); };
+    const campo = (k, tipo = "text") => { const n = el("input", { type: tipo, value: c[k] || "" }); n.oninput = () => { c[k] = n.value; marca(); }; return n; };
+    const oculto = el("input", { type: "checkbox" }); oculto.checked = !!c.oculto;
+    oculto.onchange = () => { if (oculto.checked) c.oculto = true; else delete c.oculto; fila.classList.toggle("oculto", oculto.checked); marca(); };
+    const mover = (d) => { const j = i + d; if (j < 0 || j >= INDICE.length) return; [INDICE[i], INDICE[j]] = [INDICE[j], INDICE[i]]; cambios.indice = true; pintarCats(); estado(); };
+    const fila = el("div", { class: "cat" + (c.oculto ? " oculto" : "") },
+      el("img", { src: VISTA.get(c.paginas[0]) || c.paginas[0], alt: "", loading: "lazy" }),
+      el("div", { class: "campos" },
+        el("label", {}, "Nombre", campo("titulo")), el("label", {}, "Rubro", campo("rubro")), el("label", {}, "Link del PDF", campo("pdf", "url")),
+        el("div", { class: "fila" }, el("button", { type: "button", class: "mini", "aria-label": "Subir", onclick: () => mover(-1) }, "↑"),
+          el("button", { type: "button", class: "mini", "aria-label": "Bajar", onclick: () => mover(1) }, "↓"),
+          el("label", { class: "chk" }, oculto, "Ocultar en la web"))));
+    raiz.append(fila);
+  });
+}
+const slugDe = (t) => t.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 50) || "catalogo";
+let pdfjs = null;
+function cargarPdfjs() {
+  if (pdfjs) return pdfjs;
+  pdfjs = new Promise((ok, mal) => { const s = document.createElement("script"); s.src = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js";
+    s.onload = () => { window.pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js"; ok(window.pdfjsLib); };
+    s.onerror = () => { pdfjs = null; mal(new Error("No se pudo cargar el lector de PDF. Revise su internet.")); }; document.head.append(s); });
+  return pdfjs;
+}
+$("#f-nuevo").onsubmit = async (ev) => {
+  ev.preventDefault();
+  const f = ev.target, boton = f.querySelector("button"), prog = $("#p-nuevo"), barra = prog.firstElementChild;
+  const titulo = f.titulo.value.trim(), rubro = f.rubro.value.trim(), pdf = f.pdf.value.trim(), arch = f.archivo.files[0];
+  $("#e-nuevo").textContent = "";
+  if (!titulo || !rubro || !/^https:\/\//.test(pdf) || !arch) { $("#e-nuevo").textContent = "Complete el nombre, el rubro, el link (que empiece con https://) y el archivo."; return; }
+  let slug = slugDe(titulo); const usados = new Set(INDICE.map((c) => c.slug)); for (let n = 2; usados.has(slug); n++) slug = slugDe(titulo) + "-" + n;
+  boton.disabled = true; prog.hidden = false; barra.style.width = "0";
+  const subidas = [];
+  try {
+    const lib = await cargarPdfjs();
+    const doc = await lib.getDocument({ data: await arch.arrayBuffer() }).promise;
+    if (doc.numPages > 200) throw new Error("El PDF tiene más de 200 páginas.");
+    const paginas = [];
+    for (let p = 1; p <= doc.numPages; p++) {
+      const pag = await doc.getPage(p); const v0 = pag.getViewport({ scale: 1 }); const vp = pag.getViewport({ scale: 1200 / v0.width });
+      const cv = document.createElement("canvas"); cv.width = Math.round(vp.width); cv.height = Math.round(vp.height);
+      await pag.render({ canvasContext: cv.getContext("2d"), viewport: vp }).promise;
+      const url = `/catalogos/${slug}/p${p}.webp`;
+      const img = await lienzoA(cv);
+      await subir(aRepo(url), img); subidas.push(aRepo(url));
+      if (p === 1) VISTA.set(url, URL.createObjectURL(img));
+      paginas.push(url); barra.style.width = Math.round((p / doc.numPages) * 100) + "%";
+      $("#estado").textContent = `Preparando el catálogo: página ${p} de ${doc.numPages}…`;
+    }
+    const id = Math.max(0, ...INDICE.map((c) => +c.id || 0)) + 1;
+    INDICE.push({ id, slug, titulo, marca: "Gladymar", rubro, pdf, paginas });
+    cambios.indice = true; f.reset(); pintarCats(); estado();
+    $("#e-nuevo").textContent = "";
+  } catch (err) {
+    // Un catálogo a medias no se publica: las páginas que alcanzaron a subir se descartan.
+    subidas.forEach((r) => cambios.blobs.delete(r));
+    $("#e-nuevo").textContent = err.message || "No se pudo leer el PDF."; estado();
+  }
+  finally { boton.disabled = false; prog.hidden = true; }
+};
+
+// --- GUARDAR: un solo commit con todo; la web se vuelve a publicar sola.
+function estado() {
+  const n = (cambios.contenido ? 1 : 0) + (cambios.indice ? 1 : 0) + cambios.blobs.size;
+  $("#guardar").disabled = !n;
+  $("#estado").textContent = n ? "Hay cambios sin publicar." : "Sin cambios.";
+}
+$("#guardar").onclick = async () => {
+  const archivos = [], partes = [];
+  if (cambios.contenido) { archivos.push({ ruta: "contenido.json", texto: JSON.stringify(C, null, 2) + "\n" }); partes.push("textos"); }
+  if (cambios.indice) { archivos.push({ ruta: "public/catalogos/indice.json", texto: JSON.stringify(INDICE) }); partes.push("catálogos"); }
+  for (const [ruta, sha] of cambios.blobs) archivos.push({ ruta, sha });
+  if ([...cambios.blobs.keys()].some((r) => r.startsWith("public/img/"))) partes.push("fotos");
+  $("#guardar").disabled = true; $("#estado").textContent = "Publicando…";
+  try {
+    await api("guardar", { method: "POST", body: JSON.stringify({ mensaje: partes.join(", ") || "páginas de catálogo", archivos, version: VERSION }) });
+    // Se vuelve a leer TODO del repositorio: lo que guardaron otros en otros archivos entra a la pantalla junto con su
+    // versión. Si la lectura falla, la versión vieja se queda: a lo sumo pide recargar, nunca pisa un cambio ajeno.
+    try { const d = await api("leer"); C = d.contenido; INDICE = d.indice; FOTOS = d.fotos; VERSION = d.version; VISTA.clear(); pintarTextos(); pintarFotos(); pintarCats(); } catch {}
+    cambios.contenido = false; cambios.indice = false; cambios.blobs.clear();
+    document.querySelectorAll(".cambiado").forEach((n) => n.classList.remove("cambiado"));
+    estado(); $("#estado").textContent = "Publicado. La web se actualiza en alrededor de un minuto.";
+  } catch (err) {
+    $("#guardar").disabled = false; $("#estado").textContent = err.message;
+    if (err.status === 401) { CLAVE = ""; try { sessionStorage.removeItem("gm-panel"); } catch {} }
+  }
+};
+window.addEventListener("beforeunload", (ev) => { if (!$("#guardar").disabled) { ev.preventDefault(); ev.returnValue = ""; } });
+</script>
+</body></html>
