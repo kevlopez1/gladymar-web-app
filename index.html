@@ -1,0 +1,907 @@
+<!doctype html>
+<!-- Diseño de la web. Los textos van en contenido.json y las portadas en public/catalogos/indice.json: node build.mjs arma public/index.html. -->
+<html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#FFFFFF">
+<meta name="description" content="Gladymar: pisos y revestimientos hechos en Bolivia desde 1984. Productos, catálogos, ideas para su espacio y dónde comprar.">
+<meta property="og:title" content="Gladymar, pisos y revestimientos">
+<meta property="og:description" content="Pisos y revestimientos hechos en Bolivia desde 1984.">
+<meta property="og:image" content="/gladymar-web-app/img/og.jpg">
+<meta property="og:type" content="website">
+<link rel="icon" href="/gladymar-web-app/img/logo.png">
+<link rel="preload" as="image" href="/gladymar-web-app/video/fondo-inicio.jpg" media="(orientation: landscape)">
+<link rel="preload" as="image" href="/gladymar-web-app/video/fondo-inicio-movil.jpg" media="(orientation: portrait)">
+<style>[hidden]{display:none!important}</style>
+</head><body>
+<div id="gm-intro" hidden aria-hidden="true">
+<style>
+#gm-intro *{box-sizing:border-box;margin:0;padding:0;border:0;background-color:transparent;border-radius:0;box-shadow:none;outline:0}
+#gm-intro{position:fixed;inset:0;z-index:999;cursor:pointer;overflow:hidden}
+#gm-intro .gm-rej{position:absolute;inset:0;display:grid;perspective:900px}
+#gm-intro .gm-rej span{display:block;background:#F7F7F7;transform-origin:50% 0;transition:transform .55s cubic-bezier(.55,0,.75,.2),opacity .55s ease}
+#gm-intro.fuera .gm-rej span{transform:rotateX(-92deg);opacity:0}
+/* Juntas: una cuadrícula fina que se abre desde el centro, como el piso antes de las piezas. */
+#gm-intro .gm-juntas{position:absolute;inset:0;pointer-events:none;opacity:.55;
+  background-image:linear-gradient(#e4e1dc 1px,transparent 1px),linear-gradient(90deg,#e4e1dc 1px,transparent 1px);background-size:64px 64px;background-position:center;
+  clip-path:circle(0% at 50% 45%);transition:clip-path 1.6s cubic-bezier(.2,.8,.2,1)}
+#gm-intro .gm-juntas.ya{clip-path:circle(75% at 50% 45%)}
+#gm-intro.fuera .gm-juntas{opacity:0;transition:opacity .3s}
+#gm-intro .gm-cont{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px;transition:transform .5s ease,opacity .4s ease}
+#gm-intro.fuera .gm-cont{transform:scale(.9);opacity:0}
+#gm-intro .gm-simb{position:relative;width:min(40vw,200px);aspect-ratio:1.0577;perspective:700px}
+#gm-intro .gm-simb.late{animation:gm-late .7s ease-in-out}
+@keyframes gm-late{40%{transform:scale(1.07)}100%{transform:scale(1)}}
+#gm-intro .gm-simb span{display:block;position:absolute;background-image:url('/gladymar-web-app/img/intro-simbolo.png');background-repeat:no-repeat;opacity:0;
+  transition:transform 1s cubic-bezier(.2,.9,.3,1),opacity .45s ease}
+#gm-intro .gm-simb.ya span{transform:none!important;opacity:1}
+/* Brillo de porcelana: una banda blanca que cruza solo sobre la tinta del símbolo. */
+#gm-intro .gm-simb::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(105deg,transparent 35%,rgba(255,255,255,.75) 50%,transparent 65%) no-repeat;background-size:250% 100%;background-position:130% 0;
+  -webkit-mask:url('/gladymar-web-app/img/intro-simbolo.png') center/100% 100% no-repeat;mask:url('/gladymar-web-app/img/intro-simbolo.png') center/100% 100% no-repeat}
+#gm-intro .gm-simb.brilla::after{transition:background-position 1s ease-in-out;background-position:-30% 0}
+#gm-intro .gm-pal{width:min(58vw,290px);aspect-ratio:4.2812;background:url('/gladymar-web-app/img/intro-palabra.png') center/contain no-repeat;clip-path:inset(0 100% 0 0);transform:translateY(10px);
+  transition:clip-path .75s cubic-bezier(.65,0,.35,1),transform .75s cubic-bezier(.2,.8,.2,1)}
+#gm-intro .gm-pal.ya{clip-path:inset(0 0 0 0);transform:none}
+#gm-intro .gm-linea{width:0;height:2px;background:#EB2038;border-radius:2px;transition:width .8s cubic-bezier(.65,0,.35,1)}
+#gm-intro .gm-linea.ya{width:56px}
+</style>
+<div class="gm-rej" id="gm-rej"></div><div class="gm-juntas" id="gm-jun"></div>
+<div class="gm-cont"><div class="gm-simb" id="gm-simb"></div><div class="gm-pal" id="gm-pal"></div><div class="gm-linea" id="gm-lin"></div></div>
+</div>
+<script>
+(function () {
+  const el = document.getElementById("gm-intro");
+  let visto = false;
+  try { visto = sessionStorage.getItem("gm-intro") === "1"; sessionStorage.setItem("gm-intro", "1"); } catch (e) {}
+  if (visto || matchMedia("(prefers-reduced-motion: reduce)").matches) { el.remove(); return; }
+  el.hidden = false; document.documentElement.style.overflow = "hidden";
+  const $ = (id) => document.getElementById(id), N = 8, C = [[0, 2], [0, 3], [0, 4], [0, 5], [1, 1], [1, 2], [1, 3], [1, 4], [1, 5], [1, 6], [2, 0], [2, 1], [2, 2], [2, 3], [2, 4], [2, 5], [2, 6], [2, 7], [3, 0], [3, 1], [3, 2], [3, 3], [3, 4], [3, 5], [3, 6], [3, 7], [4, 0], [4, 1], [4, 2], [4, 3], [4, 4], [4, 5], [4, 6], [4, 7], [5, 0], [5, 1], [5, 2], [5, 3], [5, 4], [5, 5], [5, 6], [5, 7], [6, 1], [6, 2], [6, 3], [6, 4], [6, 5], [6, 6], [7, 2], [7, 3], [7, 4], [7, 5], [7, 6]], s = $("gm-simb");
+  // Las piezas llegan de lejos, dadas vuelta, y encajan con un pequeño rebote; de afuera hacia adentro.
+  s.innerHTML = C.map(([f, c]) => {
+    const ang = Math.random() * Math.PI * 2, lej = 160 + Math.random() * 220;
+    const dx = Math.cos(ang) * lej, dy = Math.sin(ang) * lej, rx = (Math.random() - 0.5) * 300, ry = (Math.random() - 0.5) * 300, r = (Math.random() - 0.5) * 120;
+    const d = Math.round(Math.hypot(f - (N - 1) / 2, c - (N - 1) / 2) / (N / 1.4) * 620 + Math.random() * 180);
+    return `<span style="left:${c * 100 / N}%;top:${f * 100 / N}%;width:${100 / N + 0.4}%;height:${100 / N + 0.4}%;background-size:${N * 100}% ${N * 100}%;`
+      + `background-position:${c * 100 / (N - 1)}% ${f * 100 / (N - 1)}%;transform:translate3d(${dx}px,${dy}px,0) rotateX(${rx}deg) rotateY(${ry}deg) rotate(${r}deg) scale(.35);transition-delay:${d}ms"></span>`;
+  }).join("");
+  // El fondo son baldosas: al salir se dan vuelta desde el centro hacia los bordes.
+  const T = 72, cols = Math.ceil(innerWidth / T), filas = Math.ceil(innerHeight / T), rej = $("gm-rej");
+  rej.style.gridTemplateColumns = `repeat(${cols},1fr)`; rej.style.gridTemplateRows = `repeat(${filas},1fr)`;
+  let h = ""; for (let f = 0; f < filas; f++) for (let c = 0; c < cols; c++) {
+    const d = Math.hypot(c - (cols - 1) / 2, f - (filas - 1) / 2) / Math.hypot(cols / 2, filas / 2);
+    h += `<span style="transition-delay:${Math.round(150 + d * 420 + Math.random() * 60)}ms"></span>`; }
+  rej.innerHTML = h;
+  let fin = false;
+  const salir = () => { if (fin) return; fin = true; el.classList.add("fuera"); el.style.pointerEvents = "none";
+    setTimeout(() => { document.documentElement.style.overflow = ""; }, 400); setTimeout(() => el.remove(), 1300); };
+  const en = (ms, f) => setTimeout(() => { if (!fin) f(); }, ms);
+  requestAnimationFrame(() => requestAnimationFrame(() => { s.classList.add("ya"); $("gm-jun").classList.add("ya"); }));
+  en(1500, () => s.classList.add("late"));
+  en(1650, () => s.classList.add("brilla"));
+  en(1450, () => $("gm-pal").classList.add("ya"));
+  en(1850, () => $("gm-lin").classList.add("ya"));
+  setTimeout(salir, 2600);
+  setTimeout(salir, 3600);
+  el.addEventListener("click", salir); addEventListener("keydown", salir, { once: true });
+})();
+</script>
+
+<title>Gladymar, pisos y revestimientos</title>
+<style>
+/* MARCA (manual de Gladymar y roadmap del 03/11). Todo color y la letra salen de acá: cambiar Crossten o el rojo es
+   cambiar UNA línea. El rojo es el de su Pantone 186 C (#C8102E): el "HTML FF671F" del manual es un error (naranja). */
+:root{--rojo:#C8102E;--pizarra:#54585A;--beige:#D1CCBD;--taupe:#A69F88;--blanco:#FFFFFF;--crema:#F5F3EE;
+  --tinta:#54585A;--suave:#7A7E80;--linea:rgba(84,88,90,.14);
+  --letra:"Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",sans-serif; /* provisoria: Crossten cuando llegue la licencia web */
+  --fondo:var(--blanco);--panel:var(--crema);--panel2:#ECE9E2;--gris:var(--suave);--oro:var(--rojo);--ok:#2E7D4F;
+  --ritmo:cubic-bezier(.2,.7,.2,1);color-scheme:light}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:84px;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--blanco);color:var(--tinta);font-family:var(--letra);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}button,input,select{font:inherit;color:inherit}button{cursor:pointer}a{color:inherit}
+:focus-visible{outline:2px solid var(--rojo);outline-offset:3px}
+.env{max-width:1200px;margin:0 auto;padding-inline:max(20px,env(safe-area-inset-left,0px))}
+h1,h2,h3{font-weight:600;letter-spacing:-.025em;line-height:1.05;margin:0;color:var(--pizarra);text-wrap:balance}
+.k{display:block;font-size:14px;font-weight:600;color:var(--rojo);margin-bottom:18px}
+.k::before{content:"";display:block;width:28px;height:2px;background:var(--rojo);margin-bottom:14px}
+.t1{font-size:clamp(44px,7.4vw,104px)}.t2{font-size:clamp(36px,5.6vw,76px)}.t3{font-size:clamp(28px,3.4vw,44px)}
+.lead{font-size:clamp(18px,1.6vw,22px);color:var(--suave);max-width:38ch;margin:22px 0 0}
+.bt{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:999px;background:var(--rojo);color:#fff;font-weight:600;font-size:16px;padding:15px 28px;text-decoration:none;min-height:50px}
+.bt:hover{filter:brightness(1.08)}
+.enlace{display:inline-flex;align-items:center;gap:8px;border:0;background:none;padding:0;color:var(--rojo);font-weight:600;font-size:16px;text-decoration:none;margin-top:26px}
+.enlace svg{transition:transform .3s var(--ritmo)}.enlace:hover svg{transform:translateX(4px)}
+
+/* BARRA: sobre el video es transparente y blanca (logo blanco, manual pág. 9); en el resto, blanca con el logo de color. */
+.hd{position:fixed;inset:0 0 auto;z-index:30;background:rgba(255,255,255,.88);backdrop-filter:saturate(1.6) blur(14px);-webkit-backdrop-filter:saturate(1.6) blur(14px);transition:background .4s,color .4s}
+.hd .env{display:flex;align-items:center;gap:28px;height:68px}
+/* Área de resguardo (manual pág. 16): x = alto de la "a", 34 % del alto del logo (10 px a 30 px, 9 px a 26 px).
+   La barra deja 19 px (17 en el teléfono) arriba y abajo, 20 px a la izquierda y 28 px (14 px en el teléfono) hasta el menú. */
+.marca{display:block;flex:none;height:30px}.marca img{height:30px;width:auto}.marca .lb{display:none}
+.nav{display:flex;gap:30px;margin-left:auto;font-size:15px}.nav a{text-decoration:none;color:var(--pizarra);opacity:.86}
+.nav a:hover,.nav a[aria-current]{opacity:1;color:var(--rojo)}
+.cot{display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:600;text-decoration:none;border:1px solid var(--linea);border-radius:999px;padding:8px 16px;color:var(--pizarra)}
+.cot b{display:none;min-width:20px;height:20px;border-radius:99px;background:var(--rojo);color:#fff;font-size:11.5px;place-items:center;padding:0 5px}.cot b.si{display:inline-grid}
+.menu-b{display:none;border:0;background:none;width:44px;height:44px;margin-right:-10px;color:var(--pizarra)}
+html.sobre .hd{background:transparent;backdrop-filter:none;-webkit-backdrop-filter:none}
+html.sobre .marca .lc{display:none}html.sobre .marca .lb{display:block}
+html.sobre .nav a,html.sobre .cot,html.sobre .menu-b{color:#fff}html.sobre .cot{border-color:rgba(255,255,255,.4)}
+.menu-m{position:fixed;inset:0;z-index:29;background:var(--blanco);padding:96px 24px 40px;display:flex;flex-direction:column;gap:6px;opacity:0;pointer-events:none;transition:opacity .3s}
+.menu-m a{font-size:32px;font-weight:600;letter-spacing:-.02em;text-decoration:none;color:var(--pizarra);padding:8px 0}
+html.menu .menu-m{opacity:1;pointer-events:auto}html.menu .hd{background:var(--blanco)}
+html.menu.sobre .marca .lc{display:block}html.menu.sobre .marca .lb{display:none}html.menu.sobre .menu-b,html.menu.sobre .cot{color:var(--pizarra)}
+@media (max-width:900px){.nav{display:none}.menu-b{display:grid;place-items:center}.cot{margin-left:auto}.hd .env{gap:14px;height:60px}.marca,.marca img{height:26px}}
+
+/* HOME: una idea por pantalla. */
+.hero{position:relative;height:100svh;min-height:560px;overflow:hidden;background:#111;color:#fff}
+.hero video,.hero .poster{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.28) 0%,rgba(0,0,0,0) 30%,rgba(0,0,0,.08) 55%,rgba(0,0,0,.55) 100%)}
+/* Teléfono: el dron pasa por el cartel rojo; la mitad de abajo se oscurece para que el titular y el botón manden. */
+@media (orientation:portrait){.hero::after{background:linear-gradient(180deg,rgba(0,0,0,.3) 0%,rgba(0,0,0,0) 22%,rgba(0,0,0,.18) 42%,rgba(0,0,0,.66) 64%,rgba(0,0,0,.78) 100%)}}
+.hero .env{position:relative;z-index:2;height:100%;display:flex;flex-direction:column;justify-content:flex-end;padding-bottom:clamp(56px,10vh,110px)}
+.hero h1{color:#fff;font-size:clamp(48px,8.4vw,120px)}.hero p{font-size:clamp(18px,1.8vw,22px);margin:18px 0 34px;max-width:32ch;color:rgba(255,255,255,.9)}
+.pant{min-height:94svh;display:flex;align-items:center;padding:clamp(80px,12vh,140px) 0}
+.duo{display:grid;grid-template-columns:1.05fr 1fr;gap:clamp(32px,6vw,96px);align-items:center}
+.duo img{width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:4px}
+.ancha{position:relative;margin-top:clamp(40px,7vh,72px);overflow:hidden}
+.ancha img{width:100%;height:min(78vh,760px);object-fit:cover}
+.centro{text-align:center}.centro .lead{margin-inline:auto}.centro .k::before{margin-inline:auto}
+.fila-l{display:grid;grid-auto-flow:column;grid-auto-columns:min(78vw,420px);gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;padding:0 max(20px,calc((100vw - 1200px)/2 + 20px)) 6px;scrollbar-width:none;margin-top:48px;scroll-padding-inline:max(20px,calc((100vw - 1200px)/2 + 20px))}
+.fila-l::-webkit-scrollbar{display:none}
+.fila-l a{scroll-snap-align:start;text-decoration:none;color:var(--pizarra)}
+.fila-l img{width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:4px;transition:transform .8s var(--ritmo)}.fila-l a:hover img{transform:scale(1.02)}
+.fila-l b{display:block;font-size:20px;font-weight:600;margin-top:14px}
+.voz{position:relative;background:var(--beige);overflow:hidden}
+.voz::before{content:"";position:absolute;right:-6%;top:50%;width:min(62vw,680px);aspect-ratio:1316/1635;transform:translateY(-50%);background:url('/gladymar-web-app/img/tapiz-900.png') center/contain no-repeat;opacity:.55;pointer-events:none}
+.voz blockquote{position:relative;margin:0;max-width:16ch;font-size:clamp(36px,5.4vw,72px);font-weight:500;letter-spacing:-.025em;line-height:1.08;color:var(--pizarra)}
+.voz cite{position:relative;display:block;margin-top:30px;font-style:normal;font-weight:600;font-size:15px;color:var(--pizarra)}
+.voz cite::before{content:"";display:inline-block;width:28px;height:2px;background:var(--rojo);vertical-align:middle;margin-right:12px}
+
+/* VISTAS INTERNAS */
+.vista{padding:clamp(110px,16vh,170px) 0 clamp(70px,10vh,120px)}
+.cab{max-width:760px;margin-bottom:clamp(48px,8vh,90px)}
+.marcas{display:flex;flex-wrap:wrap;gap:10px 30px;margin-top:30px;font-size:15px;font-weight:600;color:var(--taupe)}
+.linea{display:grid;grid-template-columns:1.15fr 1fr;gap:clamp(28px,5vw,80px);align-items:center;padding:clamp(36px,6vh,64px) 0}
+.linea.inv .linea-f{order:2}
+.linea-f img{width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:4px}
+.linea h3{font-size:clamp(34px,4.4vw,58px)}.linea p{font-size:18px;color:var(--suave);margin:16px 0 0;max-width:36ch}
+.linea dl{display:grid;grid-template-columns:auto 1fr;gap:6px 22px;margin:28px 0 0;font-size:15px}.linea dt{color:var(--suave)}.linea dd{margin:0;font-weight:600}
+.pzs{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:12px;margin-top:28px}
+.pz{border:0;background:none;padding:0;text-align:left}.pz i{display:block;aspect-ratio:1;border-radius:4px;background:var(--crema) center/cover;transition:transform .5s var(--ritmo)}.pz:hover i{transform:scale(1.04)}
+.pz b{display:block;font-size:12.5px;font-weight:600;margin-top:7px;line-height:1.3}
+.otras{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:clamp(40px,7vh,80px)}
+.otra{background:var(--crema);border-radius:4px;overflow:hidden}.otra img{width:100%;aspect-ratio:16/10;object-fit:cover}.otra>div{padding:26px}
+.otra h3{font-size:26px}.otra p{color:var(--suave);margin:10px 0 18px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}.chip{border:1px solid var(--linea);background:var(--blanco);border-radius:999px;padding:8px 14px;font-size:14px;color:var(--pizarra)}.chip:hover{border-color:var(--rojo);color:var(--rojo)}
+.tapas{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:clamp(22px,3vw,40px)}
+.tapa{margin:0}.tapa-b{display:block;width:100%;border:0;padding:0;background:var(--crema);border-radius:4px;overflow:hidden}
+.tapa-b img{width:100%;aspect-ratio:3/4;object-fit:cover;transition:transform .8s var(--ritmo)}.tapa-b:hover img{transform:scale(1.03)}
+.tapa figcaption{display:grid;grid-template-columns:1fr auto;align-items:start;gap:2px 10px;margin-top:14px}
+.tapa b{font-size:17px;font-weight:600;color:var(--pizarra);line-height:1.3}.tapa span{grid-row:2;font-size:13.5px;color:var(--suave)}
+.ic{grid-row:1/3;grid-column:2;width:42px;height:42px;border-radius:99px;border:1px solid var(--linea);display:grid;place-items:center;color:var(--pizarra)}.ic:hover{border-color:var(--rojo);color:var(--rojo)}
+.bloque{margin-top:clamp(80px,13vh,150px)}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:28px}
+.tabs button{border:1px solid var(--linea);background:none;border-radius:999px;padding:10px 18px;font-size:15px;color:var(--pizarra)}
+.tabs button[aria-selected="true"]{background:var(--pizarra);border-color:var(--pizarra);color:#fff}
+.esp{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.esp figure,.cc figure{margin:0}.esp img{width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:4px}
+figcaption{font-size:14px;color:var(--suave);margin-top:10px}
+.cc{display:grid;grid-template-columns:2fr 1fr;grid-auto-rows:auto;gap:18px}
+.cc figure:first-child{grid-row:span 2}.cc img{width:100%;height:100%;object-fit:cover;border-radius:4px;aspect-ratio:16/10}.cc figure:first-child img{aspect-ratio:auto;min-height:100%}
+.ad{position:relative;border-radius:4px;overflow:hidden;aspect-ratio:16/10;background:var(--crema);touch-action:pan-y}
+.ad img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.ad .des{clip-path:inset(0 0 0 var(--x,50%))}
+.ad .linea-c{position:absolute;top:0;bottom:0;left:var(--x,50%);width:2px;background:#fff;transform:translateX(-1px);pointer-events:none}
+.ad .tir{position:absolute;top:50%;left:var(--x,50%);width:48px;height:48px;border-radius:99px;background:#fff;color:var(--pizarra);transform:translate(-50%,-50%);display:grid;place-items:center;pointer-events:none;box-shadow:0 4px 18px rgba(0,0,0,.18)}
+.ad .et{position:absolute;top:16px;font-size:13px;font-weight:600;background:rgba(255,255,255,.88);color:var(--pizarra);border-radius:99px;padding:6px 14px}
+.ad input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:ew-resize;margin:0}
+.roomvo{display:grid;grid-template-columns:1fr auto;gap:30px;align-items:center;background:var(--crema);border-radius:4px;padding:clamp(28px,4vw,48px);margin-top:28px}
+.roomvo p{color:var(--suave);margin:10px 0 0}
+.articulo .portada{height:min(70vh,640px);width:100%;object-fit:cover}
+.articulo .texto{max-width:700px;margin:0 auto;padding:clamp(56px,9vh,96px) 0 0}
+.articulo .texto p{font-size:19px;line-height:1.75;margin:0 0 22px}
+.articulo h2{margin-bottom:34px}
+.articulo .sub2{font-size:clamp(26px,3vw,36px);margin:clamp(56px,9vh,96px) 0 26px}
+.fab{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}.fab figure{margin:0}.fab img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:4px}
+.fab i{display:block;font-style:normal;color:var(--rojo);font-weight:600;font-size:13px;margin-top:4px}.fab b{display:block;font-size:18px;color:var(--pizarra);margin:2px 0 4px}
+.mv{display:grid;grid-template-columns:1fr 1fr;gap:28px;background:var(--crema);border-radius:4px;padding:clamp(26px,4vw,44px);margin-top:40px}
+.mv b{display:block;color:var(--pizarra);font-size:17px;margin-bottom:6px}.mv p{margin:0;color:var(--suave)}
+.eq{display:grid;grid-template-columns:1fr 1fr;gap:18px}.eq img{width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:4px}
+.ciu{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:26px}
+.ciu button{border:1px solid var(--linea);background:none;border-radius:999px;padding:9px 16px;font-size:14.5px;color:var(--pizarra)}
+.ciu button[aria-selected="true"]{background:var(--pizarra);border-color:var(--pizarra);color:#fff}
+.suc-g{display:grid;grid-template-columns:1fr 1.15fr;gap:clamp(24px,4vw,56px);align-items:start}
+.suc article{padding:20px 22px;border-radius:4px;cursor:pointer;transition:background .3s}
+.suc article:hover{background:var(--crema)}.suc article.on{background:var(--crema);box-shadow:inset 3px 0 0 var(--rojo)}
+.suc small{color:var(--suave);font-size:13px}.suc b{display:block;font-size:19px;color:var(--pizarra);margin:2px 0 4px}.suc p{margin:0;font-size:15px}
+.suc .hor{color:var(--suave);font-size:13.5px;margin-top:4px}
+.acc-s{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:12px;font-size:14.5px;font-weight:600}
+.acc-s a{display:inline-flex;align-items:center;gap:7px;text-decoration:none;color:var(--pizarra)}.acc-s a:hover{color:var(--rojo)}
+.wa-i{color:#25D366;flex:none}
+.mapa{position:sticky;top:90px}.mapa iframe{display:block;width:100%;aspect-ratio:4/3.6;border:0;border-radius:4px;background:var(--crema)}
+.mapa-t b{display:block;color:var(--pizarra)}.mapa-t small{color:var(--suave)}.mapa-t{margin-bottom:12px}
+.form{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:28px}
+.form label{display:flex;flex-direction:column;gap:7px;font-size:14px;font-weight:600;color:var(--pizarra)}
+.form input,.form select{border:1px solid rgba(84,88,90,.25);background:var(--blanco);border-radius:10px;padding:14px 15px;font-size:16px;font-weight:400;min-width:0}
+.form .ancho{grid-column:1/-1}.form .bt{justify-self:start}
+.aviso{margin:0;font-size:14px;color:var(--rojo);min-height:0}.aviso:empty{display:none}
+.pedir{display:grid;grid-template-columns:1fr 1.1fr;gap:clamp(28px,5vw,80px);background:var(--crema);border-radius:4px;padding:clamp(28px,5vw,64px)}
+.app-b{display:flex;align-items:center;gap:16px;flex-wrap:wrap;border-top:1px solid var(--linea);padding-top:22px;margin-top:28px;font-size:14.5px}
+.app-b img{border-radius:10px}.app-b p{margin:0;flex:1;min-width:200px;color:var(--suave)}
+.app-b span{display:flex;gap:8px}.app-b a{border:1px solid var(--linea);border-radius:999px;padding:8px 14px;text-decoration:none;font-weight:600;color:var(--pizarra)}
+.contacto{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;margin-top:40px;font-size:15px}
+.contacto small{display:block;color:var(--suave);font-size:13px}.contacto a{text-decoration:none;font-weight:600;color:var(--pizarra)}
+.it{display:grid;grid-template-columns:76px 1fr auto;gap:16px;align-items:center;padding:16px 0}
+.it i{width:76px;height:76px;border-radius:4px;background:var(--crema) center/cover}.it b{display:block;color:var(--pizarra)}.it small{color:var(--suave)}
+.qt{display:inline-flex;align-items:center;gap:10px;margin-top:8px}.qt button{width:34px;height:34px;border-radius:99px;border:1px solid var(--linea);background:none;font-size:18px;line-height:1}
+.quitar{border:0;background:none;color:var(--suave);font-size:14px;text-decoration:underline}
+.vacio{color:var(--suave);font-size:17px}
+
+/* FICHA: panel sobre la página, con la calculadora de cajas (roadmap: "panel dentro de la ficha de producto"). */
+.ficha{position:fixed;inset:0;z-index:40;background:rgba(40,42,43,.45);display:grid;place-items:center;padding:20px;animation:apar .3s var(--ritmo)}
+.fi{width:min(980px,100%);max-height:calc(100svh - 40px);overflow:auto;background:var(--blanco);border-radius:6px;display:grid;grid-template-columns:1fr 1fr}
+.fi .im{background:var(--crema) center/cover;min-height:420px;position:relative}
+.fi .tx{padding:clamp(24px,3.4vw,42px)}.fi h3{font-size:clamp(30px,3.4vw,42px)}
+.cerrar{position:absolute;top:14px;left:14px;width:42px;height:42px;border-radius:99px;border:0;background:rgba(255,255,255,.92);font-size:22px;color:var(--pizarra)}
+.esp-t{width:100%;border-collapse:collapse;margin-top:20px;font-size:14.5px}.esp-t td{padding:8px 0}.esp-t td:first-child{color:var(--suave)}.esp-t td:last-child{text-align:right;font-weight:600}
+.vars{display:grid;gap:8px;margin-top:16px}.var{display:flex;justify-content:space-between;align-items:center;gap:10px;border:1px solid var(--linea);background:none;border-radius:10px;padding:10px 12px;text-align:left}
+.var[aria-pressed="true"]{border-color:var(--pizarra)}.var:disabled{opacity:.55;cursor:not-allowed}.cod{display:block;font-size:11.5px;color:var(--suave)}
+.est{font-size:11.5px;font-weight:600;border-radius:99px;padding:3px 9px;white-space:nowrap}.est.ok{background:#E3F1E8;color:#2E7D4F}.est.no{background:#F7E1E4;color:#9B1C2E}
+.fi .bt{width:100%;margin-top:16px}.fi .acc{display:flex;gap:10px;margin-top:10px}
+.sec2{flex:1;border:1px solid var(--linea);background:none;border-radius:999px;padding:12px 16px;font-weight:600;font-size:14.5px;color:var(--pizarra)}
+.fi .k2{font-size:13px;font-weight:600;color:var(--suave);margin-top:26px}
+@keyframes apar{from{opacity:0}to{opacity:1}}
+/* Cambio de vista: fundido corto, sin saltos (roadmap: "transiciones fluidas entre secciones"). */
+@keyframes vista{from{opacity:0}to{opacity:1}}main.entra{animation:vista .35s ease-out}
+
+.calc{margin-top:14px;background:var(--panel);border:1px solid var(--linea);border-radius:16px;padding:14px}
+.modo{display:grid;grid-template-columns:1fr 1fr;gap:6px;background:var(--panel2);border-radius:10px;padding:4px}
+.modo button{border:0;background:transparent;border-radius:8px;padding:8px 6px;font-size:13px;color:var(--gris)}
+.modo button[aria-pressed="true"]{background:var(--tinta);color:var(--fondo);font-weight:600}
+.campos{display:flex;align-items:center;gap:8px;margin-top:12px;flex-wrap:wrap}
+.campos label{font-size:12px;color:var(--gris)}.c-m2 label{flex:1;min-width:120px}
+.campos input{width:96px;text-align:right;background:var(--panel2);border:1px solid var(--linea);border-radius:10px;padding:10px 11px;font-size:18px;font-weight:600;font-variant-numeric:tabular-nums}
+.c-m2 input{width:120px}.por{color:var(--gris);padding-bottom:11px}
+.c-med{display:grid;grid-template-columns:1fr auto 1fr;align-items:end;gap:10px}.c-med .campo{display:flex;flex-direction:column;gap:4px;min-width:0}.c-med input{width:100%}
+.extra{display:flex;align-items:center;gap:8px;margin-top:12px;font-size:13px;color:#FFFFFF}.extra input{width:18px;height:18px;accent-color:var(--rojo)}
+.calc-r{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px;font-variant-numeric:tabular-nums}
+.calc-r div{text-align:center;background:var(--panel2);border-radius:10px;padding:8px 4px}.calc-r b{display:block;font-weight:600;font-size:16px}.calc-r span{font-size:11px;color:var(--gris)}
+.calc-r p{grid-column:1/-1;margin:0;font-size:13px;color:var(--gris)}
+.comb{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:10px}
+.comb button{border:0;padding:0;background:transparent;text-align:left;min-width:0}
+.comb i{display:block;aspect-ratio:1/1;max-width:100%;border-radius:10px;background:var(--panel) center/cover}
+.comb b{display:block;font-weight:500;font-size:12.5px;margin-top:6px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.comb span{font-size:11px;color:var(--gris)}
+.datos-cli{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+.datos-cli label{display:flex;flex-direction:column;gap:4px;font-size:11px;color:var(--gris);min-width:0}
+.datos-cli input{background:var(--panel2);border:1px solid var(--linea);border-radius:10px;padding:10px;font-size:16px;min-width:0}
+.vencida{background:#3A1A1D;border:1px solid #5a2a2f;color:#FFC2C8;border-radius:12px;padding:10px 12px;font-size:13px;margin-top:12px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.vencida button{border:0;background:#fff;color:#0A0A0A;border-radius:8px;padding:7px 10px;font-weight:600;font-size:12.5px;white-space:nowrap}
+
+.calc{background:var(--crema);border:0;border-radius:6px}.modo{background:var(--blanco)}.modo button[aria-pressed="true"]{background:var(--pizarra);color:#fff}
+.campos input,.calc-r div{background:var(--blanco)}.extra{color:var(--tinta)}.calc-r{grid-template-columns:1fr 1fr}
+.toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%);z-index:60;background:var(--pizarra);color:#fff;border-radius:999px;padding:12px 20px;font-size:14.5px;box-shadow:0 8px 28px rgba(0,0,0,.18)}
+
+/* VISOR DE CATÁLOGOS: oscuro a propósito, la página del catálogo manda. */
+.visor{position:fixed;inset:0;z-index:80;background:#1d1f20;display:flex;flex-direction:column;color:#fff}
+.visor header{display:flex;align-items:center;gap:12px;padding:12px max(16px,env(safe-area-inset-left,0px))}
+.visor header b{flex:1;font-weight:600;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.visor header a,.visor header button{color:#fff;border:1px solid rgba(255,255,255,.3);background:none;border-radius:99px;padding:8px 14px;font-size:14px;text-decoration:none;white-space:nowrap}
+.visor .hoja{flex:1;min-height:0;display:grid;place-items:center;padding:0 12px}
+.visor .hoja img{max-width:100%;max-height:100%;object-fit:contain;border-radius:2px;background:#fff}
+.visor .pie{display:flex;justify-content:center;align-items:center;gap:16px;color:#ccc;padding:12px 0 calc(14px + env(safe-area-inset-bottom,0px))}
+.visor .pie button{width:46px;height:46px;border-radius:99px;border:1px solid rgba(255,255,255,.3);background:none;color:#fff;font-size:22px}
+
+/* PIE: beige, con el tapiz, el contacto y la app discreta (roadmap). */
+.pie-p{position:relative;background:var(--crema);overflow:hidden;padding:clamp(64px,10vh,110px) 0 36px;font-size:15px}
+.pie-p::before{content:"";position:absolute;right:-120px;bottom:-140px;width:520px;aspect-ratio:1316/1635;background:url('/gladymar-web-app/img/tapiz-900.png') center/contain no-repeat;opacity:.35;pointer-events:none}
+.pie-p .env{position:relative}
+.pie-p .marca img{height:34px}.pie-p .contacto{margin-top:34px}
+.redes{display:flex;gap:10px;margin-top:6px}.red{width:42px;height:42px;border-radius:99px;border:1px solid var(--linea);display:grid;place-items:center;color:var(--pizarra)}.red:hover{color:var(--rojo);border-color:var(--rojo)}
+.copy{margin:36px 0 0;font-size:13.5px;color:var(--suave)}
+/* En Dónde comprar el contacto y la app ya están en la sección: el pie no los repite. */
+[data-vista="donde"] .pie-p .contacto,[data-vista="donde"] .pie-p .app-b{display:none}
+
+/* MOVIMIENTO SOBRIO: fundido y desplazamiento corto (500 ms) al aparecer; paralaje leve en las fotos anchas. */
+.rev{opacity:0;transform:translateY(24px);transition:opacity .5s var(--ritmo),transform .5s var(--ritmo)}.rev.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.rev{opacity:1;transform:none;transition:none}*{scroll-behavior:auto!important;animation:none!important}}
+
+@media (max-width:900px){
+  .duo,.linea,.suc-g,.pedir,.fi,.roomvo{grid-template-columns:1fr}.linea.inv .linea-f{order:0}
+  .duo.inv-m>:first-child{order:2}
+  .pant{min-height:auto;padding:84px 0}.ancha img{height:62vh}
+  .esp{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:80vw;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;margin-inline:-20px;padding-inline:20px;scroll-padding-inline:20px}.esp figure{scroll-snap-align:start}.cc{grid-template-columns:1fr}.cc figure:first-child{grid-row:auto}
+  .otras,.fab,.mv,.contacto{grid-template-columns:1fr}.eq{grid-template-columns:1fr 1fr}
+  .fi .im{min-height:46vh}.mapa{position:static;order:-1}.form{grid-template-columns:1fr}
+  .tapas{grid-template-columns:1fr 1fr;gap:18px 14px}
+  .contacto{grid-template-columns:1fr 1fr}
+}
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+<header class="hd"><div class="env">
+  <a class="marca" href="#inicio" aria-label="Gladymar, inicio"><img class="lc" src="/gladymar-web-app/img/logo-horizontal-color-88.png" alt="Gladymar" height="30"><img class="lb" src="/gladymar-web-app/img/logo-horizontal.png" alt="Gladymar" height="30"></a>
+  <nav class="nav" aria-label="Secciones"><a href="#productos">Productos</a><a href="#catalogos">Catálogos</a><a href="#disena">Diseña</a><a href="#gladymar">Gladymar</a><a href="#donde">Dónde comprar</a></nav>
+  <a class="cot" href="#cotizar">Cotizar <b id="cuenta"></b></a>
+  <button type="button" class="menu-b" id="menu-b" aria-label="Abrir el menú" aria-expanded="false"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 8h16M4 16h16"/></svg></button>
+</div></header>
+<nav class="menu-m" id="menu-m" aria-label="Menú"><a href="#productos">Productos</a><a href="#catalogos">Catálogos</a><a href="#disena">Diseña</a><a href="#gladymar">Gladymar</a><a href="#donde">Dónde comprar</a></nav>
+
+<main>
+<section class="hero" id="inicio">
+  <picture><source media="(orientation: portrait)" srcset="/gladymar-web-app/video/fondo-inicio-movil.jpg"><img class="poster" src="/gladymar-web-app/video/fondo-inicio.jpg" alt="" aria-hidden="true"></picture>
+  <video id="fondo-hero" data-h="/gladymar-web-app/video/fondo-inicio.mp4" data-v="/gladymar-web-app/video/fondo-inicio-movil.mp4" muted loop playsinline autoplay preload="metadata" aria-hidden="true"></video>
+  <script>
+  // Pantalla vertical (teléfono): el recorrido en dron del showroom Plus, grabado vertical. Horizontal: el video de siempre.
+  (function () {
+    var v = document.getElementById("fondo-hero"), q = matchMedia("(orientation: portrait)");
+    function poner() { var u = q.matches ? v.dataset.v : v.dataset.h; if (v.getAttribute("src") === u) return; var andaba = v.src && !v.paused;
+      if (v.getAttribute("src")) v.autoplay = andaba; // al girar fuera del inicio, el video oculto no arranca solo
+      v.poster = u.replace(".mp4", ".jpg"); v.src = u; if (andaba) v.play().catch(function () {}); }
+    poner(); if (q.addEventListener) q.addEventListener("change", poner);
+  })();
+  </script>
+  <div class="env"><h1>Diseño que inspira.</h1><p>Pisos y revestimientos hechos en Bolivia desde 1984.</p><div><a class="bt" href="#productos">Ver productos</a></div></div>
+</section>
+
+<section class="pant" id="legado"><div class="env duo">
+  <div class="rev"><span class="k">Desde 1984</span><h2 class="t2">Tres generaciones.</h2><p class="lead">Don Cristóbal Roda Daza y Gladys Vaca El Hage fundaron Gladymar en Santa Cruz en 1984. Desde entonces, tres generaciones de una misma familia hacen los pisos y revestimientos que acompañan las obras de todo el país.</p><a class="enlace" href="#gladymar">Nuestra historia <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
+  <img class="rev" style="aspect-ratio:16/9" src="/gladymar-web-app/img/historia-sin-sello-800.webp" alt="El equipo de Gladymar frente a la fábrica, en Santa Cruz" loading="lazy" decoding="async">
+</div></section>
+
+<section class="pant" id="innovacion" style="display:block"><div class="env centro rev"><span class="k">Innovación</span><h2 class="t2">Innovación que transforma espacios.</h2><p class="lead">Cada colección se prueba en nuestro laboratorio y cada pieza se revisa antes de entrar a la caja.</p></div>
+  <div class="ancha"><img class="para" src="/gladymar-web-app/img/fabrica-laboratorio-1400.webp" alt="El laboratorio de la fábrica de Gladymar" loading="lazy" decoding="async"></div>
+</section>
+
+<section class="pant" id="h-productos" style="display:block"><div class="env rev"><span class="k">Productos</span><h2 class="t2">Hecho en Bolivia.</h2><p class="lead">Porcelanato, Eleganza, Platinum, Terraforte, Artema y Kaiser.</p><a class="enlace" href="#productos">Ver todos los productos <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
+  <div class="fila-l rev"><a href="#l-porcelanato"><img src="/gladymar-web-app/img/f5-1-1200.webp" alt="Porcelanato" loading="lazy" decoding="async"><b>Porcelanato</b></a><a href="#l-eleganza"><img src="/gladymar-web-app/img/a-atlas-grey-2-1200.webp" alt="Eleganza" loading="lazy" decoding="async"><b>Eleganza</b></a><a href="#l-platinum"><img src="/gladymar-web-app/img/a-taj-mahal-1200.webp" alt="Platinum" loading="lazy" decoding="async"><b>Platinum</b></a><a href="#l-terraforte"><img src="/gladymar-web-app/img/a-rovere-toscano-1200.webp" alt="Terraforte" loading="lazy" decoding="async"><b>Terraforte</b></a><a href="#l-artema"><img src="/gladymar-web-app/img/l-artema-1200.webp" alt="Artema" loading="lazy" decoding="async"><b>Artema</b></a><a href="#l-kaiser"><img src="/gladymar-web-app/img/f2-1-1200.webp" alt="Kaiser" loading="lazy" decoding="async"><b>Kaiser</b></a></div>
+</section>
+
+<section class="pant" id="h-disena" style="display:block;padding-bottom:0"><div class="env rev"><span class="k">Diseña</span><h2 class="t2">Imagine su espacio.</h2><p class="lead">Ambientes para inspirarse, CasaCor Bolivia y el simulador para probar el piso en la foto de su casa.</p><a class="enlace" href="#disena">Ir a Diseña <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
+  <div class="ancha"><img class="para" src="/gladymar-web-app/img/casacor-bar-1600.webp" alt="El Jardín del Achachairú en CasaCor Bolivia" loading="lazy" decoding="async"></div>
+</section>
+
+<section class="pant voz" id="voz"><div class="env rev"><blockquote>Superficies diseñadas no solo para verse, sino para sentirse.</blockquote><cite>Colección Dimensión Viva</cite></div></section>
+
+<section class="pant" id="h-donde"><div class="env duo inv-m">
+  <img class="rev" src="/gladymar-web-app/img/tienda-fachada-1000.webp" alt="Una tienda Gladymar" loading="lazy" decoding="async" style="aspect-ratio:4/3">
+  <div class="rev"><span class="k">Dónde comprar</span><h2 class="t2">Cerca de su obra.</h2><p class="lead">11 tiendas y la fábrica, en Santa Cruz, La Paz, Cochabamba, Sucre, Tarija, Oruro y Potosí.</p><a class="enlace" href="#donde">Ver tiendas <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
+</div></section>
+
+<section class="vista" id="productos"><div class="env">
+  <div class="cab rev"><h1 class="t1">Productos</h1><p class="lead">Nuestras líneas nacionales, con sus formatos y acabados. Elija una pieza, calcule sus cajas y pida su proforma a un asesor.</p><div class="marcas"><span>Noventia</span><span>Porcelanato</span><span>Eleganza</span><span>Platinum</span><span>Terraforte</span><span>Artema</span><span>Importados</span></div></div>
+  <article class="linea rev" id="l-porcelanato">
+  <div class="linea-f"><img src="/gladymar-web-app/img/f5-1-1200.webp" alt="Porcelanato" loading="lazy" decoding="async"></div>
+  <div class="linea-t">
+    <h3>Porcelanato</h3><p>Grandes formatos y piezas de 60 × 60 para interiores y exteriores.</p>
+    <dl><dt>Formatos</dt><dd>20 × 20, 20 × 120, 60 × 60, 60 × 120 y 90 × 90</dd><dt>Acabados</dt><dd>Exterior, Mate, Pulido y Rústico</dd></dl>
+    
+    <button type="button" class="enlace" data-hojear="5448" data-pag="1">Ver el catálogo <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+  </div></article>
+<article class="linea rev inv" id="l-eleganza">
+  <div class="linea-f"><img src="/gladymar-web-app/img/a-atlas-grey-2-1200.webp" alt="Eleganza" loading="lazy" decoding="async"></div>
+  <div class="linea-t">
+    <h3>Eleganza</h3><p>Porcelanato 60 × 60 en acabado mate, con vetas suaves de piedra.</p>
+    <dl><dt>Formatos</dt><dd>60 × 60</dd><dt>Acabados</dt><dd>Mate</dd></dl>
+    <div class="pzs"><button class="pz abre" data-id="basalto-gris"><i style="background-image:url('/gladymar-web-app/img/m-basalto-gris-520.webp')"></i><b>Basalto Gris</b></button><button class="pz abre" data-id="atlas-grey"><i style="background-image:url('/gladymar-web-app/img/m-atlas-grey-520.webp')"></i><b>Atlas Grey</b></button><button class="pz abre" data-id="marmore-crema"><i style="background-image:url('/gladymar-web-app/img/m-marmore-crema-520.webp')"></i><b>Marmore Crema</b></button><button class="pz abre" data-id="moon-white"><i style="background-image:url('/gladymar-web-app/img/m-moon-white-520.webp')"></i><b>Moon White</b></button><button class="pz abre" data-id="urban-graffito"><i style="background-image:url('/gladymar-web-app/img/m-urban-graffito-520.webp')"></i><b>Urban Graffito</b></button></div>
+    <button type="button" class="enlace" data-hojear="5573" data-pag="1">Ver el catálogo <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+  </div></article>
+<article class="linea rev" id="l-platinum">
+  <div class="linea-f"><img src="/gladymar-web-app/img/a-taj-mahal-1200.webp" alt="Platinum" loading="lazy" decoding="async"></div>
+  <div class="linea-t">
+    <h3>Platinum</h3><p>Mármoles en porcelanato 60 × 60, en brillo y mate.</p>
+    <dl><dt>Formatos</dt><dd>41 × 41 y 60 × 60</dd><dt>Acabados</dt><dd>Brillo y Mate</dd></dl>
+    <div class="pzs"><button class="pz abre" data-id="calacatta-silver"><i style="background-image:url('/gladymar-web-app/img/m-calacatta-silver-520.webp')"></i><b>Calacatta Silver</b></button><button class="pz abre" data-id="taj-mahal"><i style="background-image:url('/gladymar-web-app/img/m-taj-mahal-520.webp')"></i><b>Taj Mahal</b></button><button class="pz abre" data-id="ebano-venato"><i style="background-image:url('/gladymar-web-app/img/m-ebano-venato-520.webp')"></i><b>Ébano Venato</b></button></div>
+    <button type="button" class="enlace" data-hojear="5573" data-pag="1">Ver el catálogo <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+  </div></article>
+<article class="linea rev inv" id="l-terraforte">
+  <div class="linea-f"><img src="/gladymar-web-app/img/a-rovere-toscano-1200.webp" alt="Terraforte" loading="lazy" decoding="async"></div>
+  <div class="linea-t">
+    <h3>Terraforte</h3><p>Maderas, mármoles y cementos en porcelanato 60 × 60.</p>
+    <dl><dt>Formatos</dt><dd>60 × 60</dd><dt>Acabados</dt><dd>Brillo y Mate</dd></dl>
+    <div class="pzs"><button class="pz abre" data-id="negro-artico"><i style="background-image:url('/gladymar-web-app/img/m-negro-artico-520.webp')"></i><b>Negro Ártico</b></button><button class="pz abre" data-id="onix-royal"><i style="background-image:url('/gladymar-web-app/img/m-onix-royal-520.webp')"></i><b>Onix Royal</b></button><button class="pz abre" data-id="cimento-cinza"><i style="background-image:url('/gladymar-web-app/img/m-cimento-cinza-520.webp')"></i><b>Cimento Cinza</b></button><button class="pz abre" data-id="nogal-nocturno"><i style="background-image:url('/gladymar-web-app/img/m-nogal-nocturno-520.webp')"></i><b>Nogal Nocturno</b></button><button class="pz abre" data-id="onice-bianco"><i style="background-image:url('/gladymar-web-app/img/m-onice-bianco-520.webp')"></i><b>Onice Bianco</b></button><button class="pz abre" data-id="rovere-toscano"><i style="background-image:url('/gladymar-web-app/img/m-rovere-toscano-520.webp')"></i><b>Rovere Toscano</b></button><button class="pz abre" data-id="carrara-venato"><i style="background-image:url('/gladymar-web-app/img/m-carrara-venato-520.webp')"></i><b>Carrara Venato</b></button><button class="pz abre" data-id="oro-bianco"><i style="background-image:url('/gladymar-web-app/img/m-oro-bianco-520.webp')"></i><b>Oro Bianco</b></button><button class="pz abre" data-id="perlino-dark"><i style="background-image:url('/gladymar-web-app/img/m-perlino-dark-520.webp')"></i><b>Perlino Dark</b></button></div>
+    <button type="button" class="enlace" data-hojear="5573" data-pag="1">Ver el catálogo <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+  </div></article>
+<article class="linea rev" id="l-artema">
+  <div class="linea-f"><img src="/gladymar-web-app/img/l-artema-1200.webp" alt="Artema" loading="lazy" decoding="async"></div>
+  <div class="linea-t">
+    <h3>Artema</h3><p>Semigres en colores tierra, piedra y mármol.</p>
+    <dl><dt>Formatos</dt><dd>41 × 41 y 60 × 60</dd><dt>Acabados</dt><dd>Goteado y Semibrillo</dd></dl>
+    
+    <button type="button" class="enlace" data-hojear="5573" data-pag="12">Ver el catálogo <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+  </div></article>
+<article class="linea rev inv" id="l-kaiser">
+  <div class="linea-f"><img src="/gladymar-web-app/img/f2-1-1200.webp" alt="Kaiser" loading="lazy" decoding="async"></div>
+  <div class="linea-t">
+    <h3>Kaiser</h3><p>Pisos rústicos en tonos de terracota.</p>
+    <dl><dt>Formatos</dt><dd>18 × 24 y 24 × 24</dd><dt>Acabados</dt><dd>Rústico</dd></dl>
+    
+    <button type="button" class="enlace" data-hojear="5450" data-pag="1">Ver el catálogo <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+  </div></article>
+  <h2 class="t3 rev" style="margin-top:clamp(60px,10vh,110px)">Otras categorías</h2>
+  <div class="otras"><article class="otra rev"><img src="/gladymar-web-app/catalogos/deca-sanitarios/f2-1.webp" alt="" loading="lazy" decoding="async"><div><h3>Griferías y sanitarios</h3><p>Lozas, griferías y accesorios de las marcas que representamos.</p><div class="chips"><button type="button" class="chip" data-hojear="5379">Deca Sanitarios</button><button type="button" class="chip" data-hojear="5371">Vainsa</button><button type="button" class="chip" data-hojear="5487">Deca Cocina</button><button type="button" class="chip" data-hojear="5497">Deca Accesorios</button></div></div></article>
+<article class="otra rev"><img src="/gladymar-web-app/catalogos/atrim/f13-1.webp" alt="" loading="lazy" decoding="async"><div><h3>Complementos</h3><p>Perfiles, herramientas y lo necesario para terminar su obra.</p><div class="chips"><button type="button" class="chip" data-hojear="5306">Atrim</button></div></div></article></div>
+</div></section>
+
+<section class="vista" id="catalogos"><div class="env">
+  <div class="cab rev"><h1 class="t1">Catálogos</h1><p class="lead">Hojee cada catálogo en la pantalla o descargue el PDF original.</p></div>
+  <div class="tapas"><figure class="tapa rev"><button type="button" class="tapa-b" data-hojear="5573" aria-label="Hojear Catálogo Gladymar"><img src="/gladymar-web-app/catalogos/gladymar/p1.webp" alt="" loading="lazy" decoding="async"></button>
+  <figcaption><b>Catálogo Gladymar</b><span>Pisos y revestimientos</span><a class="ic" href="https://www.dropbox.com/scl/fi/rjogs3ib3513ayjvcq5fq/CATALOGO-GLADYMAR-25-PRODUCTOS.pdf?rlkey=xch9f0gl7jtc5da8qazzhfpyi&amp;dl=1" target="_blank" rel="noopener" aria-label="Descargar Catálogo Gladymar en PDF" title="Descargar el PDF"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg></a></figcaption></figure>
+<figure class="tapa rev"><button type="button" class="tapa-b" data-hojear="5696" aria-label="Hojear Dimensión Viva"><img src="/gladymar-web-app/catalogos/dimension-viva/p1.webp" alt="" loading="lazy" decoding="async"></button>
+  <figcaption><b>Dimensión Viva</b><span>Pisos y revestimientos</span><a class="ic" href="https://www.dropbox.com/scl/fi/gsapv1yub2usumbuqreby/CATALOGO_DIMENSION_VIVA.pdf?rlkey=josb9vj4fxd0ohp7h1odedm3f&amp;dl=1" target="_blank" rel="noopener" aria-label="Descargar Dimensión Viva en PDF" title="Descargar el PDF"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg></a></figcaption></figure>
+<figure class="tapa rev"><button type="button" class="tapa-b" data-hojear="5597" aria-label="Hojear Nuevos lanzamientos 2025"><img src="/gladymar-web-app/catalogos/lanzamientos-2025/p1.webp" alt="" loading="lazy" decoding="async"></button>
+  <figcaption><b>Nuevos lanzamientos 2025</b><span>Pisos y revestimientos</span><a class="ic" href="https://www.dropbox.com/scl/fi/9eus41it1pbpuvlgo4ed6/NUEVOS-PRODUCTOS.pdf?rlkey=z5b7tqp3h3jf0nnwx4g8evk4o&amp;dl=1" target="_blank" rel="noopener" aria-label="Descargar Nuevos lanzamientos 2025 en PDF" title="Descargar el PDF"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg></a></figcaption></figure>
+<figure class="tapa rev"><button type="button" class="tapa-b" data-hojear="5209" aria-label="Hojear Eliane"><img src="/gladymar-web-app/catalogos/eliane/p1.webp" alt="" loading="lazy" decoding="async"></button>
+  <figcaption><b>Eliane</b><span>Pisos y revestimientos</span><a class="ic" href="https://www.dropbox.com/scl/fi/lssm2aomvfi72ugiagq0i/CATALOGO-ELIANE.pdf?rlkey=ptub5ae1c2xp83uuij7kh574t&amp;dl=1" target="_blank" rel="noopener" aria-label="Descargar Eliane en PDF" title="Descargar el PDF"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg></a></figcaption></figure>
+<figure class="tapa rev"><button type="button" class="tapa-b" data-hojear="5317" aria-label="Hojear Ceusa"><img src="/gladymar-web-app/catalogos/ceusa/p1.webp" alt="" loading="lazy" decoding="async"></button>
+  <figcaption><b>Ceusa</b><span>Pisos y revestimientos</span><a class="ic" href="https://www.dropbox.com/scl/fi/zr1n43hk4deakx2jn4hc1/CATALOGO-CEUSA.pdf?rlkey=7cc9t3gcfjzos4rfnmy6iamg4&amp;dl=1" target="_blank" rel="noopener" aria-label="Descargar Ceusa en PDF" title="Descargar el PDF"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg></a></figcaption></figure>
+<figure class="tapa rev"><button type="button" class="tapa-b" data-hojear="5319" aria-label="Hojear Grupo Lef"><img src="/gladymar-web-app/catalogos/grupo-lef/p1.webp" alt="" loading="lazy" decoding="async"></button>
+  <figcaption><b>Grupo Lef</b><span>Pisos y revestimientos</span><a class="ic" href="https://www.dropbox.com/scl/fi/rmkuhqsu5vdr2x30xw3bh/CATALOGO-GRUPO-LEF.pdf?rlkey=yn0f5i90j1qpc7ynuvqpckbj7&amp;dl=1" target="_blank" rel="noopener" aria-label="Descargar Grupo Lef en PDF" title="Descargar el PDF"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg></a></figcaption></figure>
+<figure class="tapa rev"><button type="button" class="tapa-b" data-hojear="5218" aria-label="Hojear Portinari"><img src="/gladymar-web-app/catalogos/portinari/p1.webp" alt="" loading="lazy" decoding="async"></button>
+  <figcaption><b>Portinari</b><span>Pisos y revestimientos</span><a class="ic" href="https://www.dropbox.com/scl/fi/jhtwt8a9mdmu1l7z9e75t/Cat.-Portinari-Portafolio-11-22.pdf?rlkey=imaupxstmv40ffm447dvw8l4v&amp;dl=1" target="_blank" rel="noopener" aria-label="Descargar Portinari en PDF" title="Descargar el PDF"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg></a></figcaption></figure>
+<figure class="tapa rev"><button type="button" class="tapa-b" data-hojear="5315" aria-label="Hojear Embramaco"><img src="/gladymar-web-app/catalogos/embramaco/p1.webp" alt="" loading="lazy" decoding="async"></button>
+  <figcaption><b>Embramaco</b><span>Pisos y revestimientos</span><a class="ic" href="https://www.dropbox.com/scl/fi/spe7ylus4j4azalsm0o5d/Cat.-Embramaco.11-22.pdf?rlkey=p8fi1nbbbp5ipb3zr4rqm7u4w&amp;dl=1" target="_blank" rel="noopener" aria-label="Descargar Embramaco en PDF" title="Descargar el PDF"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg></a></figcaption></figure>
+<figure class="tapa rev"><button type="button" class="tapa-b" data-hojear="5203" aria-label="Hojear Aparici"><img src="/gladymar-web-app/catalogos/aparici/p1.webp" alt="" loading="lazy" decoding="async"></button>
+  <figcaption><b>Aparici</b><span>Pisos y revestimientos</span><a class="ic" href="https://www.dropbox.com/scl/fi/1xbuumgyno87q240f170j/CAT.-APARICI.pdf?rlkey=o3n30s2fq3u8c6jawstvkwlej&amp;dl=1" target="_blank" rel="noopener" aria-label="Descargar Aparici en PDF" title="Descargar el PDF"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg></a></figcaption></figure>
+<figure class="tapa rev"><button type="button" class="tapa-b" data-hojear="5377" aria-label="Hojear Vinilforte"><img src="/gladymar-web-app/catalogos/vinilforte/p1.webp" alt="" loading="lazy" decoding="async"></button>
+  <figcaption><b>Vinilforte</b><span>Pisos y revestimientos</span><a class="ic" href="https://www.dropbox.com/scl/fi/mwln9h69p1c0mzorpboxm/CATALOGO-VINILFORTE.pdf?rlkey=kyfg1gr2apgr75alaom7k0f0d&amp;dl=1" target="_blank" rel="noopener" aria-label="Descargar Vinilforte en PDF" title="Descargar el PDF"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg></a></figcaption></figure>
+<figure class="tapa rev"><button type="button" class="tapa-b" data-hojear="5551" aria-label="Hojear Durafloor"><img src="/gladymar-web-app/catalogos/durafloor/p1.webp" alt="" loading="lazy" decoding="async"></button>
+  <figcaption><b>Durafloor</b><span>Pisos y revestimientos</span><a class="ic" href="https://www.dropbox.com/scl/fi/5cyqrbh36fiv5agd5261o/CATALOGO-DURAFLOOR.pdf?rlkey=2fbdks7f3ci54ui262u0wmhy7&amp;dl=1" target="_blank" rel="noopener" aria-label="Descargar Durafloor en PDF" title="Descargar el PDF"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg></a></figcaption></figure>
+<figure class="tapa rev"><button type="button" class="tapa-b" data-hojear="5371" aria-label="Hojear Vainsa"><img src="/gladymar-web-app/catalogos/vainsa/p1.webp" alt="" loading="lazy" decoding="async"></button>
+  <figcaption><b>Vainsa</b><span>Griferías y sanitarios</span><a class="ic" href="https://www.dropbox.com/scl/fi/x56hcw3yydma2kv4jur5j/CATALOGO-VAINSA.pdf?rlkey=58goyugxjvtkhffhynnjpxjcd&amp;dl=1" target="_blank" rel="noopener" aria-label="Descargar Vainsa en PDF" title="Descargar el PDF"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg></a></figcaption></figure>
+<figure class="tapa rev"><button type="button" class="tapa-b" data-hojear="5379" aria-label="Hojear Deca Sanitarios"><img src="/gladymar-web-app/catalogos/deca-sanitarios/p1.webp" alt="" loading="lazy" decoding="async"></button>
+  <figcaption><b>Deca Sanitarios</b><span>Griferías y sanitarios</span><a class="ic" href="https://www.dropbox.com/scl/fi/wxhaeqophiz6ojdf5rt75/DECA-SANITARIOS.pdf?rlkey=w7qwa64pqq9mfi35hrpbm6l6p&amp;dl=1" target="_blank" rel="noopener" aria-label="Descargar Deca Sanitarios en PDF" title="Descargar el PDF"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg></a></figcaption></figure>
+<figure class="tapa rev"><button type="button" class="tapa-b" data-hojear="5487" aria-label="Hojear Deca Cocina"><img src="/gladymar-web-app/catalogos/deca-cocina/p1.webp" alt="" loading="lazy" decoding="async"></button>
+  <figcaption><b>Deca Cocina</b><span>Griferías y sanitarios</span><a class="ic" href="https://www.dropbox.com/scl/fi/smx0x6pe5ixiaj2rmboe4/DECA-cocina.pdf?rlkey=6qdxh92qxpl9c1ww32qduh5q3&amp;dl=1" target="_blank" rel="noopener" aria-label="Descargar Deca Cocina en PDF" title="Descargar el PDF"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg></a></figcaption></figure>
+<figure class="tapa rev"><button type="button" class="tapa-b" data-hojear="5497" aria-label="Hojear Deca Accesorios"><img src="/gladymar-web-app/catalogos/deca-accesorios/p1.webp" alt="" loading="lazy" decoding="async"></button>
+  <figcaption><b>Deca Accesorios</b><span>Griferías y sanitarios</span><a class="ic" href="https://www.dropbox.com/scl/fi/z1b04rzg8iacu8gxqklre/DECA-Accesorios-valvulas-repuestos-asientos-bachas-de-cocina.pdf?rlkey=5aaf3mfh2911ab2paq55ulnx4&amp;dl=1" target="_blank" rel="noopener" aria-label="Descargar Deca Accesorios en PDF" title="Descargar el PDF"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg></a></figcaption></figure>
+<figure class="tapa rev"><button type="button" class="tapa-b" data-hojear="5306" aria-label="Hojear Atrim"><img src="/gladymar-web-app/catalogos/atrim/p1.webp" alt="" loading="lazy" decoding="async"></button>
+  <figcaption><b>Atrim</b><span>Complementos</span><a class="ic" href="https://www.dropbox.com/scl/fi/ch3y9mq2a8n5pu0z8v6dw/ATRIM-2024.pdf?rlkey=kpdwd4bekmf1hatjv3e6m405t&amp;dl=1" target="_blank" rel="noopener" aria-label="Descargar Atrim en PDF" title="Descargar el PDF"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg></a></figcaption></figure>
+<figure class="tapa rev"><button type="button" class="tapa-b" data-hojear="4990" aria-label="Hojear División hospitalaria"><img src="/gladymar-web-app/catalogos/hospitalaria/p1.webp" alt="" loading="lazy" decoding="async"></button>
+  <figcaption><b>División hospitalaria</b><span>División hospitalaria</span><a class="ic" href="https://www.dropbox.com/scl/fi/8imgtprjpp00x0lopf2wz/DivisionHospitalaria-compr.pdf?rlkey=007hqgqos0lmf7bufk4lvlwih&amp;dl=1" target="_blank" rel="noopener" aria-label="Descargar División hospitalaria en PDF" title="Descargar el PDF"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg></a></figcaption></figure>
+<figure class="tapa rev"><button type="button" class="tapa-b" data-hojear="5578" aria-label="Hojear Pulidos"><img src="/gladymar-web-app/catalogos/pulidos/p1.webp" alt="" loading="lazy" decoding="async"></button>
+  <figcaption><b>Pulidos</b><span>Pisos y revestimientos</span><a class="ic" href="https://www.dropbox.com/scl/fi/0oi2qqc8vup8m55oh9jky/CATALOGO-PULIDOS.pdf?rlkey=se4a8mbn8x0ttidb09wvag66w&amp;dl=1" target="_blank" rel="noopener" aria-label="Descargar Pulidos en PDF" title="Descargar el PDF"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg></a></figcaption></figure>
+<figure class="tapa rev"><button type="button" class="tapa-b" data-hojear="5576" aria-label="Hojear Porcelanato 60 × 120 y 20 × 120"><img src="/gladymar-web-app/catalogos/60x120/p1.webp" alt="" loading="lazy" decoding="async"></button>
+  <figcaption><b>Porcelanato 60 × 120 y 20 × 120</b><span>Pisos y revestimientos</span><a class="ic" href="https://www.dropbox.com/scl/fi/q5q630b2fkxou6ckh9l19/PORCELANATO-60X120-20X120.pdf?rlkey=wwzp7ms6dquk16xkbe2mjcotw&amp;dl=1" target="_blank" rel="noopener" aria-label="Descargar Porcelanato 60 × 120 y 20 × 120 en PDF" title="Descargar el PDF"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg></a></figcaption></figure>
+<figure class="tapa rev"><button type="button" class="tapa-b" data-hojear="5502" aria-label="Hojear Porcelanato 60 × 60"><img src="/gladymar-web-app/catalogos/porcelanato-60x60/p1.webp" alt="" loading="lazy" decoding="async"></button>
+  <figcaption><b>Porcelanato 60 × 60</b><span>Pisos y revestimientos</span><a class="ic" href="https://www.dropbox.com/scl/fi/ojvf88r6puhbbuuxywzgf/CATALOGO-PORCELANATO-60X60.pdf?rlkey=n66e4126pl65ilraruhoz3e65&amp;dl=1" target="_blank" rel="noopener" aria-label="Descargar Porcelanato 60 × 60 en PDF" title="Descargar el PDF"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg></a></figcaption></figure>
+<figure class="tapa rev"><button type="button" class="tapa-b" data-hojear="5448" aria-label="Hojear Porcelanato en grandes formatos"><img src="/gladymar-web-app/catalogos/grandes-formatos/p1.webp" alt="" loading="lazy" decoding="async"></button>
+  <figcaption><b>Porcelanato en grandes formatos</b><span>Pisos y revestimientos</span><a class="ic" href="https://www.dropbox.com/scl/fi/5z114adss03q1nirb9f4o/CATALOGO-PORCELANATO-GRAN-FORM.pdf?rlkey=m4bbsh76c9hc7l445213m86d7&amp;dl=1" target="_blank" rel="noopener" aria-label="Descargar Porcelanato en grandes formatos en PDF" title="Descargar el PDF"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg></a></figcaption></figure>
+<figure class="tapa rev"><button type="button" class="tapa-b" data-hojear="5450" aria-label="Hojear Kaiser"><img src="/gladymar-web-app/catalogos/kaiser/p1.webp" alt="" loading="lazy" decoding="async"></button>
+  <figcaption><b>Kaiser</b><span>Pisos y revestimientos</span><a class="ic" href="https://www.dropbox.com/scl/fi/qxla33strglczotmqae8q/Cat.-Kaiser.22.pdf?rlkey=5rzw3nab0rll2gvlmnqiy9fqd&amp;dl=1" target="_blank" rel="noopener" aria-label="Descargar Kaiser en PDF" title="Descargar el PDF"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg></a></figcaption></figure>
+<figure class="tapa rev"><button type="button" class="tapa-b" data-hojear="5334" aria-label="Hojear Capri"><img src="/gladymar-web-app/catalogos/capri/p1.webp" alt="" loading="lazy" decoding="async"></button>
+  <figcaption><b>Capri</b><span>Pisos y revestimientos</span><a class="ic" href="https://www.dropbox.com/scl/fi/q4jcjx916e2f3cc94nbsw/CATALOGO-CAPRI.pdf?rlkey=dkduyfgde9vjizsnkpezdv11z&amp;dl=1" target="_blank" rel="noopener" aria-label="Descargar Capri en PDF" title="Descargar el PDF"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg></a></figcaption></figure>
+<figure class="tapa rev"><button type="button" class="tapa-b" data-hojear="5445" aria-label="Hojear Arbe"><img src="/gladymar-web-app/catalogos/arbe/p1.webp" alt="" loading="lazy" decoding="async"></button>
+  <figcaption><b>Arbe</b><span>Pisos y revestimientos</span><a class="ic" href="https://www.dropbox.com/scl/fi/5vsfzyt2j6j5ab5y3v7l3/ARBE-CAT-LOGO.pdf?rlkey=w3cefn2e6c21iyneh62dgy1q3&amp;dl=1" target="_blank" rel="noopener" aria-label="Descargar Arbe en PDF" title="Descargar el PDF"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg></a></figcaption></figure></div>
+</div></section>
+
+<section class="vista" id="disena"><div class="env">
+  <div class="cab rev"><h1 class="t1">Diseña</h1><p class="lead">Ideas por espacio, lo que mostramos en CasaCor Bolivia y su piso nuevo en la foto de su casa.</p></div>
+  <div class="rev"><div class="tabs" role="tablist" aria-label="Espacios"><button type="button" role="tab" data-esp="0" aria-selected="true">Sala</button><button type="button" role="tab" data-esp="1" aria-selected="false">Dormitorio</button><button type="button" role="tab" data-esp="2" aria-selected="false">Cocina y comedor</button><button type="button" role="tab" data-esp="3" aria-selected="false">Terraza</button><button type="button" role="tab" data-esp="4" aria-selected="false">Comercial</button></div><div class="esp" data-esp="0"><figure><img src="/gladymar-web-app/img/a-taj-mahal-900.webp" alt="Sala con Taj Mahal" loading="lazy" decoding="async"><figcaption>Taj Mahal</figcaption></figure><figure><img src="/gladymar-web-app/img/a-oro-bianco-900.webp" alt="Sala con Oro Bianco" loading="lazy" decoding="async"><figcaption>Oro Bianco</figcaption></figure><figure><img src="/gladymar-web-app/img/a-toronto-white-900.webp" alt="Sala con Toronto White" loading="lazy" decoding="async"><figcaption>Toronto White</figcaption></figure></div><div class="esp" data-esp="1" hidden><figure><img src="/gladymar-web-app/img/a-onix-aura-900.webp" alt="Dormitorio con Onix Aura" loading="lazy" decoding="async"><figcaption>Onix Aura</figcaption></figure><figure><img src="/gladymar-web-app/img/a-urban-graffito-2-900.webp" alt="Dormitorio con Urban Graffito" loading="lazy" decoding="async"><figcaption>Urban Graffito</figcaption></figure></div><div class="esp" data-esp="2" hidden><figure><img src="/gladymar-web-app/img/a-ebano-venato-900.webp" alt="Cocina y comedor con Ébano Venato" loading="lazy" decoding="async"><figcaption>Ébano Venato</figcaption></figure><figure><img src="/gladymar-web-app/img/a-rovere-toscano-900.webp" alt="Cocina y comedor con Rovere Toscano" loading="lazy" decoding="async"><figcaption>Rovere Toscano</figcaption></figure></div><div class="esp" data-esp="3" hidden><figure><img src="/gladymar-web-app/img/a-atlas-grey-2-900.webp" alt="Terraza con Atlas Grey" loading="lazy" decoding="async"><figcaption>Atlas Grey</figcaption></figure><figure><img src="/gladymar-web-app/img/a-moon-white-900.webp" alt="Terraza con Moon White" loading="lazy" decoding="async"><figcaption>Moon White</figcaption></figure><figure><img src="/gladymar-web-app/img/a-urban-graffito-900.webp" alt="Terraza con Urban Graffito" loading="lazy" decoding="async"><figcaption>Urban Graffito</figcaption></figure></div><div class="esp" data-esp="4" hidden><figure><img src="/gladymar-web-app/img/a-calacatta-silver-900.webp" alt="Comercial con Calacatta Silver" loading="lazy" decoding="async"><figcaption>Calacatta Silver</figcaption></figure><figure><img src="/gladymar-web-app/img/a-onix-royal-900.webp" alt="Comercial con Onix Royal" loading="lazy" decoding="async"><figcaption>Onix Royal</figcaption></figure><figure><img src="/gladymar-web-app/img/a-portland-soft-900.webp" alt="Comercial con Portland Soft" loading="lazy" decoding="async"><figcaption>Portland Soft</figcaption></figure><figure><img src="/gladymar-web-app/img/a-basalto-gris-900.webp" alt="Comercial con Basalto Gris" loading="lazy" decoding="async"><figcaption>Basalto Gris</figcaption></figure></div></div>
+  <div class="bloque"><h2 class="t2 rev">CasaCor Bolivia</h2><p class="lead rev">El Jardín del Achachairú, de Adriana Cirbián y Bruna Añez, y nuestra noche en CasaCor.</p><div class="cc" style="margin-top:36px"><figure class="rev"><img src="/gladymar-web-app/img/casacor-fuente-1200.webp" alt="La fuente del Jardín del Achachairú" loading="lazy" decoding="async"><figcaption>La fuente del Jardín del Achachairú</figcaption></figure><figure class="rev"><img src="/gladymar-web-app/img/casacor-salon-1200.webp" alt="El salón" loading="lazy" decoding="async"><figcaption>El salón</figcaption></figure><figure class="rev"><img src="/gladymar-web-app/img/casacor-terraza-1200.webp" alt="La terraza" loading="lazy" decoding="async"><figcaption>La terraza</figcaption></figure><figure class="rev"><img src="/gladymar-web-app/img/casacor-beso-de-miel-1200.webp" alt="Beso de Miel" loading="lazy" decoding="async"><figcaption>Beso de Miel</figcaption></figure><figure class="rev"><img src="/gladymar-web-app/img/equipo-evento-expo-1000.webp" alt="En el escenario de CasaCor Bolivia" loading="lazy" decoding="async"><figcaption>En el escenario de CasaCor Bolivia</figcaption></figure></div></div>
+  <div class="bloque rev"><h2 class="t2">Antes y después</h2><p class="lead">Deslice para ver la misma sala con otro piso.</p>
+    <div class="ad" id="ad" style="margin-top:36px"><img src="/gladymar-web-app/img/antes-1400.webp" alt="La sala antes" loading="lazy"><img class="des" src="/gladymar-web-app/img/sala-1400.webp" alt="La sala con otro piso" loading="lazy">
+      <span class="et" style="left:16px">Antes</span><span class="et" style="right:16px">Después</span><span class="linea-c"></span>
+      <span class="tir"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l-6 6 6 6M15 6l6 6-6 6"/></svg></span>
+      <input type="range" id="corte" min="0" max="100" value="50" aria-label="Deslice para comparar el antes y el después"></div>
+    <div class="roomvo"><div><h3 class="t3">Pruébelo en su casa</h3><p>Suba una foto de su ambiente y vea cómo queda con nuestros pisos.</p></div><button type="button" class="bt" id="roomvo">Probar con la foto de mi casa</button></div>
+  </div>
+</div></section>
+
+<section class="articulo" id="gladymar">
+  <img class="portada" src="/gladymar-web-app/img/fabrica-piezas-1400.webp" alt="Piezas de Gladymar en la fábrica" fetchpriority="low">
+  <div class="env"><div class="texto">
+    <span class="k rev">Gladymar</span><h1 class="t2 rev">Desde 1984, en Santa Cruz.</h1>
+    <p class="rev">Gladymar nació en 1984 del esfuerzo de Don Cristóbal Roda Daza y su esposa, Gladys Vaca El Hage. Don Cristóbal, arquitecto de profesión, empezó en la construcción y su espíritu emprendedor lo llevó a crear empresas en muchos sectores.</p><p class="rev">Fue un actor importante en la transformación de Santa Cruz y participó en la creación de sus principales instituciones gremiales y empresariales.</p><p class="rev">Hoy Cerámica Gladymar S.A. forma parte del Grupo Industrial Roda y la tercera generación de la familia sigue haciendo pisos y revestimientos para las obras de todo el país.</p>
+  </div>
+  <h2 class="sub2 rev" style="max-width:700px;margin-inline:auto">Cómo se hace una pieza</h2>
+  <div class="fab"><figure class="rev"><img src="/gladymar-web-app/img/fabrica-laboratorio-900.webp" alt="Laboratorio" loading="lazy" decoding="async"><figcaption><i>01</i><b>Laboratorio</b>Se prueban la pasta y el esmalte de cada colección.</figcaption></figure><figure class="rev"><img src="/gladymar-web-app/img/fabrica-linea-900.webp" alt="Línea" loading="lazy" decoding="async"><figcaption><i>02</i><b>Línea</b>Prensado, esmaltado y horno, controlados desde el tablero de la línea.</figcaption></figure><figure class="rev"><img src="/gladymar-web-app/img/fabrica-mano-900.webp" alt="Revisión" loading="lazy" decoding="async"><figcaption><i>03</i><b>Revisión</b>Cada pieza se mira antes de entrar a la caja.</figcaption></figure></div>
+  <div class="texto" style="padding-top:clamp(40px,7vh,72px)"><h2 class="sub2 rev" style="margin-top:0">Calidad</h2><p class="rev">Trabajamos con un Sistema de Gestión de Calidad que revisamos de forma continua en todos nuestros procesos.</p></div>
+  <div class="mv rev" style="max-width:900px;margin-inline:auto"><div><b>Misión</b><p>Ofrecer productos cerámicos, servicio y asesoramiento para crear estilo, belleza y confort en cada ambiente.</p></div><div><b>Visión</b><p>Mantener el liderazgo nacional y ser reconocidos en el exterior por la calidad de nuestras piezas.</p></div></div>
+  <div class="texto"><h2 class="sub2 rev">Nuestro equipo</h2><p class="rev">La gente de Gladymar, en la fábrica, en el showroom y con sus clientes.</p></div>
+  <div class="eq" style="max-width:900px;margin:0 auto clamp(70px,10vh,120px)"><img class="rev" src="/gladymar-web-app/img/equipo-petra-900.webp" alt="El equipo de Gladymar" loading="lazy" decoding="async"><img class="rev" src="/gladymar-web-app/img/gente-evento-900.webp" alt="El equipo de Gladymar" loading="lazy" decoding="async"></div>
+  </div>
+</section>
+
+<section class="vista" id="donde"><div class="env">
+  <div class="cab rev"><h1 class="t1">Dónde comprar</h1><p class="lead">11 tiendas y la fábrica, en Santa Cruz, La Paz, Cochabamba, Sucre, Tarija, Oruro y Potosí.</p></div>
+  <div class="ciu" id="ciu" role="tablist" aria-label="Ciudades"></div>
+  <div class="suc-g"><div class="suc" id="suc"></div>
+    <div class="mapa"><div class="mapa-t"><b id="mapa-tit"></b><small id="mapa-nota"></small></div><iframe id="gmapa" title="Mapa de la tienda" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></div></div>
+  <div class="pedir bloque rev"><div><h2 class="t3">Pida su proforma</h2><p class="lead" style="font-size:17px">Déjenos sus datos y un asesor de la tienda de su ciudad le manda la proforma con precio.</p><div class="app-b"><img src="/gladymar-web-app/img/logo.png" alt="" width="44" height="44"><p>Descargue la app de Gladymar: catálogo, cotización y el seguimiento de su pedido.</p>
+  <span><a href="https://primebusiness.live/demo/gladymar-app">Google Play</a><a href="https://primebusiness.live/demo/gladymar-app">App Store</a></span></div></div><div><form class="form" novalidate>
+  <label>Nombre<input name="nombre" autocomplete="name" maxlength="80" required></label>
+  <label>Ciudad<select name="ciudad" required><option value="">Elija su ciudad</option><option>Santa Cruz</option><option>La Paz</option><option>Cochabamba</option><option>Sucre</option><option>Tarija</option><option>Oruro</option><option>Potosí</option></select></label>
+  <label class="ancho">Producto de interés<input name="producto" maxlength="160" placeholder="Por ejemplo: porcelanato 60 × 60 para la sala"></label>
+  <label class="ancho">Teléfono o WhatsApp<input name="tel" inputmode="tel" autocomplete="tel" maxlength="20" required placeholder="7xx xx xxx"></label>
+  <p class="aviso ancho" role="status"></p>
+  <button class="bt ancho" type="submit">Enviar a la tienda de mi ciudad</button>
+</form></div></div>
+  <div class="contacto" id="contacto-d"></div>
+</div></section>
+
+<section class="vista" id="cotizar"><div class="env">
+  <div class="cab rev"><h1 class="t1">Cotizar</h1><p class="lead">Su lista de pisos, con las cajas y los metros que lleva. Envíela a la tienda de su ciudad y un asesor le manda la proforma con precio.</p></div>
+  <div class="pedir"><div id="lista-cot"></div><div><form class="form" novalidate>
+  <label>Nombre<input name="nombre" autocomplete="name" maxlength="80" required></label>
+  <label>Ciudad<select name="ciudad" required><option value="">Elija su ciudad</option><option>Santa Cruz</option><option>La Paz</option><option>Cochabamba</option><option>Sucre</option><option>Tarija</option><option>Oruro</option><option>Potosí</option></select></label>
+  <label class="ancho">Producto de interés<input name="producto" maxlength="160" placeholder="Por ejemplo: porcelanato 60 × 60 para la sala"></label>
+  <label class="ancho">Teléfono o WhatsApp<input name="tel" inputmode="tel" autocomplete="tel" maxlength="20" required placeholder="7xx xx xxx"></label>
+  <p class="aviso ancho" role="status"></p>
+  <button class="bt ancho" type="submit">Enviar a la tienda de mi ciudad</button>
+</form></div></div>
+</div></section>
+</main>
+
+<div class="visor" id="visor" hidden role="dialog" aria-modal="true" aria-label="Catálogo">
+  <header><b id="v-tit"></b><a id="v-pdf" target="_blank" rel="noopener">Descargar PDF</a><button type="button" id="v-x" aria-label="Cerrar" title="Cerrar"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></header>
+  <div class="hoja"><img id="v-img" alt=""></div>
+  <div class="pie"><button type="button" id="v-ant" aria-label="Página anterior">‹</button><span id="v-n"></span><button type="button" id="v-sig" aria-label="Página siguiente">›</button></div>
+</div>
+
+<footer class="pie-p"><div class="env">
+  <a class="marca" href="#inicio" aria-label="Gladymar, inicio"><img src="/gladymar-web-app/img/logo-horizontal-color-88.png" alt="Gladymar" height="34"></a>
+  <div class="contacto" id="contacto-p"></div>
+  <div class="app-b"><img src="/gladymar-web-app/img/logo.png" alt="" width="44" height="44"><p>Descargue la app de Gladymar: catálogo, cotización y el seguimiento de su pedido.</p>
+  <span><a href="https://primebusiness.live/demo/gladymar-app">Google Play</a><a href="https://primebusiness.live/demo/gladymar-app">App Store</a></span></div>
+  <p class="copy">© <span id="anio">2026</span> Cerámica Gladymar S.A. Todos los derechos reservados.</p>
+</div></footer>
+<div id="capa"></div>
+
+<script>
+
+const PROD = [{"id": "calacatta-silver", "nombre": "Calacatta Silver", "linea": "Platinum", "formato": "60 × 60 cm", "m2caja": 2.22, "nuevo": false, "variantes": [{"cod": "PAPPL600JC610001", "acabado": "Brillo", "estado": "PORTAFOLIO"}], "pieza": "/gladymar-web-app/img/m-calacatta-silver-520.webp", "ambiente": null}, {"id": "taj-mahal", "nombre": "Taj Mahal", "linea": "Platinum", "formato": "60 × 60 cm", "m2caja": 2.22, "nuevo": true, "variantes": [{"cod": "PAPPL600JC910001", "acabado": "Brillo", "estado": "NUEVO"}], "pieza": "/gladymar-web-app/img/m-taj-mahal-520.webp", "ambiente": null}, {"id": "ebano-venato", "nombre": "Ébano Venato", "linea": "Platinum", "formato": "60 × 60 cm", "m2caja": 2.22, "nuevo": false, "variantes": [{"cod": "PAPPL600JC010001", "acabado": "Brillo", "estado": "PORTAFOLIO"}], "pieza": "/gladymar-web-app/img/m-ebano-venato-520.webp", "ambiente": null}, {"id": "negro-artico", "nombre": "Negro Ártico", "linea": "Terraforte", "formato": "60 × 60 cm", "m2caja": 1.44, "nuevo": true, "variantes": [{"cod": "PAPTE600JC110001", "acabado": "Brillo", "estado": "NUEVO"}], "pieza": "/gladymar-web-app/img/m-negro-artico-520.webp", "ambiente": null}, {"id": "onix-royal", "nombre": "Onix Royal", "linea": "Terraforte", "formato": "60 × 60 cm", "m2caja": 1.44, "nuevo": true, "variantes": [{"cod": "PAPTE600JD110001", "acabado": "Brillo", "estado": "NUEVO"}], "pieza": "/gladymar-web-app/img/m-onix-royal-520.webp", "ambiente": null}, {"id": "basalto-gris", "nombre": "Basalto Gris", "linea": "Eleganza", "formato": "60 × 60 cm", "m2caja": 1.44, "nuevo": false, "variantes": [{"cod": "PAPEL60003A10001", "acabado": "Mate", "estado": "PORTAFOLIO"}, {"cod": "PAPEL60003A10002", "acabado": "Brillo", "estado": "DESCONTINUADO"}, {"cod": "PAPEL61003A10001", "acabado": "Brillo", "estado": "DESCONTINUADO"}, {"cod": "PAPEL59003A10001", "acabado": "Brillo", "estado": "DESCONTINUADO"}], "pieza": "/gladymar-web-app/img/m-basalto-gris-520.webp", "ambiente": null}, {"id": "atlas-grey", "nombre": "Atlas Grey", "linea": "Eleganza", "formato": "60 × 60 cm", "m2caja": 1.44, "nuevo": false, "variantes": [{"cod": "PAPEL600IW610001", "acabado": "Mate", "estado": "PORTAFOLIO"}], "pieza": "/gladymar-web-app/img/m-atlas-grey-520.webp", "ambiente": null}, {"id": "marmore-crema", "nombre": "Marmore Crema", "linea": "Eleganza", "formato": "60 × 60 cm", "m2caja": 1.44, "nuevo": false, "variantes": [{"cod": "PAPEL600IW010001", "acabado": "Mate", "estado": "PORTAFOLIO"}], "pieza": "/gladymar-web-app/img/m-marmore-crema-520.webp", "ambiente": null}, {"id": "moon-white", "nombre": "Moon White", "linea": "Eleganza", "formato": "60 × 60 cm", "m2caja": 1.44, "nuevo": false, "variantes": [{"cod": "PAPEL6000MK10001", "acabado": "Mate", "estado": "PORTAFOLIO"}, {"cod": "PAPEL6000MK10002", "acabado": "Brillo", "estado": "DESCONTINUADO"}, {"cod": "PAPEL5900MK10001", "acabado": "Brillo", "estado": "DESCONTINUADO"}], "pieza": "/gladymar-web-app/img/m-moon-white-520.webp", "ambiente": null}, {"id": "urban-graffito", "nombre": "Urban Graffito", "linea": "Eleganza", "formato": "60 × 60 cm", "m2caja": 1.44, "nuevo": false, "variantes": [{"cod": "PAPEL6000VH10001", "acabado": "Mate", "estado": "PORTAFOLIO"}, {"cod": "PAPEL6000VH10002", "acabado": "Brillo", "estado": "DESCONTINUADO"}, {"cod": "PAPEL5900VH10001", "acabado": "Brillo", "estado": "DESCONTINUADO"}], "pieza": "/gladymar-web-app/img/m-urban-graffito-520.webp", "ambiente": null}, {"id": "cimento-cinza", "nombre": "Cimento Cinza", "linea": "Terraforte", "formato": "60 × 60 cm", "m2caja": 1.44, "nuevo": false, "variantes": [{"cod": "PAPTE60055R10001", "acabado": "Mate", "estado": "PORTAFOLIO"}], "pieza": "/gladymar-web-app/img/m-cimento-cinza-520.webp", "ambiente": null}, {"id": "nogal-nocturno", "nombre": "Nogal Nocturno", "linea": "Terraforte", "formato": "60 × 60 cm", "m2caja": 1.44, "nuevo": false, "variantes": [{"cod": "PAPTE600IW710001", "acabado": "Mate", "estado": "PORTAFOLIO"}], "pieza": "/gladymar-web-app/img/m-nogal-nocturno-520.webp", "ambiente": null}, {"id": "onice-bianco", "nombre": "Onice Bianco", "linea": "Terraforte", "formato": "60 × 60 cm", "m2caja": 1.44, "nuevo": false, "variantes": [{"cod": "PAPTE60062P10001", "acabado": "Mate", "estado": "PORTAFOLIO"}], "pieza": "/gladymar-web-app/img/m-onice-bianco-520.webp", "ambiente": null}, {"id": "rovere-toscano", "nombre": "Rovere Toscano", "linea": "Terraforte", "formato": "60 × 60 cm", "m2caja": 1.44, "nuevo": false, "variantes": [{"cod": "PAPTE600W6410001", "acabado": "Mate", "estado": "PORTAFOLIO"}], "pieza": "/gladymar-web-app/img/m-rovere-toscano-520.webp", "ambiente": null}, {"id": "carrara-venato", "nombre": "Carrara Venato", "linea": "Terraforte", "formato": "60 × 60 cm", "m2caja": 1.44, "nuevo": false, "variantes": [{"cod": "PAPTE60051M10001", "acabado": "Brillo", "estado": "PORTAFOLIO"}, {"cod": "PAPTE61051M10001", "acabado": "Brillo", "estado": "PORTAFOLIO"}], "pieza": "/gladymar-web-app/img/m-carrara-venato-520.webp", "ambiente": null}, {"id": "oro-bianco", "nombre": "Oro Bianco", "linea": "Terraforte", "formato": "60 × 60 cm", "m2caja": 1.44, "nuevo": false, "variantes": [{"cod": "PAPTE60051F10001", "acabado": "Brillo", "estado": "PORTAFOLIO"}], "pieza": "/gladymar-web-app/img/m-oro-bianco-520.webp", "ambiente": null}, {"id": "perlino-dark", "nombre": "Perlino Dark", "linea": "Terraforte", "formato": "60 × 60 cm", "m2caja": 1.44, "nuevo": false, "variantes": [{"cod": "PAPTE60061L10001", "acabado": "Brillo", "estado": "PORTAFOLIO"}], "pieza": "/gladymar-web-app/img/m-perlino-dark-520.webp", "ambiente": null}];
+const REG = [["SCZ", "Santa Cruz"], ["CBBA", "Cochabamba"], ["LPZ", "La Paz"], ["SRE", "Sucre"], ["TRJ", "Tarija"]];
+const $ = (s, r = document) => r.querySelector(s);
+const esc = (t) => String(t).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+// Cada subtotal se redondea a centavos ANTES de sumar: las líneas que se ven tienen que dar el total que se ve.
+const cent = (n) => Math.round(n * 100 + 1e-6) / 100;
+const bs = (n) => "Bs " + n.toLocaleString("es-BO", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const num = (n) => n.toLocaleString("es-BO", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+// Buscar sin tildes ni mayúsculas: "ebano" encuentra "Ébano" y "artico" encuentra "Ártico".
+const norm = (t) => String(t).normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+// Los metros se escriben con coma o con punto (en Bolivia se usa la coma). Lo que no es un número > 0 vale 0.
+const leerNum = (t) => { const n = parseFloat(String(t).trim().replace(",", ".")); return Number.isFinite(n) && n > 0 ? n : 0; };
+const aTexto = (n) => String(n).replace(".", ",");
+const prod = (id) => PROD.find((p) => p.id === id);
+const vigente = (p) => p.variantes.find((v) => v.estado !== "DESCONTINUADO");
+const regNombre = (k) => (REG.find((r) => r[0] === k) || REG[0])[1];
+const cajasDe = (m2, p) => Math.ceil(m2 / p.m2caja - 1e-9);
+// "baño, mate, 60x60" (el ejemplo de la propuesta, pág. 5): las comas separan, "60 x 60" vale como "60x60",
+// y un ambiente de interior no descarta nada (todo el porcelanato 60 × 60 de la lista va en baño, cocina o sala).
+const AMBIENTES = ["bano", "banos", "cocina", "cocinas", "sala", "living", "comedor", "dormitorio", "pasillo", "piso", "pisos", "pared", "paredes", "interior"];
+const buscar = (p, q) => { const t = norm(p.nombre + " " + p.linea + " " + vigente(p).acabado + " 60x60 porcelanato"); return norm(q).replace(/(\d+)\s*[x×]\s*(\d+)/g, "$1x$2").split(/[\s,;]+/).filter((w) => w && !AMBIENTES.includes(w)).every((w) => t.includes(w)); };
+const VIGENCIA_MS = 24 * 3600 * 1000;
+
+// LA COTIZACIÓN GUARDADA se valida al leer: un código que ya no existe o quedó descontinuado no vuelve.
+// La cotización arranca VACÍA. La clave cambió de "gladymar-demo" para que quien vio las dos piezas de ejemplo también arranque en 0.
+const CLAVE = "gladymar-cotizacion";
+function cargar() {
+  let c = null;
+  try { c = JSON.parse(localStorage.getItem(CLAVE) || "null"); } catch (e) { c = null; }
+  const s = (x) => (typeof x === "string" ? x.slice(0, 80) : "");
+  if (!c || typeof c !== "object") {
+    return { region: "SCZ", nombre: "", obra: "", creada: Date.now(),
+      items: [] };
+  }
+  const items = (Array.isArray(c.items) ? c.items : []).filter((it) => {
+    const p = it && prod(it.id), v = p && p.variantes.find((x) => x.cod === it.cod);
+    return v && v.estado !== "DESCONTINUADO" && Number.isInteger(it.cajas) && it.cajas > 0;
+  });
+  return { region: REG.some((r) => r[0] === c.region) ? c.region : "SCZ", nombre: s(c.nombre), obra: s(c.obra),
+    creada: Number(c.creada) || Date.now(), items };
+}
+function guardar(st) {
+  try { localStorage.setItem(CLAVE, JSON.stringify({ region: st.region, items: st.items, creada: st.creada, nombre: st.nombre, obra: st.obra })); } catch (e) {}
+}
+function filasDe(st) {
+  return st.items.map((it, i) => {
+    const p = prod(it.id), v = p.variantes.find((x) => x.cod === it.cod), m2 = it.cajas * p.m2caja;
+    return { p, v, it, i, m2, sub: cent(m2 * v.precios[st.region]) };
+  });
+}
+const totalDe = (filas) => cent(filas.reduce((s, f) => s + f.sub, 0));
+function vigenciaDe(st) {
+  const fin = st.creada + VIGENCIA_MS, resta = fin - Date.now(), d = new Date(fin);
+  const fecha = d.toLocaleDateString("es-BO", { weekday: "long", day: "numeric", month: "long" }) + ", " +
+    d.toLocaleTimeString("es-BO", { hour: "2-digit", minute: "2-digit" });
+  return { vencida: resta <= 0, fecha, h: Math.max(0, Math.floor(resta / 3600000)), m: Math.max(0, Math.floor((resta % 3600000) / 60000)) };
+}
+function mensajeDe(st, origen) {
+  const filas = filasDe(st);
+  if (!filas.length) return "";
+  const vg = vigenciaDe(st), quien = [st.nombre.trim() && `Soy ${st.nombre.trim()}`, st.obra.trim() && `Obra: ${st.obra.trim()}`].filter(Boolean);
+  return `Hola, quiero avanzar con esta cotización de ${origen} (precio de lista de ${regNombre(st.region)}):\n` +
+    (quien.length ? quien.join(". ") + ".\n" : "") +
+    filas.map((f) => `• ${f.p.nombre} ${f.v.acabado.toLowerCase()} 60×60 (cód. ${f.v.cod}): ${f.it.cajas} cajas, ${num(f.m2)} m² × ${bs(f.v.precios[st.region])} = ${bs(f.sub)}`).join("\n") +
+    `\nTotal: ${bs(totalDe(filas))}\nVálida hasta el ${vg.fecha}${vg.fecha.endsWith(".") ? "" : "."}`;
+}
+function agregar(st, p, v, cajas) {
+  const ya = st.items.find((x) => x.cod === v.cod);
+  if (ya) ya.cajas += cajas; else st.items.push({ id: p.id, cod: v.cod, cajas });
+  st.creada = Date.now(); guardar(st);
+}
+
+function toast(t, donde) {
+  document.querySelectorAll(".toast").forEach((x) => x.remove());
+  const d = document.createElement("div"); d.className = "toast"; d.setAttribute("role", "status"); d.textContent = t;
+  (donde || document.body).appendChild(d); setTimeout(() => d.remove(), 2200);
+}
+function abrirWhatsApp(texto) {
+  const a = document.createElement("a"); a.href = "https://wa.me/?text=" + encodeURIComponent(texto); a.target = "_blank"; a.rel = "noopener";
+  document.body.appendChild(a); a.click(); a.remove();
+}
+function copiar(texto, nodo, donde) {
+  // Si el texto está oculto (la web no lo muestra), aparece solo cuando hay que copiarlo a mano.
+  const sel = () => { if (!nodo) return; nodo.hidden = false; const r = document.createRange(); r.selectNodeContents(nodo); const s = getSelection(); s.removeAllRanges(); s.addRange(r); };
+  try { navigator.clipboard.writeText(texto).then(() => toast("Copiado", donde)).catch(() => { sel(); toast("Texto seleccionado: cópielo", donde); }); }
+  catch (e) { sel(); toast("Texto seleccionado: cópielo", donde); }
+}
+function compartirPieza(p, donde) {
+  const url = location.href.split("#")[0] + "#p-" + p.id;
+  if (navigator.share) navigator.share({ title: p.nombre + ", Gladymar", url }).catch(() => {});
+  else copiar(url, null, donde);
+}
+
+// LA CALCULADORA DE LA FICHA: por metros cuadrados o por largo × ancho, con 10% de más por cortes si se pide.
+// Al escribir NO se vuelve a pintar: un input nuevo pierde el cursor y la tecla siguiente entra al principio
+// (en la primera versión "120" quedaba "213"). Solo se actualizan el resultado y el botón.
+function calcHTML(c) {
+  return `<div class="calc">
+    <div class="modo" role="group" aria-label="Cómo calcular"><button type="button" data-modo="m2" aria-pressed="${c.modo === "m2"}">Metros cuadrados</button><button type="button" data-modo="med" aria-pressed="${c.modo === "med"}">Largo × ancho</button></div>
+    <div class="campos c-m2" ${c.modo === "m2" ? "" : "hidden"}><label for="c-m2">Metros cuadrados de su ambiente</label><input id="c-m2" type="text" inputmode="decimal" autocomplete="off" value="${aTexto(c.m2)}"></div>
+    <div class="campos c-med" ${c.modo === "med" ? "" : "hidden"}><div class="campo"><label for="c-largo">Largo (m)</label><input id="c-largo" type="text" inputmode="decimal" autocomplete="off" value="${aTexto(c.largo)}"></div><span class="por">×</span><div class="campo"><label for="c-ancho">Ancho (m)</label><input id="c-ancho" type="text" inputmode="decimal" autocomplete="off" value="${aTexto(c.ancho)}"></div></div>
+    <label class="extra"><input type="checkbox" id="c-extra" ${c.extra ? "checked" : ""}> Sumar 10% por cortes o colocación en diagonal</label>
+    <div class="calc-r" id="c-res" aria-live="polite"></div></div>`;
+}
+const calcM2 = (c) => (c.modo === "m2" ? c.m2 : c.largo * c.ancho) * (c.extra ? 1.1 : 1);
+function calcBind(raiz, c, p, precioV, alCambiar) {
+  const upd = () => {
+    const m2 = calcM2(c), cj = m2 > 0 ? cajasDe(m2, p) : 0, r = cj * p.m2caja;
+    $("#c-res", raiz).innerHTML = cj
+      ? `<div><b>${cj}</b><span>cajas</span></div><div><b>${num(r)}</b><span>m² que lleva</span></div>${precioV ? `<div><b>${bs(cent(r * precioV()))}</b><span>subtotal</span></div>` : ""}`
+      : `<p>Escriba sus medidas para calcular las cajas.</p>`;
+    alCambiar(cj);
+  };
+  raiz.querySelectorAll("[data-modo]").forEach((b) => (b.onclick = () => {
+    c.modo = b.dataset.modo;
+    raiz.querySelectorAll("[data-modo]").forEach((x) => x.setAttribute("aria-pressed", String(x.dataset.modo === c.modo)));
+    $(".c-m2", raiz).hidden = c.modo !== "m2"; $(".c-med", raiz).hidden = c.modo !== "med"; upd();
+  }));
+  [["#c-m2", "m2"], ["#c-largo", "largo"], ["#c-ancho", "ancho"]].forEach(([id, k]) => { const el = $(id, raiz); el.oninput = () => { c[k] = leerNum(el.value); upd(); }; });
+  $("#c-extra", raiz).onchange = (e) => { c.extra = e.target.checked; upd(); };
+  upd();
+}
+const combinaCon = (p) => PROD.filter((x) => x.id !== p.id && x.linea === p.linea).concat(PROD.filter((x) => x.linea !== p.linea)).slice(0, 3);
+
+const O = {"sucursales": [{"ciudad": "Santa Cruz", "nombre": "Gladymar Plus", "direccion": "Av. Banzer 3er anillo interno", "whatsapp": "67703821", "horario": "Lunes a Viernes: 09:00 a 18:30 y Sábado: 09:00 a 13:00", "lat": -17.759, "lon": -63.183}, {"ciudad": "Santa Cruz", "nombre": "Canal Cotoca", "direccion": "Av. Santa Cruz nro 2015 Esq Guapay", "whatsapp": "72238416", "horario": "Lunes a Viernes: 08:30 a 18:30 y Sábado: 09:00 a 13:00", "lat": -17.79, "lon": -63.135}, {"ciudad": "Santa Cruz", "nombre": "Fábrica", "direccion": "Parque Industrial Mz 11", "whatsapp": "71656258", "horario": "Lunes a Viernes: 08:30 a 16:30 y Sábado: 09:00 a 13:00", "lat": -17.747, "lon": -63.146}, {"ciudad": "Santa Cruz", "nombre": "Montero", "direccion": "Av. Circunvalación Este. C/ 19 de Agosto", "whatsapp": "67895527", "horario": "Lunes a Viernes: 08:30 a 16:30 y Sábado: 09:00 a 13:00", "lat": -17.338, "lon": -63.255}, {"ciudad": "La Paz – El Alto", "nombre": "Ballivián", "direccion": "Calacoto Av. Ballivián Esq calle 16", "whatsapp": "68225572", "horario": "Lunes a Viernes: 08:30 a 18:30 y Sábado: 08:30 a 12:30", "lat": -16.541, "lon": -68.079}, {"ciudad": "La Paz – El Alto", "nombre": "Montes", "direccion": "Av. Montes No. 560", "whatsapp": "68225572", "horario": "Lunes a Viernes: 08:30 a 18:30 y Sábado: 08:30 a 12:30", "lat": -16.496, "lon": -68.14}, {"ciudad": "Cochabamba", "nombre": "Blanco Galindo", "direccion": "Av. Blanco Galindo No 1532 Km 1 1/2", "whatsapp": "67408846", "horario": "Lunes a Viernes: 08:30 a 18:30 y Sábado: 09:00 a 13:00", "lat": -17.393, "lon": -66.185}, {"ciudad": "Cochabamba", "nombre": "Juan De La Rosa", "direccion": "Av. Juan de la Rosa 311 y Av. America", "whatsapp": "67408846", "horario": "Lunes a Viernes: 08:30 a 12:30 – 14:30 a 18:30 y Sábado: 09:00 a 13:00", "lat": -17.38, "lon": -66.17}, {"ciudad": "Chuquisaca – Sucre", "nombre": "Sucre", "direccion": "Av. Ostria Gutierrez N° 191 Zona Bancario", "whatsapp": "67900508", "horario": "Lunes a Viernes: 08:30 a 12:30 , 14:30 a 18:30 y Sábado: 08:30 a 12:30", "lat": -19.04, "lon": -65.255}, {"ciudad": "Tarija", "nombre": "Tarija", "direccion": "Av. La Paz esq. Ingavi", "whatsapp": "72987241", "horario": "Lunes a Viernes: 08:30 a 12:30 , 14:30 a 18:30 y Sábado: 08:30 a 12:30", "lat": -21.533, "lon": -64.73}, {"ciudad": "Oruro", "nombre": "Oruro", "direccion": "C/ Pagador no. 5599 Esq. C/ Caro", "whatsapp": "72303568", "horario": "Lunes a Viernes: 08:00 a 18:00 y Sábado: 09:00 a 13:00", "lat": -17.97, "lon": -67.11}, {"ciudad": "Potosí", "nombre": "Potosí Central", "direccion": "C / La Paz Esq, Lucas Laime", "whatsapp": "69612800", "horario": "Lunes a Viernes: 08:00 a 18:00 y Sábado: 09:00 a 13:00", "lat": -19.584, "lon": -65.754}], "contacto": {"telefono": "3 3466110", "fax": "3 3645148", "direccion": "Parque Industrial Mz 11, Santa Cruz, Bolivia", "email": "contacto@gladymar.com.bo", "whatsapp": "72155223"}, "redes": {"facebook": "https://www.facebook.com/CeramicaGladymar/", "instagram": "https://www.instagram.com/gladymarbolivia/"}, "roomvo_script": "https://cdn.roomvo.com/static/scripts/b2b/gladymarcombo.js", "fuente": "https://gladymar.com.bo"};
+const st = Object.assign(cargar(), { msg: "" });
+const e = (t) => String(t).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+const wa = (n) => "https://wa.me/591" + String(n).replace(/\D/g, "");
+const corto = (c) => /sucre/i.test(c) ? "Sucre" : c.split("–")[0].trim();
+const WA_SVG = `<svg class="wa-i" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91C21.95 6.45 17.5 2 12.04 2zm5.8 14.05c-.24.68-1.41 1.3-1.95 1.34-.5.05-.97.24-3.27-.68-2.77-1.09-4.52-3.92-4.66-4.1-.13-.18-1.11-1.48-1.11-2.82 0-1.34.7-2 .95-2.27.25-.27.54-.34.72-.34h.52c.17 0 .39-.06.61.47.23.54.77 1.88.84 2.02.07.13.11.29.02.47-.09.18-.13.29-.27.45-.13.16-.28.35-.4.47-.13.13-.27.28-.12.55.16.27.7 1.15 1.5 1.86 1.03.92 1.9 1.2 2.17 1.34.27.13.43.11.59-.07.16-.18.68-.79.86-1.06.18-.27.36-.23.61-.13.25.09 1.58.75 1.85.88.27.13.45.2.52.31.07.11.07.65-.17 1.33z"/></svg>`;
+try { document.getElementById("anio").textContent = new Date().getFullYear(); } catch (_) {}
+
+// FICHA DE PRODUCTO, sin precio: formato, acabado, código, disponibilidad y la calculadora de cajas.
+const calc = { modo: "m2", m2: 30, largo: 5, ancho: 4, extra: false };
+function pintarFicha(id) {
+  const p = prod(id), capa = $("#capa");
+  if (!p) return;
+  let v = vigente(p);
+  const pinta = () => {
+    capa.innerHTML = `<div class="ficha" id="fondo" data-id="${p.id}"><div class="fi" role="dialog" aria-label="${e(p.nombre)}">
+      <div class="im" style="background-image:url('${p.pieza}')"><button class="cerrar" id="cerrar" aria-label="Cerrar">×</button></div>
+      <div class="tx"><span class="k" style="margin-bottom:10px">${e(p.linea)}</span><h3>${e(p.nombre)}</h3>
+        <table class="esp-t"><tr><td>Formato</td><td>${p.formato}</td></tr><tr><td>Acabado</td><td>${v.acabado}</td></tr>
+          <tr><td>Por caja</td><td>${num(p.m2caja)} m²</td></tr><tr><td>Código</td><td>${v.cod}</td></tr></table>
+        ${p.variantes.length > 1 ? `<div class="vars">${p.variantes.map((x) => { const no = x.estado === "DESCONTINUADO";
+          return `<button class="var" data-cod="${x.cod}" aria-pressed="${x.cod === v.cod}" ${no ? "disabled" : ""}><span>${x.acabado}<small class="cod">Cód. ${x.cod}</small></span><span class="est ${no ? "no" : "ok"}">${no ? "Descontinuado" : "Disponible"}</span></button>`; }).join("")}</div>` : ""}
+        ${calcHTML(calc)}
+        <button class="bt" id="agregar">Agregar a mi lista</button>
+        <div class="acc"><button class="sec2" id="probar">Probar en mi casa</button><button class="sec2" id="compartir">Compartir</button></div>
+        <div class="k2">Combina bien con</div>
+        <div class="comb">${combinaCon(p).map((x) => `<button class="abre" data-id="${x.id}" data-reemplaza="1"><i style="background-image:url('${x.pieza}')"></i><b>${e(x.nombre)}</b><span>${e(x.linea)}</span></button>`).join("")}</div>
+      </div></div></div>`;
+    $("#cerrar").onclick = cerrarFicha;
+    $("#fondo").onclick = (ev) => { if (ev.target.id === "fondo") cerrarFicha(); };
+    capa.querySelectorAll(".var:not(:disabled)").forEach((b) => (b.onclick = () => { v = p.variantes.find((x) => x.cod === b.dataset.cod); pinta(); }));
+    let cajas = 0;
+    calcBind(capa, calc, p, null, (cj) => { cajas = cj; const b = $("#agregar"); b.disabled = !cj; b.textContent = cj ? `Agregar ${cj} cajas a mi lista` : "Escriba sus medidas"; });
+    $("#agregar").onclick = () => { if (!cajas) return; agregar(st, p, v, cajas); cerrarFicha(); lista(); toast(`${p.nombre}: ${cajas} cajas en su lista`); };
+    $("#probar").onclick = abrirRoomvo;
+    $("#compartir").onclick = () => compartirPieza(p);
+  };
+  pinta();
+}
+function abrirFicha(id, reemplaza) {
+  if (!prod(id)) return;
+  if (reemplaza && history.state && history.state.ficha) history.replaceState({ ficha: id }, "", "#p-" + id);
+  else history.pushState({ ficha: id }, "", "#p-" + id);
+  pintarFicha(id);
+}
+function cerrarFicha() {
+  if (history.state && history.state.ficha) history.back();
+  else { $("#capa").innerHTML = ""; history.replaceState(null, "", location.pathname + location.search); }
+}
+window.addEventListener("popstate", () => { const h = location.hash.slice(1); if (h.startsWith("p-") && prod(h.slice(2))) pintarFicha(h.slice(2)); else $("#capa").innerHTML = ""; });
+document.addEventListener("click", (ev) => { const b = ev.target.closest(".abre"); if (b) abrirFicha(b.dataset.id, b.dataset.reemplaza); });
+document.addEventListener("keydown", (ev) => { if (ev.key === "Escape" && $("#capa .ficha")) cerrarFicha(); });
+
+// SU LISTA (Cotizar): cajas y metros, SIN PRECIO. El precio lo da el asesor en la proforma (roadmap).
+const filas = () => st.items.map((it, i) => { const p = prod(it.id), v = p.variantes.find((x) => x.cod === it.cod); return { p, v, it, i, m2: it.cajas * p.m2caja }; });
+const resumen = () => filas().map((f) => `${f.p.nombre} ${f.v.acabado.toLowerCase()} ${f.p.formato.replace(" cm", "")} (cód. ${f.v.cod}): ${f.it.cajas} cajas, ${num(f.m2)} m²`);
+function lista() {
+  const fs = filas(), cu = $("#cuenta");
+  cu.textContent = fs.length || ""; cu.classList.toggle("si", !!fs.length);
+  $("#lista-cot").innerHTML = fs.length ? fs.map((f) => `<div class="it"><i style="background-image:url('${f.p.pieza}')"></i>
+      <div><b>${e(f.p.nombre)}</b><small>${e(f.v.acabado)}, ${f.p.formato.replace(" cm", "")}, ${num(f.m2)} m²</small>
+      <div class="qt"><button data-menos="${f.i}" aria-label="Una caja menos">−</button><span>${f.it.cajas} cajas</span><button data-mas="${f.i}" aria-label="Una caja más">+</button></div></div>
+      <button class="quitar" data-quitar="${f.i}">Quitar</button></div>`).join("")
+    : `<p class="vacio">Su lista está vacía. Abra una pieza en <a href="#productos">Productos</a>, calcule sus cajas y agréguela.</p>`;
+  document.querySelectorAll("[data-mas]").forEach((b) => (b.onclick = () => { st.items[b.dataset.mas].cajas++; guardar(st); lista(); }));
+  document.querySelectorAll("[data-menos]").forEach((b) => (b.onclick = () => { const it = st.items[b.dataset.menos]; if (it.cajas > 1) { it.cajas--; guardar(st); lista(); } }));
+  document.querySelectorAll("[data-quitar]").forEach((b) => (b.onclick = () => { st.items.splice(+b.dataset.quitar, 1); guardar(st); lista(); }));
+}
+window.addEventListener("storage", (ev) => { if (ev.key === CLAVE) { Object.assign(st, cargar()); lista(); } });
+lista();
+
+// FORMULARIO DE PROFORMA (nombre, ciudad, producto, teléfono): va por WhatsApp a la tienda de la ciudad elegida.
+const tiendaDe = (ciudad) => O.sucursales.find((s) => corto(s.ciudad) === ciudad && s.nombre !== "Fábrica");
+document.querySelectorAll(".form").forEach((f) => {
+  const enCot = !!f.closest("#cotizar");
+  f.onsubmit = (ev) => {
+    ev.preventDefault();
+    const d = Object.fromEntries(new FormData(f)), tel = String(d.tel || "").replace(/\D/g, ""), av = f.querySelector(".aviso");
+    const items = enCot ? resumen() : [];
+    if (!String(d.nombre || "").trim() || !d.ciudad || tel.length < 8) { av.textContent = "Escriba su nombre, elija su ciudad y deje un teléfono o WhatsApp de 8 dígitos."; return; }
+    if (enCot && !items.length && !String(d.producto || "").trim()) { av.textContent = "Agregue una pieza a su lista o escriba qué producto le interesa."; return; }
+    av.textContent = "";
+    const t = tiendaDe(d.ciudad) || tiendaDe("Santa Cruz");
+    const msg = `Hola, soy ${d.nombre.trim()}. Quiero una proforma.\n` + (items.length ? items.map((x) => "• " + x).join("\n") + "\n" : "") +
+      (String(d.producto || "").trim() ? `Producto de interés: ${d.producto.trim()}\n` : "") + `Ciudad: ${d.ciudad}\nMi teléfono o WhatsApp: ${tel}`;
+    const a = document.createElement("a"); a.href = wa(t.whatsapp) + "?text=" + encodeURIComponent(msg); a.target = "_blank"; a.rel = "noopener";
+    document.body.appendChild(a); a.click(); a.remove();
+    toast(`Le escribimos a ${t.nombre}, en ${corto(t.ciudad)}`);
+  };
+});
+
+// CONTACTO (pie y Dónde comprar).
+const C = O.contacto;
+const contacto = `<div><small>WhatsApp</small><a class="wa" href="${wa(C.whatsapp)}" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:7px">${WA_SVG}${e(C.whatsapp)}</a></div>
+  <div><small>Teléfono</small><a href="tel:+591${C.telefono.replace(/\D/g, "")}">(+591) ${e(C.telefono)}</a></div>
+  <div><small>Correo</small><a href="mailto:${e(C.email)}">${e(C.email)}</a></div>
+  <div><small>Fábrica</small><span>${e(C.direccion)}</span><div class="redes">
+    <a class="red" href="${e(O.redes.facebook)}" target="_blank" rel="noopener" aria-label="Facebook de Gladymar"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M24 12.07C24 5.4 18.63 0 12 0S0 5.4 0 12.07C0 18.1 4.39 23.1 10.13 24v-8.44H7.08v-3.49h3.05V9.41c0-3.02 1.79-4.69 4.53-4.69 1.31 0 2.68.24 2.68.24v2.97h-1.51c-1.49 0-1.96.93-1.96 1.89v2.26h3.33l-.53 3.49h-2.8V24C19.61 23.1 24 18.1 24 12.07z"/></svg></a>
+    <a class="red" href="${e(O.redes.instagram)}" target="_blank" rel="noopener" aria-label="Instagram de Gladymar"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5"/><circle cx="12" cy="12" r="4.3"/><circle cx="17.6" cy="6.4" r="1.2" fill="currentColor" stroke="none"/></svg></a></div></div>`;
+document.getElementById("contacto-p").innerHTML = contacto;
+document.getElementById("contacto-d").innerHTML = contacto;
+
+// ROOMVO: el mismo script que usa gladymar.com.bo; si no carga (dominio todavía no autorizado), su página del simulador.
+// Se pide recién al entrar a Diseña (roadmap: que Roomvo no le pese a la página), nunca en el inicio.
+let roomvoPedido = false;
+function cargarRoomvo() { if (roomvoPedido || !O.roomvo_script) return; roomvoPedido = true; const sc = document.createElement("script"); sc.src = O.roomvo_script; sc.async = true; document.head.appendChild(sc); }
+function abrirRoomvo() { if (window.roomvo && typeof window.roomvo.startStandaloneVisualizer === "function") window.roomvo.startStandaloneVisualizer(); else window.open(O.fuente + "/visualiza-tu-ambiente/", "_blank", "noopener"); }
+document.getElementById("roomvo").onclick = abrirRoomvo;
+const ad = $("#ad"), corte = $("#corte"); corte.oninput = () => ad.style.setProperty("--x", corte.value + "%");
+
+// DISEÑA: un espacio a la vez.
+document.querySelectorAll("#disena .tabs button").forEach((b) => (b.onclick = () => {
+  document.querySelectorAll("#disena .tabs button").forEach((x) => x.setAttribute("aria-selected", String(x === b)));
+  document.querySelectorAll("#disena .esp").forEach((g) => (g.hidden = g.dataset.esp !== b.dataset.esp));
+}));
+
+// VISOR DE CATÁLOGOS: el índice se pide recién cuando alguien abre uno.
+(() => {
+  const V = $("#visor"); let C = null, vc = null, vp = 1, cargado = null;
+  const cargarI = () => cargado || (cargado = fetch("/gladymar-web-app/catalogos/indice.json").then((r) => { if (!r.ok) throw new Error(r.status); return r.json(); }).then((d) => (C = d)));
+  const ver = () => { $("#v-img").src = vc.paginas[vp - 1]; $("#v-n").textContent = `${vp} / ${vc.paginas.length}`; };
+  const abrir = (id, pag) => cargarI().then(() => { vc = C.find((x) => String(x.id) === String(id)); if (!vc) return;
+    vp = Math.min(+pag || 1, vc.paginas.length); $("#v-tit").textContent = vc.titulo; $("#v-pdf").href = vc.pdf; V.hidden = false; document.body.style.overflow = "hidden"; ver(); })
+    .catch((err) => { console.error("catálogos: no se pudo leer el índice", err); toast("No se pudo abrir el catálogo"); });
+  const cerrar = () => { V.hidden = true; document.body.style.overflow = ""; };
+  document.addEventListener("click", (ev) => { const b = ev.target.closest("[data-hojear]"); if (b) abrir(b.dataset.hojear, b.dataset.pag); });
+  $("#v-x").onclick = cerrar;
+  $("#v-ant").onclick = () => { if (vp > 1) { vp--; ver(); } };
+  $("#v-sig").onclick = () => { if (vc && vp < vc.paginas.length) { vp++; ver(); } };
+  document.addEventListener("keydown", (ev) => { if (V.hidden) return; if (ev.key === "Escape") cerrar(); if (ev.key === "ArrowLeft") $("#v-ant").click(); if (ev.key === "ArrowRight") $("#v-sig").click(); });
+  let x0 = null; V.addEventListener("touchstart", (ev) => (x0 = ev.touches[0].clientX), { passive: true });
+  V.addEventListener("touchend", (ev) => { if (x0 === null) return; const d = ev.changedTouches[0].clientX - x0; if (Math.abs(d) > 50) $(d < 0 ? "#v-sig" : "#v-ant").click(); x0 = null; });
+})();
+
+// DÓNDE COMPRAR: ciudades, tiendas con dirección, horario, teléfono y WhatsApp, y el mapa de la elegida.
+(() => {
+  const km = (a, b) => { const R = 6371, r = Math.PI / 180, dLa = (b.lat - a.lat) * r, dLo = (b.lon - a.lon) * r;
+    const h = Math.sin(dLa / 2) ** 2 + Math.cos(a.lat * r) * Math.cos(b.lat * r) * Math.sin(dLo / 2) ** 2; return 2 * R * Math.asin(Math.sqrt(h)); };
+  const consulta = (x) => (/^gladymar/i.test(x.nombre) ? "" : "Gladymar ") + x.nombre + ", " + x.direccion + ", " + corto(x.ciudad) + ", Bolivia";
+  const ciudades = [...new Set(O.sucursales.map((x) => corto(x.ciudad)))];
+  const est = { ciudad: "Santa Cruz", yo: null, sel: null };
+  const lst = () => { let xs = O.sucursales.filter((x) => !est.ciudad || corto(x.ciudad) === est.ciudad); if (est.yo) xs = xs.map((x) => ({ ...x, d: km(est.yo, x) })).sort((a, b) => a.d - b.d); return xs; };
+  function verEnMapa(x) {
+    est.sel = x.nombre;
+    $("#gmapa").src = "https://maps.google.com/maps?q=" + encodeURIComponent(consulta(x)) + "&z=16&hl=es&output=embed";
+    $("#mapa-tit").textContent = `${x.nombre}, ${corto(x.ciudad)}`; $("#mapa-nota").textContent = x.direccion;
+    document.querySelectorAll("#suc article").forEach((a) => a.classList.toggle("on", a.dataset.n === x.nombre));
+  }
+  function pintar() {
+    const xs = lst();
+    $("#ciu").innerHTML = ciudades.map((c) => `<button type="button" role="tab" data-c="${e(c)}" aria-selected="${est.ciudad === c && !est.yo}">${e(c)}</button>`).join("") +
+      `<button type="button" id="cerca" aria-selected="${!!est.yo}">Más cerca de mí</button>`;
+    document.querySelectorAll("#ciu button[data-c]").forEach((b) => (b.onclick = () => { est.ciudad = b.dataset.c; est.yo = null; est.sel = null; pintar(); }));
+    $("#cerca").onclick = cerca;
+    $("#suc").innerHTML = xs.map((x, i) => `<article data-n="${e(x.nombre)}" tabindex="0">
+      <small>${e(corto(x.ciudad))}${x.d !== undefined ? `, a ${x.d < 10 ? x.d.toFixed(1).replace(".", ",") : Math.round(x.d)} km${i === 0 ? ", la más cercana" : ""}` : ""}</small>
+      <b>${e(x.nombre)}</b><p>${e(x.direccion)}</p><p class="hor">${e(x.horario)}</p>
+      <div class="acc-s"><a href="${wa(x.whatsapp)}" target="_blank" rel="noopener" aria-label="WhatsApp de ${e(x.nombre)}">${WA_SVG}${e(x.whatsapp)}</a><a href="tel:+591${String(x.whatsapp).replace(/\D/g, "")}">Llamar</a>
+      <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(consulta(x))}" target="_blank" rel="noopener">Cómo llegar</a></div></article>`).join("");
+    document.querySelectorAll("#suc article").forEach((a) => {
+      const x = xs.find((y) => y.nombre === a.dataset.n);
+      const f = (ev) => { if (ev.target.closest("a")) return; verEnMapa(x); if (innerWidth < 900) $(".mapa").scrollIntoView({ behavior: "smooth", block: "center" }); };
+      a.onclick = f; a.onkeydown = (ev) => { if (ev.key === "Enter") f(ev); };
+    });
+    const sel = xs.find((x) => x.nombre === est.sel) || xs[0]; if (sel) verEnMapa(sel);
+  }
+  function cerca() {
+    const nota = $("#mapa-nota");
+    if (!navigator.geolocation) { nota.textContent = "Este navegador no comparte la ubicación. Elija su ciudad."; return; }
+    nota.textContent = "Buscando su ubicación…";
+    navigator.geolocation.getCurrentPosition((pos) => { est.yo = { lat: pos.coords.latitude, lon: pos.coords.longitude }; est.ciudad = ""; est.sel = null; pintar(); },
+      () => { nota.textContent = "No se pudo obtener su ubicación. Elija su ciudad."; }, { timeout: 10000, maximumAge: 600000 });
+  }
+  pintar();
+})();
+
+// VISTAS: cada entrada del menú muestra solo su sección (roadmap: "únicamente lo que el usuario decidió ver").
+(() => {
+  const VISTAS = { inicio: ["inicio", "legado", "innovacion", "h-productos", "h-disena", "voz", "h-donde"], productos: ["productos"], catalogos: ["catalogos"],
+    disena: ["disena"], gladymar: ["gladymar"], donde: ["donde"], cotizar: ["cotizar"] };
+  const deSec = {}; for (const [v, xs] of Object.entries(VISTAS)) xs.forEach((x) => (deSec[x] = v));
+  const raiz = document.documentElement, hero = $("#inicio"), video = $("#fondo-hero");
+  let actual = null;
+  const sobre = () => raiz.classList.toggle("sobre", actual === "inicio" && scrollY < hero.offsetHeight - 80);
+  function mostrar(v) {
+    if (v === actual) return false;
+    actual = v; raiz.dataset.vista = v;
+    document.querySelectorAll("main > section[id]").forEach((s) => (s.hidden = !VISTAS[v].includes(s.id)));
+    document.querySelectorAll(".nav a, .menu-m a, .cot").forEach((a) => { const id = a.getAttribute("href").slice(1); if (v !== "inicio" && id === v) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current"); });
+    if (v === "inicio" && !matchMedia("(prefers-reduced-motion: reduce)").matches) video.play().catch(() => {}); else video.pause();
+    if (v === "disena") cargarRoomvo();
+    const m = document.querySelector("main"); m.classList.remove("entra"); void m.offsetWidth; m.classList.add("entra");
+    sobre(); revelar();
+    return true;
+  }
+  function ir(id, empuja) {
+    const v = deSec[id] || (id in VISTAS ? id : null);
+    if (!v) return false;
+    const cambio = mostrar(v);
+    if (id === v || id === VISTAS[v][0]) window.scrollTo({ top: 0, behavior: cambio ? "instant" : "smooth" });
+    else document.getElementById(id).scrollIntoView({ behavior: cambio ? "instant" : "smooth" });
+    if (empuja && location.hash !== "#" + id) history.pushState({ vista: id }, "", "#" + id);
+    return true;
+  }
+  const cerrarMenu = () => { raiz.classList.remove("menu"); $("#menu-b").setAttribute("aria-expanded", "false"); };
+  $("#menu-b").onclick = () => { const ab = !raiz.classList.contains("menu"); raiz.classList.toggle("menu", ab); $("#menu-b").setAttribute("aria-expanded", String(ab)); };
+  document.addEventListener("click", (ev) => {
+    const a = ev.target.closest('a[href^="#"]');
+    if (!a || ev.defaultPrevented || ev.metaKey || ev.ctrlKey) return;
+    cerrarMenu();
+    if (ir(a.getAttribute("href").slice(1), true)) ev.preventDefault();
+  });
+  window.addEventListener("popstate", () => { const h = location.hash.slice(1); if (h.startsWith("p-")) return; const id = deSec[h] || h in VISTAS ? h : "inicio"; if ((deSec[id] || id) !== actual) ir(id, false); });
+  // Aparición suave (500 ms) y paralaje leve; con "reducir movimiento", nada se mueve.
+  const quieto = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const io = !quieto && "IntersectionObserver" in window ? new IntersectionObserver((es) => es.forEach((x) => { if (x.isIntersecting) { x.target.classList.add("in"); io.unobserve(x.target); } }), { threshold: 0.12, rootMargin: "0px 0px -6% 0px" }) : null;
+  function revelar() { document.querySelectorAll(".rev:not(.in)").forEach((el) => { if (!io || el.closest("[hidden]")) { if (!io) el.classList.add("in"); return; } io.observe(el); }); }
+  if (quieto) { video.removeAttribute("autoplay"); video.pause(); }
+  let pend = false;
+  addEventListener("scroll", () => { if (pend) return; pend = true; requestAnimationFrame(() => { pend = false; sobre();
+    if (!quieto) document.querySelectorAll("main > section:not([hidden]) .para").forEach((im) => { const r = im.getBoundingClientRect(); if (r.bottom < 0 || r.top > innerHeight) return; im.style.transform = `translateY(${((r.top + r.height / 2 - innerHeight / 2) * -0.06).toFixed(1)}px) scale(1.08)`; }); }); }, { passive: true });
+  // PRIMERA ENTRADA: siempre el inicio, arriba; al recargar se respeta dónde estaba; el link de una pieza la abre.
+  let primera = false;
+  try { primera = !sessionStorage.getItem("gm-visto"); sessionStorage.setItem("gm-visto", "1"); } catch (_) {}
+  const h = location.hash.slice(1);
+  if (primera && !h.startsWith("p-")) { if ("scrollRestoration" in history) history.scrollRestoration = "manual"; if (h) history.replaceState(null, "", location.pathname + location.search); mostrar("inicio"); scrollTo(0, 0); }
+  else if (h.startsWith("p-") && prod(h.slice(2))) { mostrar("inicio"); history.replaceState(null, "", location.pathname + location.search); abrirFicha(h.slice(2)); }
+  else if (!ir(h, false)) mostrar("inicio");
+})();
+</script>
+
+</body></html>
