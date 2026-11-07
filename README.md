@@ -32,6 +32,10 @@ El panel solo puede escribir `contenido.json`, `public/catalogos/indice.json` y 
      *Contents: Read and write*.
 3. Conectar el dominio.
 
+## Publicación fuera de Vercel (Railway u otro servidor con Node 20 o más)
+`npm run build` y después `npm start`: `servidor.mjs` sirve la web y el panel en el puerto `PORT`, con las mismas tres
+variables de entorno.
+
 ## Probar en una computadora
 ```
 node build.mjs     # arma public/index.html
