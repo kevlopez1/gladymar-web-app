@@ -3,8 +3,8 @@
 import { readFileSync, writeFileSync } from "node:fs";
 
 const leer = (r) => readFileSync(new URL(r, import.meta.url), "utf8");
-const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#x27;").replace(/`/g, "&#96;").replace(/\$/g, "&#36;");
-// (el acento grave y el $ también: un texto puede caer dentro de una plantilla de JavaScript, como el título de la calculadora)
+const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#x27;").replace(/\\/g, "&#92;").replace(/`/g, "&#96;").replace(/\$/g, "&#36;");
+// (la barra invertida, el acento grave y el $ también: un texto puede caer dentro de una plantilla de JavaScript, como el título de la calculadora)
 
 const contenido = JSON.parse(leer("contenido.json"));
 const indice = JSON.parse(leer("public/catalogos/indice.json"));
