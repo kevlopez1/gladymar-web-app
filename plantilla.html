@@ -165,7 +165,8 @@ html.menu.sobre .marca .lc{display:block}html.menu.sobre .marca .lb{display:none
 .linea-f img{width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:4px}
 .linea h3{font-size:clamp(34px,4.4vw,58px)}.linea p{font-size:18px;color:var(--suave);margin:16px 0 0;max-width:36ch}
 .linea dl{display:grid;grid-template-columns:auto 1fr;gap:6px 22px;margin:28px 0 0;font-size:15px}.linea dt{color:var(--suave)}.linea dd{margin:0;font-weight:600}
-.pzs{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:12px;margin-top:28px}
+.pzs-k{margin:28px 0 0;font-size:14px;font-weight:600;color:var(--rojo)}
+.pzs{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:12px;margin-top:12px}
 .pz{border:0;background:none;padding:0;text-align:left}.pz i{display:block;aspect-ratio:1;border-radius:4px;background:var(--crema) center/cover;transition:transform .5s var(--ritmo)}.pz:hover i{transform:scale(1.04)}
 .pz b{display:block;font-size:12.5px;font-weight:600;margin-top:7px;line-height:1.3}
 .otras{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:clamp(40px,7vh,80px)}
@@ -249,6 +250,7 @@ figcaption{font-size:14px;color:var(--suave);margin-top:10px}
 .fi .bt{width:100%;margin-top:16px}.fi .acc{display:flex;gap:10px;margin-top:10px}
 .sec2{flex:1;border:1px solid var(--linea);background:none;border-radius:999px;padding:12px 16px;font-weight:600;font-size:14.5px;color:var(--pizarra)}
 .fi .k2{font-size:13px;font-weight:600;color:var(--suave);margin-top:26px}
+.calc-k{margin:18px 0 0;font-size:15px;font-weight:600}.cab-bt{margin:22px 0 0}
 @keyframes apar{from{opacity:0}to{opacity:1}}
 /* Cambio de vista: fundido corto, sin saltos (roadmap: "transiciones fluidas entre secciones"). */
 @keyframes vista{from{opacity:0}to{opacity:1}}main.entra{animation:vista .35s ease-out}
@@ -310,7 +312,7 @@ figcaption{font-size:14px;color:var(--suave);margin-top:10px}
   .pant{min-height:auto;padding:84px 0}.ancha img{height:62vh}
   .esp{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:80vw;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;margin-inline:-20px;padding-inline:20px;scroll-padding-inline:20px}.esp figure{scroll-snap-align:start}.cc{grid-template-columns:1fr}.cc figure:first-child{grid-row:auto}
   .otras,.fab,.mv,.contacto{grid-template-columns:1fr}.eq{grid-template-columns:1fr 1fr}
-  .fi .im{min-height:46vh}.mapa{position:static;order:-1}.form{grid-template-columns:1fr}
+  .fi .im{min-height:30vh}.mapa{position:static;order:-1}.form{grid-template-columns:1fr}
   .tapas{grid-template-columns:1fr 1fr;gap:18px 14px}
   .contacto{grid-template-columns:1fr 1fr}
 }
@@ -368,7 +370,7 @@ figcaption{font-size:14px;color:var(--suave);margin-top:10px}
 </div></section>
 
 <section class="vista" id="productos"><div class="env">
-  <div class="cab rev"><h1 class="t1">⟦productos.titulo⟧</h1><p class="lead">⟦productos.bajada⟧</p><div class="marcas"><span>⟦productos.marcas.0⟧</span><span>⟦productos.marcas.1⟧</span><span>⟦productos.marcas.2⟧</span><span>⟦productos.marcas.3⟧</span><span>⟦productos.marcas.4⟧</span><span>⟦productos.marcas.5⟧</span><span>⟦productos.marcas.6⟧</span></div></div>
+  <div class="cab rev"><h1 class="t1">⟦productos.titulo⟧</h1><p class="lead">⟦productos.bajada⟧</p><p class="cab-bt"><a class="bt" href="#l-eleganza">⟦productos.calcular⟧</a></p><div class="marcas"><span>⟦productos.marcas.0⟧</span><span>⟦productos.marcas.1⟧</span><span>⟦productos.marcas.2⟧</span><span>⟦productos.marcas.3⟧</span><span>⟦productos.marcas.4⟧</span><span>⟦productos.marcas.5⟧</span><span>⟦productos.marcas.6⟧</span></div></div>
   <article class="linea rev" id="l-porcelanato">
   <div class="linea-f"><img src="/img/f5-1-1200.webp" alt="⟦productos.lineas.0.nombre⟧" loading="lazy" decoding="async"></div>
   <div class="linea-t">
@@ -382,7 +384,7 @@ figcaption{font-size:14px;color:var(--suave);margin-top:10px}
   <div class="linea-t">
     <h3>⟦productos.lineas.1.nombre⟧</h3><p>⟦productos.lineas.1.texto⟧</p>
     <dl><dt>Formatos</dt><dd>60 × 60</dd><dt>Acabados</dt><dd>Mate</dd></dl>
-    <div class="pzs"><button class="pz abre" data-id="basalto-gris"><i style="background-image:url('/img/m-basalto-gris-520.webp')"></i><b>Basalto Gris</b></button><button class="pz abre" data-id="atlas-grey"><i style="background-image:url('/img/m-atlas-grey-520.webp')"></i><b>Atlas Grey</b></button><button class="pz abre" data-id="marmore-crema"><i style="background-image:url('/img/m-marmore-crema-520.webp')"></i><b>Marmore Crema</b></button><button class="pz abre" data-id="moon-white"><i style="background-image:url('/img/m-moon-white-520.webp')"></i><b>Moon White</b></button><button class="pz abre" data-id="urban-graffito"><i style="background-image:url('/img/m-urban-graffito-520.webp')"></i><b>Urban Graffito</b></button></div>
+    <p class="pzs-k">⟦productos.elija⟧</p><div class="pzs"><button class="pz abre" data-id="basalto-gris"><i style="background-image:url('/img/m-basalto-gris-520.webp')"></i><b>Basalto Gris</b></button><button class="pz abre" data-id="atlas-grey"><i style="background-image:url('/img/m-atlas-grey-520.webp')"></i><b>Atlas Grey</b></button><button class="pz abre" data-id="marmore-crema"><i style="background-image:url('/img/m-marmore-crema-520.webp')"></i><b>Marmore Crema</b></button><button class="pz abre" data-id="moon-white"><i style="background-image:url('/img/m-moon-white-520.webp')"></i><b>Moon White</b></button><button class="pz abre" data-id="urban-graffito"><i style="background-image:url('/img/m-urban-graffito-520.webp')"></i><b>Urban Graffito</b></button></div>
     <button type="button" class="enlace" data-hojear="5573" data-pag="1">Ver el catálogo <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
   </div></article>
 <article class="linea rev" id="l-platinum">
@@ -390,7 +392,7 @@ figcaption{font-size:14px;color:var(--suave);margin-top:10px}
   <div class="linea-t">
     <h3>⟦productos.lineas.2.nombre⟧</h3><p>⟦productos.lineas.2.texto⟧</p>
     <dl><dt>Formatos</dt><dd>41 × 41 y 60 × 60</dd><dt>Acabados</dt><dd>Brillo y Mate</dd></dl>
-    <div class="pzs"><button class="pz abre" data-id="calacatta-silver"><i style="background-image:url('/img/m-calacatta-silver-520.webp')"></i><b>Calacatta Silver</b></button><button class="pz abre" data-id="taj-mahal"><i style="background-image:url('/img/m-taj-mahal-520.webp')"></i><b>Taj Mahal</b></button><button class="pz abre" data-id="ebano-venato"><i style="background-image:url('/img/m-ebano-venato-520.webp')"></i><b>Ébano Venato</b></button></div>
+    <p class="pzs-k">⟦productos.elija⟧</p><div class="pzs"><button class="pz abre" data-id="calacatta-silver"><i style="background-image:url('/img/m-calacatta-silver-520.webp')"></i><b>Calacatta Silver</b></button><button class="pz abre" data-id="taj-mahal"><i style="background-image:url('/img/m-taj-mahal-520.webp')"></i><b>Taj Mahal</b></button><button class="pz abre" data-id="ebano-venato"><i style="background-image:url('/img/m-ebano-venato-520.webp')"></i><b>Ébano Venato</b></button></div>
     <button type="button" class="enlace" data-hojear="5573" data-pag="1">Ver el catálogo <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
   </div></article>
 <article class="linea rev inv" id="l-terraforte">
@@ -398,7 +400,7 @@ figcaption{font-size:14px;color:var(--suave);margin-top:10px}
   <div class="linea-t">
     <h3>⟦productos.lineas.3.nombre⟧</h3><p>⟦productos.lineas.3.texto⟧</p>
     <dl><dt>Formatos</dt><dd>60 × 60</dd><dt>Acabados</dt><dd>Brillo y Mate</dd></dl>
-    <div class="pzs"><button class="pz abre" data-id="negro-artico"><i style="background-image:url('/img/m-negro-artico-520.webp')"></i><b>Negro Ártico</b></button><button class="pz abre" data-id="onix-royal"><i style="background-image:url('/img/m-onix-royal-520.webp')"></i><b>Onix Royal</b></button><button class="pz abre" data-id="cimento-cinza"><i style="background-image:url('/img/m-cimento-cinza-520.webp')"></i><b>Cimento Cinza</b></button><button class="pz abre" data-id="nogal-nocturno"><i style="background-image:url('/img/m-nogal-nocturno-520.webp')"></i><b>Nogal Nocturno</b></button><button class="pz abre" data-id="onice-bianco"><i style="background-image:url('/img/m-onice-bianco-520.webp')"></i><b>Onice Bianco</b></button><button class="pz abre" data-id="rovere-toscano"><i style="background-image:url('/img/m-rovere-toscano-520.webp')"></i><b>Rovere Toscano</b></button><button class="pz abre" data-id="carrara-venato"><i style="background-image:url('/img/m-carrara-venato-520.webp')"></i><b>Carrara Venato</b></button><button class="pz abre" data-id="oro-bianco"><i style="background-image:url('/img/m-oro-bianco-520.webp')"></i><b>Oro Bianco</b></button><button class="pz abre" data-id="perlino-dark"><i style="background-image:url('/img/m-perlino-dark-520.webp')"></i><b>Perlino Dark</b></button></div>
+    <p class="pzs-k">⟦productos.elija⟧</p><div class="pzs"><button class="pz abre" data-id="negro-artico"><i style="background-image:url('/img/m-negro-artico-520.webp')"></i><b>Negro Ártico</b></button><button class="pz abre" data-id="onix-royal"><i style="background-image:url('/img/m-onix-royal-520.webp')"></i><b>Onix Royal</b></button><button class="pz abre" data-id="cimento-cinza"><i style="background-image:url('/img/m-cimento-cinza-520.webp')"></i><b>Cimento Cinza</b></button><button class="pz abre" data-id="nogal-nocturno"><i style="background-image:url('/img/m-nogal-nocturno-520.webp')"></i><b>Nogal Nocturno</b></button><button class="pz abre" data-id="onice-bianco"><i style="background-image:url('/img/m-onice-bianco-520.webp')"></i><b>Onice Bianco</b></button><button class="pz abre" data-id="rovere-toscano"><i style="background-image:url('/img/m-rovere-toscano-520.webp')"></i><b>Rovere Toscano</b></button><button class="pz abre" data-id="carrara-venato"><i style="background-image:url('/img/m-carrara-venato-520.webp')"></i><b>Carrara Venato</b></button><button class="pz abre" data-id="oro-bianco"><i style="background-image:url('/img/m-oro-bianco-520.webp')"></i><b>Oro Bianco</b></button><button class="pz abre" data-id="perlino-dark"><i style="background-image:url('/img/m-perlino-dark-520.webp')"></i><b>Perlino Dark</b></button></div>
     <button type="button" class="enlace" data-hojear="5573" data-pag="1">Ver el catálogo <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
   </div></article>
 <article class="linea rev" id="l-artema">
@@ -644,12 +646,13 @@ function pintarFicha(id) {
     capa.innerHTML = `<div class="ficha" id="fondo" data-id="${p.id}"><div class="fi" role="dialog" aria-label="${e(p.nombre)}">
       <div class="im" style="background-image:url('${p.pieza}')"><button class="cerrar" id="cerrar" aria-label="Cerrar">×</button></div>
       <div class="tx"><span class="k" style="margin-bottom:10px">${e(p.linea)}</span><h3>${e(p.nombre)}</h3>
+        <p class="calc-k">⟦productos.calc_titulo⟧</p>
+        ${calcHTML(calc)}
+        <button class="bt" id="agregar">Agregar a mi lista</button>
         <table class="esp-t"><tr><td>Formato</td><td>${p.formato}</td></tr><tr><td>Acabado</td><td>${v.acabado}</td></tr>
           <tr><td>Por caja</td><td>${num(p.m2caja)} m²</td></tr><tr><td>Código</td><td>${v.cod}</td></tr></table>
         ${p.variantes.length > 1 ? `<div class="vars">${p.variantes.map((x) => { const no = x.estado === "DESCONTINUADO";
           return `<button class="var" data-cod="${x.cod}" aria-pressed="${x.cod === v.cod}" ${no ? "disabled" : ""}><span>${x.acabado}<small class="cod">Cód. ${x.cod}</small></span><span class="est ${no ? "no" : "ok"}">${no ? "Descontinuado" : "Disponible"}</span></button>`; }).join("")}</div>` : ""}
-        ${calcHTML(calc)}
-        <button class="bt" id="agregar">Agregar a mi lista</button>
         <div class="acc"><button class="sec2" id="probar">Probar en mi casa</button><button class="sec2" id="compartir">Compartir</button></div>
         <div class="k2">Combina bien con</div>
         <div class="comb">${combinaCon(p).map((x) => `<button class="abre" data-id="${x.id}" data-reemplaza="1"><i style="background-image:url('${x.pieza}')"></i><b>${e(x.nombre)}</b><span>${e(x.linea)}</span></button>`).join("")}</div>
@@ -807,6 +810,8 @@ document.querySelectorAll("#disena .tabs button").forEach((b) => (b.onclick = ()
   const VISTAS = { inicio: ["inicio", "legado", "innovacion", "h-productos", "h-disena", "voz", "h-donde"], productos: ["productos"], catalogos: ["catalogos"],
     disena: ["disena"], gladymar: ["gladymar"], donde: ["donde"], cotizar: ["cotizar"] };
   const deSec = {}; for (const [v, xs] of Object.entries(VISTAS)) xs.forEach((x) => (deSec[x] = v));
+  // Las líneas (#l-eleganza…) viven dentro de Productos: un enlace a una línea abre esa vista y baja hasta ella.
+  document.querySelectorAll("#productos [id^='l-']").forEach((n) => (deSec[n.id] = "productos"));
   const raiz = document.documentElement, hero = $("#inicio"), video = $("#fondo-hero");
   let actual = null;
   const sobre = () => raiz.classList.toggle("sobre", actual === "inicio" && scrollY < hero.offsetHeight - 80);

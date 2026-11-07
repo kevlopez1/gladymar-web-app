@@ -50,6 +50,9 @@
   "productos": {
     "titulo": "Productos",
     "bajada": "Nuestras líneas nacionales, con sus formatos y acabados. Elija una pieza, calcule sus cajas y pida su proforma a un asesor.",
+    "calcular": "Calcular metros y cajas",
+    "elija": "Elija una pieza para calcular cuántas cajas necesita.",
+    "calc_titulo": "¿Cuántas cajas necesita?",
     "lineas": [
       {
         "id": "porcelanato",
