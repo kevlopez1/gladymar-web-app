@@ -250,7 +250,9 @@ figcaption{font-size:14px;color:var(--suave);margin-top:10px}
 .fi .bt{width:100%;margin-top:16px}.fi .acc{display:flex;gap:10px;margin-top:10px}
 .sec2{flex:1;border:1px solid var(--linea);background:none;border-radius:999px;padding:12px 16px;font-weight:600;font-size:14.5px;color:var(--pizarra)}
 .fi .k2{font-size:13px;font-weight:600;color:var(--suave);margin-top:26px}
-.calc-k{margin:18px 0 0;font-size:15px;font-weight:600}.cab-bt{margin:22px 0 0}
+.calc-k{margin:18px 0 0;font-size:15px;font-weight:600;scroll-margin-top:12px}
+.sel-p{display:grid;gap:6px;margin-top:12px;font-size:13px;font-weight:600;color:var(--suave)}
+.sel-p select{font:inherit;font-size:16px;font-weight:500;color:var(--tinta);background:var(--blanco);border:1px solid var(--linea);border-radius:8px;padding:11px 12px}.cab-bt{margin:22px 0 0}
 @keyframes apar{from{opacity:0}to{opacity:1}}
 /* Cambio de vista: fundido corto, sin saltos (roadmap: "transiciones fluidas entre secciones"). */
 @keyframes vista{from{opacity:0}to{opacity:1}}main.entra{animation:vista .35s ease-out}
@@ -370,7 +372,7 @@ figcaption{font-size:14px;color:var(--suave);margin-top:10px}
 </div></section>
 
 <section class="vista" id="productos"><div class="env">
-  <div class="cab rev"><h1 class="t1">⟦productos.titulo⟧</h1><p class="lead">⟦productos.bajada⟧</p><p class="cab-bt"><a class="bt" href="#l-eleganza">⟦productos.calcular⟧</a></p><div class="marcas"><span>⟦productos.marcas.0⟧</span><span>⟦productos.marcas.1⟧</span><span>⟦productos.marcas.2⟧</span><span>⟦productos.marcas.3⟧</span><span>⟦productos.marcas.4⟧</span><span>⟦productos.marcas.5⟧</span><span>⟦productos.marcas.6⟧</span></div></div>
+  <div class="cab rev"><h1 class="t1">⟦productos.titulo⟧</h1><p class="lead">⟦productos.bajada⟧</p><p class="cab-bt"><button type="button" class="bt" id="abre-calc">⟦productos.calcular⟧</button></p><div class="marcas"><span>⟦productos.marcas.0⟧</span><span>⟦productos.marcas.1⟧</span><span>⟦productos.marcas.2⟧</span><span>⟦productos.marcas.3⟧</span><span>⟦productos.marcas.4⟧</span><span>⟦productos.marcas.5⟧</span><span>⟦productos.marcas.6⟧</span></div></div>
   <article class="linea rev" id="l-porcelanato">
   <div class="linea-f"><img src="/img/f5-1-1200.webp" alt="⟦productos.lineas.0.nombre⟧" loading="lazy" decoding="async"></div>
   <div class="linea-t">
@@ -646,7 +648,8 @@ function pintarFicha(id) {
     capa.innerHTML = `<div class="ficha" id="fondo" data-id="${p.id}"><div class="fi" role="dialog" aria-label="${e(p.nombre)}">
       <div class="im" style="background-image:url('${p.pieza}')"><button class="cerrar" id="cerrar" aria-label="Cerrar">×</button></div>
       <div class="tx"><span class="k" style="margin-bottom:10px">${e(p.linea)}</span><h3>${e(p.nombre)}</h3>
-        <p class="calc-k">⟦productos.calc_titulo⟧</p>
+        <p class="calc-k" id="calc-k">⟦productos.calc_titulo⟧</p>
+        <label class="sel-p">⟦productos.calc_pieza⟧<select id="otra-pieza">${lineasConPiezas().map(([l, ps]) => `<optgroup label="${e(l)}">${ps.map((x) => `<option value="${x.id}"${x.id === p.id ? " selected" : ""}>${e(x.nombre)}</option>`).join("")}</optgroup>`).join("")}</select></label>
         ${calcHTML(calc)}
         <button class="bt" id="agregar">Agregar a mi lista</button>
         <table class="esp-t"><tr><td>Formato</td><td>${p.formato}</td></tr><tr><td>Acabado</td><td>${v.acabado}</td></tr>
@@ -658,6 +661,8 @@ function pintarFicha(id) {
         <div class="comb">${combinaCon(p).map((x) => `<button class="abre" data-id="${x.id}" data-reemplaza="1"><i style="background-image:url('${x.pieza}')"></i><b>${e(x.nombre)}</b><span>${e(x.linea)}</span></button>`).join("")}</div>
       </div></div></div>`;
     $("#cerrar").onclick = cerrarFicha;
+    // Cambiar de pieza sin salir de la calculadora: los metros escritos se quedan (calc es uno solo).
+    $("#otra-pieza").onchange = (ev) => abrirFicha(ev.target.value, true);
     $("#fondo").onclick = (ev) => { if (ev.target.id === "fondo") cerrarFicha(); };
     capa.querySelectorAll(".var:not(:disabled)").forEach((b) => (b.onclick = () => { v = p.variantes.find((x) => x.cod === b.dataset.cod); pinta(); }));
     let cajas = 0;
@@ -667,6 +672,18 @@ function pintarFicha(id) {
     $("#compartir").onclick = () => compartirPieza(p);
   };
   pinta();
+}
+function lineasConPiezas() {
+  const g = new Map();
+  PROD.forEach((x) => { if (!g.has(x.linea)) g.set(x.linea, []); g.get(x.linea).push(x); });
+  return [...g];
+}
+// "Calcular metros y cajas" (Productos): abre la calculadora con la primera pieza; adentro se elige otra.
+function abrirCalculadora() {
+  const primera = document.querySelector("#productos .pz");
+  if (!primera) return;
+  abrirFicha(primera.dataset.id);
+  const k = $("#calc-k"); if (k && matchMedia("(max-width: 900px)").matches) k.scrollIntoView({ block: "start" });
 }
 function abrirFicha(id, reemplaza) {
   if (!prod(id)) return;
@@ -678,6 +695,7 @@ function cerrarFicha() {
   if (history.state && history.state.ficha) history.back();
   else { $("#capa").innerHTML = ""; history.replaceState(null, "", location.pathname + location.search); }
 }
+document.getElementById("abre-calc").onclick = abrirCalculadora;
 window.addEventListener("popstate", () => { const h = location.hash.slice(1); if (h.startsWith("p-") && prod(h.slice(2))) pintarFicha(h.slice(2)); else $("#capa").innerHTML = ""; });
 document.addEventListener("click", (ev) => { const b = ev.target.closest(".abre"); if (b) abrirFicha(b.dataset.id, b.dataset.reemplaza); });
 document.addEventListener("keydown", (ev) => { if (ev.key === "Escape" && $("#capa .ficha")) cerrarFicha(); });

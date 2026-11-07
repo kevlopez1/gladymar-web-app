@@ -53,6 +53,7 @@
     "calcular": "Calcular metros y cajas",
     "elija": "Elija una pieza para calcular cuántas cajas necesita.",
     "calc_titulo": "¿Cuántas cajas necesita?",
+    "calc_pieza": "Pieza",
     "lineas": [
       {
         "id": "porcelanato",
