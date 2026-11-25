@@ -128,22 +128,23 @@ html.menu.sobre .marca .lc{display:block}html.menu.sobre .marca .lb{display:none
 .hero .env{position:relative;z-index:2;height:100%;display:flex;flex-direction:column;justify-content:flex-end;padding-bottom:clamp(56px,10vh,110px)}
 .hero h1{color:#fff;font-size:clamp(48px,8.4vw,120px)}.hero p{font-size:clamp(18px,1.8vw,22px);margin:18px 0 34px;max-width:32ch;color:rgba(255,255,255,.9)}
 /* La campaña del momento (Black Friday): botón con cuenta de 10 a 0 que abre su catálogo.
-   Sobrio y transparente: solo el borde blanco, un punto rojo y el número; sin vidrio, sin brillo, sin anillos. */
-.bf{position:absolute;z-index:3;top:clamp(84px,13vh,128px);right:max(20px,calc((100vw - 1200px)/2 + 20px));display:flex;align-items:center;gap:12px;height:44px;padding:0 18px 0 16px;border:1px solid rgba(255,255,255,.6);border-radius:999px;background:rgba(0,0,0,.14);color:#fff;font:inherit;font-size:14px;line-height:1;cursor:pointer;overflow:hidden;text-shadow:0 1px 8px rgba(0,0,0,.35);animation:bf-in .8s var(--ritmo) .2s both;transition:transform .35s var(--ritmo),background .35s,border-color .35s}
-.bf:hover{transform:translateY(-1px);background:rgba(255,255,255,.1);border-color:#fff}
-.bf-p{width:7px;height:7px;flex:none;border-radius:50%;background:#C8102E}
-.bf b{font-weight:700;letter-spacing:-.005em;white-space:nowrap}
-.bf-d{width:1px;height:16px;flex:none;background:rgba(255,255,255,.4)}
-.bf-n{display:flex;align-items:center;min-width:2ch;color:#fff;font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
-.bf-n i{font-style:normal;display:inline-block}.bf-n i.c{animation:bf-num .4s var(--ritmo)}
-.bf .fl{display:none;align-items:center;gap:5px;color:#fff;font-weight:600}.bf .fl svg{width:15px;height:15px;color:#fff;transition:transform .35s var(--ritmo)}
-.bf:hover .fl svg{transform:translateX(2px)}
-.bf.listo .bf-n i{display:none}.bf.listo .fl{display:inline-flex}
-.bf-l{position:absolute;left:22px;right:22px;bottom:0;height:2px;border-radius:2px 2px 0 0;background:#C8102E;transform-origin:left;transition:transform .95s linear}.bf.listo .bf-l{display:none}
-@keyframes bf-in{from{opacity:0;transform:translateY(-8px)}}
-@keyframes bf-num{from{opacity:0;transform:translateY(6px)}}
-@media (max-width:600px){.bf{height:40px;padding:0 16px 0 14px;gap:10px;font-size:13.5px}}
-@media (prefers-reduced-motion:reduce){.bf,.bf-n i.c{animation:none}.bf-l{transition:none}}
+   Vidrio claro y fino: borde de un pelo, un punto rojo que late como "en vivo" y la frase "Black Friday en 7". */
+.bf{position:absolute;z-index:3;top:clamp(84px,13vh,128px);right:max(20px,calc((100vw - 1200px)/2 + 20px));display:flex;align-items:center;gap:10px;height:40px;padding:0 18px 0 15px;border:1px solid rgba(255,255,255,.38);border-radius:999px;background:rgba(0,0,0,.2);-webkit-backdrop-filter:blur(10px) saturate(1.2);backdrop-filter:blur(10px) saturate(1.2);color:#fff;font:inherit;font-size:14px;line-height:1;letter-spacing:-.005em;cursor:pointer;text-shadow:0 1px 6px rgba(0,0,0,.25);animation:bf-in .9s var(--ritmo) .3s both;transition:background .4s,border-color .4s}
+.bf:hover{background:rgba(0,0,0,.3);border-color:rgba(255,255,255,.6)}
+.bf-p{position:relative;width:6px;height:6px;flex:none;border-radius:50%;background:#E0213A}
+.bf-p::after{content:"";position:absolute;inset:0;border-radius:50%;background:#E0213A;animation:bf-late 2s ease-out infinite}
+.bf b{font-weight:600;white-space:nowrap}
+.bf-n{display:flex;align-items:center;white-space:nowrap}
+.bf-n .en{color:rgba(255,255,255,.8)}
+.bf-n i{font-style:normal;display:inline-block;min-width:1.3ch;color:#fff;font-weight:600;font-variant-numeric:tabular-nums}.bf-n i.c{animation:bf-num .45s var(--ritmo)}
+.bf .fl{display:none;align-items:center;gap:6px;color:rgba(255,255,255,.88)}.bf .fl svg{width:14px;height:14px;transition:transform .4s var(--ritmo)}
+.bf:hover .fl svg{transform:translateX(3px)}
+.bf.listo .bf-n .en{display:none}.bf.listo .fl{display:inline-flex}
+@keyframes bf-in{from{opacity:0;transform:translateY(-6px)}}
+@keyframes bf-num{from{opacity:0;transform:translateY(7px)}}
+@keyframes bf-late{0%{transform:scale(1);opacity:.55}100%{transform:scale(3.2);opacity:0}}
+@media (max-width:600px){.bf{height:38px;padding:0 16px 0 14px;font-size:13.5px}}
+@media (prefers-reduced-motion:reduce){.bf,.bf-n i.c,.bf-p::after{animation:none}}
 .pant{min-height:94svh;display:flex;align-items:center;padding:clamp(80px,12vh,140px) 0}
 .duo{display:grid;grid-template-columns:1.05fr 1fr;gap:clamp(32px,6vw,96px);align-items:center}
 .duo img{width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:4px}
@@ -363,7 +364,7 @@ figcaption{font-size:14px;color:var(--suave);margin-top:10px}
     poner(); if (q.addEventListener) q.addEventListener("change", poner);
   })();
   </script>
-  <button type="button" class="bf" id="bf" data-hojear="⟦inicio.campana.catalogo⟧" hidden><span class="bf-p" aria-hidden="true"></span><b>⟦inicio.campana.boton⟧</b><span class="bf-d" aria-hidden="true"></span><span class="bf-n"><i id="bf-n" aria-hidden="true">10</i><span class="fl">⟦inicio.campana.bajada⟧ <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></span><span class="bf-l" id="bf-a" aria-hidden="true"></span></button>
+  <button type="button" class="bf" id="bf" data-hojear="⟦inicio.campana.catalogo⟧" hidden><span class="bf-p" aria-hidden="true"></span><b>⟦inicio.campana.boton⟧</b><span class="bf-n"><span class="en" aria-hidden="true">en <i id="bf-n">10</i></span><span class="fl">⟦inicio.campana.bajada⟧ <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></span></button>
   <div class="env"><h1>⟦inicio.hero.titulo⟧</h1><p>⟦inicio.hero.bajada⟧</p><div><a class="bt" href="#productos">⟦inicio.hero.boton⟧</a></div></div>
 </section>
 
@@ -791,7 +792,7 @@ const ad = $("#ad"), corte = $("#corte"); corte.oninput = () => ad.style.setProp
 // campaña, una sola vez por visita y solo si la persona sigue mirando la portada. Un clic lo abre antes.
 (() => {
   const b = $("#bf"); if (!b) return;
-  const n = $("#bf-n"), a = $("#bf-a"), TOTAL = 10;
+  const n = $("#bf-n"), TOTAL = 10;
   // Sin catálogo de campaña en el índice (o con el id vacío), el botón no se muestra.
   fetch("/catalogos/indice.json").then((r) => r.json()).then((d) => { if (b.dataset.hojear && d.some((c) => String(c.id) === b.dataset.hojear)) iniciar(); })
     .catch((err) => console.error("campaña: no se pudo leer el índice", err));
@@ -807,7 +808,7 @@ const ad = $("#ad"), corte = $("#corte"); corte.oninput = () => ad.style.setProp
     const tic = () => {
       if (b.classList.contains("listo")) return clearInterval(t); // ya lo abrió con un clic
       if (document.hidden) return; // con la pestaña de fondo, la cuenta espera
-      s--; n.textContent = s; n.classList.remove("c"); void n.offsetWidth; n.classList.add("c"); a.style.transform = `scaleX(${s / TOTAL})`;
+      s--; n.textContent = s; n.classList.remove("c"); void n.offsetWidth; n.classList.add("c");
       if (s > 0) return;
       marcar(); listo();
       if (mirando() && $("#visor").hidden && !document.documentElement.classList.contains("menu")) b.click();
