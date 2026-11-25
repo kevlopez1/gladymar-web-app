@@ -128,9 +128,9 @@ html.menu.sobre .marca .lc{display:block}html.menu.sobre .marca .lb{display:none
 .hero .env{position:relative;z-index:2;height:100%;display:flex;flex-direction:column;justify-content:flex-end;padding-bottom:clamp(56px,10vh,110px)}
 .hero h1{color:#fff;font-size:clamp(48px,8.4vw,120px)}.hero p{font-size:clamp(18px,1.8vw,22px);margin:18px 0 34px;max-width:32ch;color:rgba(255,255,255,.9)}
 /* La campaña del momento (Black Friday): botón con cuenta de 10 a 0 que abre su catálogo.
-   Vidrio claro y fino: borde de un pelo, un punto rojo que late como "en vivo" y la frase "Black Friday en 7". */
-.bf{position:absolute;z-index:3;top:clamp(84px,13vh,128px);right:max(20px,calc((100vw - 1200px)/2 + 20px));display:flex;align-items:center;gap:10px;height:40px;padding:0 18px 0 15px;border:1px solid rgba(255,255,255,.38);border-radius:999px;background:rgba(0,0,0,.2);-webkit-backdrop-filter:blur(10px) saturate(1.2);backdrop-filter:blur(10px) saturate(1.2);color:#fff;font:inherit;font-size:14px;line-height:1;letter-spacing:-.005em;cursor:pointer;text-shadow:0 1px 6px rgba(0,0,0,.25);animation:bf-in .9s var(--ritmo) .3s both;transition:background .4s,border-color .4s}
-.bf:hover{background:rgba(0,0,0,.3);border-color:rgba(255,255,255,.6)}
+   Vidrio oscuro sin borde, un punto rojo que late como "en vivo" y la frase "Black Friday en 7". */
+.bf{position:absolute;z-index:3;top:clamp(84px,13vh,128px);right:max(20px,calc((100vw - 1200px)/2 + 20px));display:flex;align-items:center;gap:10px;height:40px;padding:0 18px 0 15px;border:0;border-radius:999px;background:rgba(0,0,0,.28);-webkit-backdrop-filter:blur(10px) saturate(1.2);backdrop-filter:blur(10px) saturate(1.2);color:#fff;font:inherit;font-size:14px;line-height:1;letter-spacing:-.005em;cursor:pointer;text-shadow:0 1px 6px rgba(0,0,0,.25);animation:bf-in .9s var(--ritmo) .3s both;transition:background .4s}
+.bf:hover{background:rgba(0,0,0,.4)}
 .bf-p{position:relative;width:6px;height:6px;flex:none;border-radius:50%;background:#E0213A}
 .bf-p::after{content:"";position:absolute;inset:0;border-radius:50%;background:#E0213A;animation:bf-late 2s ease-out infinite}
 .bf b{font-weight:600;white-space:nowrap}
