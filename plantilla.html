@@ -127,6 +127,23 @@ html.menu.sobre .marca .lc{display:block}html.menu.sobre .marca .lb{display:none
 @media (orientation:portrait){.hero::after{background:linear-gradient(180deg,rgba(0,0,0,.3) 0%,rgba(0,0,0,0) 22%,rgba(0,0,0,.18) 42%,rgba(0,0,0,.66) 64%,rgba(0,0,0,.78) 100%)}}
 .hero .env{position:relative;z-index:2;height:100%;display:flex;flex-direction:column;justify-content:flex-end;padding-bottom:clamp(56px,10vh,110px)}
 .hero h1{color:#fff;font-size:clamp(48px,8.4vw,120px)}.hero p{font-size:clamp(18px,1.8vw,22px);margin:18px 0 34px;max-width:32ch;color:rgba(255,255,255,.9)}
+/* La campaña del momento (Black Friday): un botón con cuenta de 10 a 0 que abre su catálogo. */
+.bf{position:absolute;z-index:3;top:clamp(84px,13vh,128px);right:max(20px,calc((100vw - 1200px)/2 + 20px));display:flex;align-items:center;gap:14px;padding:7px 7px 7px 20px;border-radius:999px;border:1px solid rgba(255,255,255,.2);background:rgba(14,14,14,.66);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);color:#fff;font:inherit;cursor:pointer;box-shadow:0 12px 32px rgba(0,0,0,.32);animation:bf-in .7s var(--ritmo) .2s both;transition:background .3s,transform .3s var(--ritmo)}
+.bf:hover{background:rgba(14,14,14,.86);transform:translateY(-1px)}
+.bf-t{display:flex;flex-direction:column;align-items:flex-start;line-height:1.15;text-align:left}
+.bf-t b{font-size:15px;font-weight:800;letter-spacing:.04em;text-transform:uppercase}
+.bf-t small{font-size:12.5px;color:rgba(255,255,255,.78);margin-top:2px}
+.bf-c{position:relative;width:46px;height:46px;flex:none;border-radius:50%;background:var(--rojo,#C8102E);display:grid;place-items:center}
+.bf-c svg.anillo{position:absolute;inset:0;width:100%;height:100%;transform:rotate(-90deg)}
+.bf-c .f{fill:none;stroke:rgba(255,255,255,.28);stroke-width:2.4}
+.bf-c .a{fill:none;stroke:#fff;stroke-width:2.4;stroke-linecap:round;stroke-dasharray:94.25;stroke-dashoffset:0;transition:stroke-dashoffset .95s linear}
+.bf-c i{font-style:normal;font-weight:800;font-size:18px;font-variant-numeric:tabular-nums}
+.bf-c .fl{display:none}.bf.listo .bf-c i{display:none}.bf.listo .bf-c .fl{display:block}.bf.listo .bf-c .anillo{display:none}
+.bf.listo{animation:bf-in .7s var(--ritmo) .2s both,bf-late 2.4s ease-in-out 1s 2}
+@keyframes bf-in{from{opacity:0;transform:translateY(-10px)}}
+@keyframes bf-late{0%,100%{box-shadow:0 12px 32px rgba(0,0,0,.32)}50%{box-shadow:0 0 0 6px rgba(200,16,46,.35),0 12px 32px rgba(0,0,0,.32)}}
+@media (max-width:600px){.bf{padding:6px 6px 6px 16px;gap:12px}.bf-t b{font-size:14px}.bf-c{width:42px;height:42px}}
+@media (prefers-reduced-motion:reduce){.bf,.bf.listo{animation:none}.bf-c .a{transition:none}}
 .pant{min-height:94svh;display:flex;align-items:center;padding:clamp(80px,12vh,140px) 0}
 .duo{display:grid;grid-template-columns:1.05fr 1fr;gap:clamp(32px,6vw,96px);align-items:center}
 .duo img{width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:4px}
@@ -346,6 +363,7 @@ figcaption{font-size:14px;color:var(--suave);margin-top:10px}
     poner(); if (q.addEventListener) q.addEventListener("change", poner);
   })();
   </script>
+  <button type="button" class="bf" id="bf" data-hojear="⟦inicio.campana.catalogo⟧" hidden><span class="bf-t"><b>⟦inicio.campana.boton⟧</b><small>⟦inicio.campana.bajada⟧</small></span><span class="bf-c"><svg class="anillo" viewBox="0 0 34 34" aria-hidden="true"><circle class="f" cx="17" cy="17" r="15"/><circle class="a" id="bf-a" cx="17" cy="17" r="15"/></svg><i id="bf-n" aria-hidden="true">10</i><span class="fl"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></span></button>
   <div class="env"><h1>⟦inicio.hero.titulo⟧</h1><p>⟦inicio.hero.bajada⟧</p><div><a class="bt" href="#productos">⟦inicio.hero.boton⟧</a></div></div>
 </section>
 
@@ -768,6 +786,37 @@ function abrirRoomvo() { if (window.roomvo && typeof window.roomvo.startStandalo
 document.getElementById("roomvo").onclick = abrirRoomvo;
 const ad = $("#ad"), corte = $("#corte"); corte.oninput = () => ad.style.setProperty("--x", corte.value + "%");
 
+
+// CAMPAÑA DEL MOMENTO: el botón cuenta de 10 a 0 (cuando termina la intro) y al llegar a 0 abre el catálogo de la
+// campaña, una sola vez por visita y solo si la persona sigue mirando la portada. Un clic lo abre antes.
+(() => {
+  const b = $("#bf"); if (!b) return;
+  const n = $("#bf-n"), a = $("#bf-a"), TOTAL = 10, LARGO = 94.25;
+  // Sin catálogo de campaña en el índice (o con el id vacío), el botón no se muestra.
+  fetch("/catalogos/indice.json").then((r) => r.json()).then((d) => { if (b.dataset.hojear && d.some((c) => String(c.id) === b.dataset.hojear)) iniciar(); })
+    .catch((err) => console.error("campaña: no se pudo leer el índice", err));
+  function iniciar() {
+    b.hidden = false;
+    let visto = false; try { visto = sessionStorage.getItem("gm-campana") === "1"; } catch (e) {}
+    const marcar = () => { try { sessionStorage.setItem("gm-campana", "1"); } catch (e) {} };
+    let t = null, s = TOTAL;
+    const listo = () => { clearInterval(t); b.classList.add("listo"); b.setAttribute("aria-label", b.textContent.trim()); };
+    b.addEventListener("click", () => { marcar(); listo(); });
+    if (visto) { listo(); return; }
+    const mirando = () => { const r = b.getBoundingClientRect(); return r.height > 0 && r.bottom > 0 && r.top < innerHeight; };
+    const tic = () => {
+      if (b.classList.contains("listo")) return clearInterval(t); // ya lo abrió con un clic
+      if (document.hidden) return; // con la pestaña de fondo, la cuenta espera
+      s--; n.textContent = s; a.style.strokeDashoffset = (LARGO * (TOTAL - s)) / TOTAL;
+      if (s > 0) return;
+      marcar(); listo();
+      if (mirando() && $("#visor").hidden && !document.documentElement.classList.contains("menu")) b.click();
+    };
+    // La cuenta arranca cuando termina la animación de entrada.
+    const esperar = () => { if (b.classList.contains("listo")) return; if (document.getElementById("gm-intro")) setTimeout(esperar, 250); else t = setInterval(tic, 1000); };
+    esperar();
+  }
+})();
 
 // VISOR DE CATÁLOGOS: el índice se pide recién cuando alguien abre uno.
 (() => {

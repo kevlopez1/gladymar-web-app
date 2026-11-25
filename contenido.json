@@ -13,6 +13,12 @@
       "bajada": "Pisos y revestimientos hechos en Bolivia desde 1984.",
       "boton": "Ver productos"
     },
+    "campana": {
+      "_nota": "Botón de la campaña del momento, arriba a la derecha de la portada. Cuenta de 10 a 0 y abre el catálogo de la campaña (su id en catalogos/indice.json).",
+      "boton": "Black Friday",
+      "bajada": "Ver ofertas",
+      "catalogo": "black-days"
+    },
     "novedad": {
       "antetitulo": "Nueva colección",
       "titulo": "Dimensión Viva.",
