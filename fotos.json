@@ -5,13 +5,13 @@
   "ancho": 800
  },
  {
-  "nombre": "Inicio: innovación",
-  "ruta": "/img/fabrica-laboratorio-1400.webp",
-  "ancho": 1400
+  "nombre": "Inicio: novedad",
+  "ruta": "/img/dimension-viva-ambiente-900.webp",
+  "ancho": 900
  },
  {
-  "nombre": "Inicio: Diseña",
-  "ruta": "/img/casacor-bar-1600.webp",
+  "nombre": "Inicio: el origen",
+  "ruta": "/img/f2-1-1600.webp",
   "ancho": 1600
  },
  {
@@ -25,62 +25,57 @@
   "ancho": 1400
  },
  {
-  "nombre": "Diseña: antes",
+  "nombre": "Simular: antes",
   "ruta": "/img/antes-1400.webp",
   "ancho": 1400
  },
  {
-  "nombre": "Diseña: después",
+  "nombre": "Simular: después",
   "ruta": "/img/sala-1400.webp",
   "ancho": 1400
  },
  {
-  "nombre": "Gladymar: fábrica 1",
-  "ruta": "/img/fabrica-laboratorio-900.webp",
+  "nombre": "Gladymar: cómo nace una pieza 1",
+  "ruta": "/img/f16-1-900.webp",
   "ancho": 900
  },
  {
-  "nombre": "Gladymar: fábrica 2",
-  "ruta": "/img/fabrica-linea-900.webp",
-  "ancho": 900
- },
- {
-  "nombre": "Gladymar: fábrica 3",
+  "nombre": "Gladymar: cómo nace una pieza 2",
   "ruta": "/img/fabrica-mano-900.webp",
   "ancho": 900
  },
  {
-  "nombre": "Gladymar: equipo 1",
-  "ruta": "/img/equipo-petra-900.webp",
+  "nombre": "Gladymar: cómo nace una pieza 3",
+  "ruta": "/img/fabrica-linea-900.webp",
   "ancho": 900
  },
  {
-  "nombre": "Gladymar: equipo 2",
-  "ruta": "/img/gente-evento-900.webp",
+  "nombre": "Gladymar: cómo nace una pieza 4",
+  "ruta": "/img/showroom-plus-900.webp",
   "ancho": 900
  },
  {
-  "nombre": "Diseña: CasaCor 1",
+  "nombre": "Gladymar: CasaCor 1",
   "ruta": "/img/casacor-fuente-1200.webp",
   "ancho": 1200
  },
  {
-  "nombre": "Diseña: CasaCor 2",
+  "nombre": "Gladymar: CasaCor 2",
   "ruta": "/img/casacor-salon-1200.webp",
   "ancho": 1200
  },
  {
-  "nombre": "Diseña: CasaCor 3",
+  "nombre": "Gladymar: CasaCor 3",
   "ruta": "/img/casacor-terraza-1200.webp",
   "ancho": 1200
  },
  {
-  "nombre": "Diseña: CasaCor 4",
+  "nombre": "Gladymar: CasaCor 4",
   "ruta": "/img/casacor-beso-de-miel-1200.webp",
   "ancho": 1200
  },
  {
-  "nombre": "Diseña: CasaCor 5",
+  "nombre": "Gladymar: CasaCor 5",
   "ruta": "/img/equipo-evento-expo-1000.webp",
   "ancho": 1000
  },

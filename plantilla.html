@@ -102,17 +102,21 @@ h1,h2,h3{font-weight:600;letter-spacing:-.025em;line-height:1.05;margin:0;color:
    La barra deja 19 px (17 en el teléfono) arriba y abajo, 20 px a la izquierda y 28 px (14 px en el teléfono) hasta el menú. */
 .marca{display:block;flex:none;height:30px}.marca img{height:30px;width:auto}.marca .lb{display:none}
 .nav{display:flex;gap:30px;margin-left:auto;font-size:15px}.nav a{text-decoration:none;color:var(--pizarra);opacity:.86}
-.nav a:hover,.nav a[aria-current]{opacity:1;color:var(--rojo)}
-.cot{display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:600;text-decoration:none;border:1px solid var(--linea);border-radius:999px;padding:8px 16px;color:var(--pizarra)}
+.nav a{padding:7px 12px;margin:0 -12px;border-radius:999px;transition:background .25s,color .25s}
+/* Reunión del 25/11: al pasar el mouse la pestaña se resalta (fondo y negrita), y Cotizar va en rojo como "Ver productos". */
+.nav a:hover,.nav a[aria-current]{opacity:1;color:var(--rojo);background:rgba(200,16,46,.08);font-weight:600}
+html.sobre .nav a:hover{color:#fff;background:rgba(255,255,255,.16)}
+.cot{display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:600;text-decoration:none;border:1px solid var(--rojo);border-radius:999px;padding:8px 16px;color:#fff;background:var(--rojo);transition:background .25s}
+.cot:hover{background:#A50D26;border-color:#A50D26}.cot b{background:#fff!important;color:var(--rojo)!important}
 .cot b{display:none;min-width:20px;height:20px;border-radius:99px;background:var(--rojo);color:#fff;font-size:11.5px;place-items:center;padding:0 5px}.cot b.si{display:inline-grid}
 .menu-b{display:none;border:0;background:none;width:44px;height:44px;margin-right:-10px;color:var(--pizarra)}
 html.sobre .hd{background:transparent;backdrop-filter:none;-webkit-backdrop-filter:none}
 html.sobre .marca .lc{display:none}html.sobre .marca .lb{display:block}
-html.sobre .nav a,html.sobre .cot,html.sobre .menu-b{color:#fff}html.sobre .cot{border-color:rgba(255,255,255,.4)}
+html.sobre .nav a,html.sobre .cot,html.sobre .menu-b{color:#fff}
 .menu-m{position:fixed;inset:0;z-index:29;background:var(--blanco);padding:96px 24px 40px;display:flex;flex-direction:column;gap:6px;opacity:0;pointer-events:none;transition:opacity .3s}
 .menu-m a{font-size:32px;font-weight:600;letter-spacing:-.02em;text-decoration:none;color:var(--pizarra);padding:8px 0}
 html.menu .menu-m{opacity:1;pointer-events:auto}html.menu .hd{background:var(--blanco)}
-html.menu.sobre .marca .lc{display:block}html.menu.sobre .marca .lb{display:none}html.menu.sobre .menu-b,html.menu.sobre .cot{color:var(--pizarra)}
+html.menu.sobre .marca .lc{display:block}html.menu.sobre .marca .lb{display:none}html.menu.sobre .menu-b{color:var(--pizarra)}
 @media (max-width:900px){.nav{display:none}.menu-b{display:grid;place-items:center}.cot{margin-left:auto}.hd .env{gap:14px;height:60px}.marca,.marca img{height:26px}}
 
 /* HOME: una idea por pantalla. */
@@ -144,6 +148,7 @@ html.menu.sobre .marca .lc{display:block}html.menu.sobre .marca .lb{display:none
 .vista{padding:clamp(110px,16vh,170px) 0 clamp(70px,10vh,120px)}
 .cab{max-width:760px;margin-bottom:clamp(48px,8vh,90px)}
 .marcas{display:flex;flex-wrap:wrap;gap:10px 30px;margin-top:30px;font-size:15px;font-weight:600;color:var(--taupe)}
+.marcas a{color:var(--taupe);text-decoration:none;border-bottom:1px solid transparent;transition:color .2s,border-color .2s}.marcas a:hover{color:var(--rojo);border-color:var(--rojo)}
 .linea{display:grid;grid-template-columns:1.15fr 1fr;gap:clamp(28px,5vw,80px);align-items:center;padding:clamp(36px,6vh,64px) 0}
 .linea.inv .linea-f{order:2}
 .linea-f img{width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:4px}
@@ -181,12 +186,19 @@ figcaption{font-size:14px;color:var(--suave);margin-top:10px}
 .ad input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:ew-resize;margin:0}
 .roomvo{display:grid;grid-template-columns:1fr auto;gap:30px;align-items:center;background:var(--crema);border-radius:4px;padding:clamp(28px,4vw,48px);margin-top:28px}
 .roomvo p{color:var(--suave);margin:10px 0 0}
+.sim{margin-top:0}.sim h2{margin:0}.pasos-s{margin:22px 0 0;padding:0;list-style:none;counter-reset:p;display:grid;gap:12px}
+.pasos-s li{counter-increment:p;display:flex;gap:14px;align-items:baseline;color:var(--pizarra)}.pasos-s li::before{content:counter(p);flex:none;width:28px;height:28px;border-radius:99px;background:var(--rojo);color:#fff;font-weight:600;font-size:14px;display:grid;place-items:center}
+/* Línea de tiempo (reunión del 25/11): un solo gráfico con los hitos. */
+.hitos{list-style:none;margin:28px auto clamp(56px,8vh,96px);padding:0 20px;max-width:1100px;display:grid;grid-template-columns:repeat(4,1fr);gap:0;position:relative}
+.hitos::before{content:"";position:absolute;left:20px;right:20px;top:9px;height:2px;background:var(--beige)}
+.hitos li{position:relative;padding:34px 18px 0 0}.hitos li::before{content:"";position:absolute;left:0;top:2px;width:16px;height:16px;border-radius:99px;background:var(--rojo);box-shadow:0 0 0 5px var(--blanco)}
+.hitos b{display:block;font-size:clamp(28px,3vw,40px);letter-spacing:-.02em;color:var(--pizarra)}.hitos span{display:block;color:var(--suave);margin-top:4px}
 .articulo .portada{height:min(70vh,640px);width:100%;object-fit:cover}
 .articulo .texto{max-width:700px;margin:0 auto;padding:clamp(56px,9vh,96px) 0 0}
 .articulo .texto p{font-size:19px;line-height:1.75;margin:0 0 22px}
 .articulo h2{margin-bottom:34px}
 .articulo .sub2{font-size:clamp(26px,3vw,36px);margin:clamp(56px,9vh,96px) 0 26px}
-.fab{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}.fab figure{margin:0}.fab img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:4px}
+.fab{display:grid;grid-template-columns:repeat(4,1fr);gap:22px}.fab figure{margin:0}.fab img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:4px}
 .fab i{display:block;font-style:normal;color:var(--rojo);font-weight:600;font-size:13px;margin-top:4px}.fab b{display:block;font-size:18px;color:var(--pizarra);margin:2px 0 4px}
 .mv{display:grid;grid-template-columns:1fr 1fr;gap:28px;background:var(--crema);border-radius:4px;padding:clamp(26px,4vw,44px);margin-top:40px}
 .mv b{display:block;color:var(--pizarra);font-size:17px;margin-bottom:6px}.mv p{margin:0;color:var(--suave)}
@@ -273,14 +285,17 @@ figcaption{font-size:14px;color:var(--suave);margin-top:10px}
 .visor header{display:flex;align-items:center;gap:12px;padding:12px max(16px,env(safe-area-inset-left,0px))}
 .visor header b{flex:1;font-weight:600;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .visor header a,.visor header button{color:#fff;border:1px solid rgba(255,255,255,.3);background:none;border-radius:99px;padding:8px 14px;font-size:14px;text-decoration:none;white-space:nowrap}
-.visor .hoja{flex:1;min-height:0;display:grid;place-items:center;padding:0 12px}
-.visor .hoja img{max-width:100%;max-height:100%;object-fit:contain;border-radius:2px;background:#fff}
+/* Reunión del 25/11: el catálogo se lee bajando, como un PDF, y no de a una página (en la laptop se cortaba el final). */
+.visor .hoja{position:relative;flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:4px 12px 24px}
+.visor .hoja img{display:block;width:100%;max-width:980px;height:auto;margin:0 auto 12px;border-radius:2px;background:#fff;aspect-ratio:auto 0.7071}
 .visor .pie{display:flex;justify-content:center;align-items:center;gap:16px;color:#ccc;padding:12px 0 calc(14px + env(safe-area-inset-bottom,0px))}
 .visor .pie button{width:46px;height:46px;border-radius:99px;border:1px solid rgba(255,255,255,.3);background:none;color:#fff;font-size:22px}
 
 /* PIE: beige, con el tapiz, el contacto y la app discreta (roadmap). */
 .pie-p{position:relative;background:var(--crema);overflow:hidden;padding:clamp(64px,10vh,110px) 0 36px;font-size:15px}
-.pie-p::before{content:"";position:absolute;right:-120px;bottom:-140px;width:520px;aspect-ratio:1316/1635;background:url('/img/tapiz-900.png') center/contain no-repeat;opacity:.35;pointer-events:none}
+/* El tapiz va a la derecha, fuera de las letras (reunión del 25/11); en pantallas angostas no entra y no se muestra. */
+.pie-p::before{content:"";position:absolute;right:-180px;top:50%;transform:translateY(-50%);width:420px;aspect-ratio:1316/1635;background:url('/img/tapiz-900.png') center/contain no-repeat;opacity:.3;pointer-events:none}
+@media (max-width:1200px){.pie-p::before{display:none}}
 .pie-p .env{position:relative}
 .pie-p .marca img{height:34px}.pie-p .contacto{margin-top:34px}
 .redes{display:flex;gap:10px;margin-top:6px}.red{width:42px;height:42px;border-radius:99px;border:1px solid var(--linea);display:grid;place-items:center;color:var(--pizarra)}.red:hover{color:var(--rojo);border-color:var(--rojo)}
@@ -293,6 +308,9 @@ figcaption{font-size:14px;color:var(--suave);margin-top:10px}
 @media (prefers-reduced-motion:reduce){.rev{opacity:1;transform:none;transition:none}*{scroll-behavior:auto!important;animation:none!important}}
 
 @media (max-width:900px){
+  .voz::before{right:-38%;top:auto;bottom:-12%;transform:none;width:78vw;opacity:.28} /* en el teléfono el tapiz baja a la esquina, lejos de la frase */
+  .hitos{grid-template-columns:1fr;padding-left:28px}.hitos::before{left:35px;right:auto;top:10px;bottom:10px;width:2px;height:auto}
+  .hitos li{padding:0 0 22px 34px}.hitos li::before{left:0;top:10px}.fab{grid-template-columns:1fr 1fr}
   .duo,.linea,.suc-g,.pedir,.fi,.roomvo{grid-template-columns:1fr}.linea.inv .linea-f{order:0}
   .duo.inv-m>:first-child{order:2}
   .pant{min-height:auto;padding:84px 0}.ancha img{height:62vh}
@@ -308,11 +326,11 @@ figcaption{font-size:14px;color:var(--suave);margin-top:10px}
 
 <header class="hd"><div class="env">
   <a class="marca" href="#inicio" aria-label="Gladymar, inicio"><img class="lc" src="/img/logo-horizontal-color-88.png" alt="Gladymar" height="30"><img class="lb" src="/img/logo-horizontal.png" alt="Gladymar" height="30"></a>
-  <nav class="nav" aria-label="Secciones"><a href="#productos">⟦menu.0⟧</a><a href="#catalogos">⟦menu.1⟧</a><a href="#disena">⟦menu.2⟧</a><a href="#gladymar">⟦menu.3⟧</a><a href="#donde">⟦menu.4⟧</a></nav>
+  <nav class="nav" aria-label="Secciones"><a href="#productos">⟦menu.0⟧</a><a href="#disena">⟦menu.1⟧</a><a href="#catalogos">⟦menu.2⟧</a><a href="#gladymar">⟦menu.3⟧</a><a href="#donde">⟦menu.4⟧</a></nav>
   <a class="cot" href="#cotizar">Cotizar <b id="cuenta"></b></a>
   <button type="button" class="menu-b" id="menu-b" aria-label="Abrir el menú" aria-expanded="false"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 8h16M4 16h16"/></svg></button>
 </div></header>
-<nav class="menu-m" id="menu-m" aria-label="Menú"><a href="#productos">⟦menu.0⟧</a><a href="#catalogos">⟦menu.1⟧</a><a href="#disena">⟦menu.2⟧</a><a href="#gladymar">⟦menu.3⟧</a><a href="#donde">⟦menu.4⟧</a></nav>
+<nav class="menu-m" id="menu-m" aria-label="Menú"><a href="#productos">⟦menu.0⟧</a><a href="#disena">⟦menu.1⟧</a><a href="#catalogos">⟦menu.2⟧</a><a href="#gladymar">⟦menu.3⟧</a><a href="#donde">⟦menu.4⟧</a></nav>
 
 <main>
 <section class="hero" id="inicio">
@@ -331,13 +349,13 @@ figcaption{font-size:14px;color:var(--suave);margin-top:10px}
   <div class="env"><h1>⟦inicio.hero.titulo⟧</h1><p>⟦inicio.hero.bajada⟧</p><div><a class="bt" href="#productos">⟦inicio.hero.boton⟧</a></div></div>
 </section>
 
-<section class="pant" id="legado"><div class="env duo">
-  <div class="rev"><span class="k">⟦inicio.legado.antetitulo⟧</span><h2 class="t2">⟦inicio.legado.titulo⟧</h2><p class="lead">⟦inicio.legado.texto⟧</p><a class="enlace" href="#gladymar">⟦inicio.legado.boton⟧ <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
-  <img class="rev" style="aspect-ratio:16/9" src="/img/historia-sin-sello-800.webp" alt="El equipo de Gladymar frente a la fábrica, en Santa Cruz" loading="lazy" decoding="async">
+<section class="pant" id="novedad"><div class="env duo">
+  <div class="rev"><span class="k">⟦inicio.novedad.antetitulo⟧</span><h2 class="t2">⟦inicio.novedad.titulo⟧</h2><p class="lead">⟦inicio.novedad.texto⟧</p><button type="button" class="bt" style="margin-top:26px" data-hojear="5696">⟦inicio.novedad.boton⟧</button></div>
+  <img class="rev" style="aspect-ratio:4/3;object-fit:cover" src="/img/dimension-viva-ambiente-900.webp" alt="Dimensión Viva, la colección 2026 de Gladymar" loading="lazy" decoding="async">
 </div></section>
 
-<section class="pant" id="innovacion" style="display:block"><div class="env centro rev"><span class="k">⟦inicio.innovacion.antetitulo⟧</span><h2 class="t2">⟦inicio.innovacion.titulo⟧</h2><p class="lead">⟦inicio.innovacion.texto⟧</p></div>
-  <div class="ancha"><img class="para" src="/img/fabrica-laboratorio-1400.webp" alt="El laboratorio de la fábrica de Gladymar" loading="lazy" decoding="async"></div>
+<section class="pant" id="origen" style="display:block"><div class="env centro rev"><span class="k">⟦inicio.origen.antetitulo⟧</span><h2 class="t2">⟦inicio.origen.titulo⟧</h2><p class="lead">⟦inicio.origen.texto⟧</p><button type="button" class="enlace" data-hojear="5450">⟦inicio.origen.boton⟧ <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div>
+  <div class="ancha"><img class="para" style="object-position:center 85%" src="/img/f2-1-1600.webp" alt="Una terraza con pisos Kaiser en tonos de terracota" loading="lazy" decoding="async"></div>
 </section>
 
 <section class="pant" id="h-productos" style="display:block"><div class="env rev"><span class="k">⟦inicio.productos.antetitulo⟧</span><h2 class="t2">⟦inicio.productos.titulo⟧</h2><p class="lead">⟦inicio.productos.texto⟧</p><a class="enlace" href="#productos">⟦inicio.productos.boton⟧ <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
@@ -345,10 +363,15 @@ figcaption{font-size:14px;color:var(--suave);margin-top:10px}
 </section>
 
 <section class="pant" id="h-disena" style="display:block;padding-bottom:0"><div class="env rev"><span class="k">⟦inicio.disena.antetitulo⟧</span><h2 class="t2">⟦inicio.disena.titulo⟧</h2><p class="lead">⟦inicio.disena.texto⟧</p><a class="enlace" href="#disena">⟦inicio.disena.boton⟧ <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
-  <div class="ancha"><img class="para" src="/img/casacor-bar-1600.webp" alt="El Jardín del Achachairú en CasaCor Bolivia" loading="lazy" decoding="async"></div>
+  <div class="ancha"><img class="para" src="/img/sala-1400.webp" alt="Una sala con un piso Gladymar, en el simulador" loading="lazy" decoding="async"></div>
 </section>
 
 <section class="pant voz" id="voz"><div class="env rev"><blockquote>⟦inicio.voz.cita⟧</blockquote><cite>⟦inicio.voz.firma⟧</cite></div></section>
+
+<section class="pant" id="legado"><div class="env duo">
+  <div class="rev"><span class="k">⟦inicio.legado.antetitulo⟧</span><h2 class="t2">⟦inicio.legado.titulo⟧</h2><p class="lead">⟦inicio.legado.texto⟧</p><a class="enlace" href="#gladymar">⟦inicio.legado.boton⟧ <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
+  <img class="rev" style="aspect-ratio:16/9" src="/img/historia-sin-sello-800.webp" alt="El equipo de Gladymar frente a la fábrica, en Santa Cruz" loading="lazy" decoding="async">
+</div></section>
 
 <section class="pant" id="h-donde"><div class="env duo inv-m">
   <img class="rev" src="/img/tienda-fachada-1000.webp" alt="Una tienda Gladymar" loading="lazy" decoding="async" style="aspect-ratio:4/3">
@@ -356,7 +379,7 @@ figcaption{font-size:14px;color:var(--suave);margin-top:10px}
 </div></section>
 
 <section class="vista" id="productos"><div class="env">
-  <div class="cab rev"><h1 class="t1">⟦productos.titulo⟧</h1><p class="lead">⟦productos.bajada⟧</p><p class="cab-bt"><button type="button" class="bt" id="abre-calc">⟦productos.calcular⟧</button></p><div class="marcas"><span>⟦productos.marcas.0⟧</span><span>⟦productos.marcas.1⟧</span><span>⟦productos.marcas.2⟧</span><span>⟦productos.marcas.3⟧</span><span>⟦productos.marcas.4⟧</span><span>⟦productos.marcas.5⟧</span><span>⟦productos.marcas.6⟧</span></div></div>
+  <div class="cab rev"><h1 class="t1">⟦productos.titulo⟧</h1><p class="lead">⟦productos.bajada⟧</p><p class="cab-bt"><button type="button" class="bt" id="abre-calc">⟦productos.calcular⟧</button></p><div class="marcas"><span>⟦productos.marcas.0⟧</span><a href="#l-porcelanato">⟦productos.marcas.1⟧</a><a href="#l-eleganza">⟦productos.marcas.2⟧</a><a href="#l-platinum">⟦productos.marcas.3⟧</a><a href="#l-terraforte">⟦productos.marcas.4⟧</a><a href="#l-artema">⟦productos.marcas.5⟧</a><span>⟦productos.marcas.6⟧</span></div></div>
   <article class="linea rev" id="l-porcelanato">
   <div class="linea-f"><img src="/img/f5-1-1200.webp" alt="⟦productos.lineas.0.nombre⟧" loading="lazy" decoding="async"></div>
   <div class="linea-t">
@@ -417,14 +440,12 @@ figcaption{font-size:14px;color:var(--suave);margin-top:10px}
 
 <section class="vista" id="disena"><div class="env">
   <div class="cab rev"><h1 class="t1">⟦disena.titulo⟧</h1><p class="lead">⟦disena.bajada⟧</p></div>
-  <div class="rev"><div class="tabs" role="tablist" aria-label="Espacios"><button type="button" role="tab" data-esp="0" aria-selected="true">Sala</button><button type="button" role="tab" data-esp="1" aria-selected="false">Dormitorio</button><button type="button" role="tab" data-esp="2" aria-selected="false">Cocina y comedor</button><button type="button" role="tab" data-esp="3" aria-selected="false">Terraza</button><button type="button" role="tab" data-esp="4" aria-selected="false">Comercial</button></div><div class="esp" data-esp="0"><figure><img src="/img/a-taj-mahal-900.webp" alt="Sala con Taj Mahal" loading="lazy" decoding="async"><figcaption>Taj Mahal</figcaption></figure><figure><img src="/img/a-oro-bianco-900.webp" alt="Sala con Oro Bianco" loading="lazy" decoding="async"><figcaption>Oro Bianco</figcaption></figure><figure><img src="/img/a-toronto-white-900.webp" alt="Sala con Toronto White" loading="lazy" decoding="async"><figcaption>Toronto White</figcaption></figure></div><div class="esp" data-esp="1" hidden><figure><img src="/img/a-onix-aura-900.webp" alt="Dormitorio con Onix Aura" loading="lazy" decoding="async"><figcaption>Onix Aura</figcaption></figure><figure><img src="/img/a-urban-graffito-2-900.webp" alt="Dormitorio con Urban Graffito" loading="lazy" decoding="async"><figcaption>Urban Graffito</figcaption></figure></div><div class="esp" data-esp="2" hidden><figure><img src="/img/a-ebano-venato-900.webp" alt="Cocina y comedor con Ébano Venato" loading="lazy" decoding="async"><figcaption>Ébano Venato</figcaption></figure><figure><img src="/img/a-rovere-toscano-900.webp" alt="Cocina y comedor con Rovere Toscano" loading="lazy" decoding="async"><figcaption>Rovere Toscano</figcaption></figure></div><div class="esp" data-esp="3" hidden><figure><img src="/img/a-atlas-grey-2-900.webp" alt="Terraza con Atlas Grey" loading="lazy" decoding="async"><figcaption>Atlas Grey</figcaption></figure><figure><img src="/img/a-moon-white-900.webp" alt="Terraza con Moon White" loading="lazy" decoding="async"><figcaption>Moon White</figcaption></figure><figure><img src="/img/a-urban-graffito-900.webp" alt="Terraza con Urban Graffito" loading="lazy" decoding="async"><figcaption>Urban Graffito</figcaption></figure></div><div class="esp" data-esp="4" hidden><figure><img src="/img/a-calacatta-silver-900.webp" alt="Comercial con Calacatta Silver" loading="lazy" decoding="async"><figcaption>Calacatta Silver</figcaption></figure><figure><img src="/img/a-onix-royal-900.webp" alt="Comercial con Onix Royal" loading="lazy" decoding="async"><figcaption>Onix Royal</figcaption></figure><figure><img src="/img/a-portland-soft-900.webp" alt="Comercial con Portland Soft" loading="lazy" decoding="async"><figcaption>Portland Soft</figcaption></figure><figure><img src="/img/a-basalto-gris-900.webp" alt="Comercial con Basalto Gris" loading="lazy" decoding="async"><figcaption>Basalto Gris</figcaption></figure></div></div>
-  <div class="bloque"><h2 class="t2 rev">⟦disena.casacor.titulo⟧</h2><p class="lead rev">⟦disena.casacor.texto⟧</p><div class="cc" style="margin-top:36px"><figure class="rev"><img src="/img/casacor-fuente-1200.webp" alt="La fuente del Jardín del Achachairú" loading="lazy" decoding="async"><figcaption>La fuente del Jardín del Achachairú</figcaption></figure><figure class="rev"><img src="/img/casacor-salon-1200.webp" alt="El salón" loading="lazy" decoding="async"><figcaption>El salón</figcaption></figure><figure class="rev"><img src="/img/casacor-terraza-1200.webp" alt="La terraza" loading="lazy" decoding="async"><figcaption>La terraza</figcaption></figure><figure class="rev"><img src="/img/casacor-beso-de-miel-1200.webp" alt="Beso de Miel" loading="lazy" decoding="async"><figcaption>Beso de Miel</figcaption></figure><figure class="rev"><img src="/img/equipo-evento-expo-1000.webp" alt="En el escenario de CasaCor Bolivia" loading="lazy" decoding="async"><figcaption>En el escenario de CasaCor Bolivia</figcaption></figure></div></div>
+  <div class="roomvo sim rev"><div><h2 class="t2">⟦disena.simulador.titulo⟧</h2><p>⟦disena.simulador.texto⟧</p><ol class="pasos-s"><li>⟦disena.simulador.pasos.0⟧</li><li>⟦disena.simulador.pasos.1⟧</li><li>⟦disena.simulador.pasos.2⟧</li></ol></div><button type="button" class="bt" id="roomvo">⟦disena.simulador.boton⟧</button></div>
   <div class="bloque rev"><h2 class="t2">⟦disena.antes.titulo⟧</h2><p class="lead">⟦disena.antes.texto⟧</p>
     <div class="ad" id="ad" style="margin-top:36px"><img src="/img/antes-1400.webp" alt="La sala antes" loading="lazy"><img class="des" src="/img/sala-1400.webp" alt="La sala con otro piso" loading="lazy">
       <span class="et" style="left:16px">Antes</span><span class="et" style="right:16px">Después</span><span class="linea-c"></span>
       <span class="tir"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l-6 6 6 6M15 6l6 6-6 6"/></svg></span>
       <input type="range" id="corte" min="0" max="100" value="50" aria-label="Deslice para comparar el antes y el después"></div>
-    <div class="roomvo"><div><h3 class="t3">⟦disena.roomvo.titulo⟧</h3><p>⟦disena.roomvo.texto⟧</p></div><button type="button" class="bt" id="roomvo">⟦disena.roomvo.boton⟧</button></div>
   </div>
 </div></section>
 
@@ -434,12 +455,14 @@ figcaption{font-size:14px;color:var(--suave);margin-top:10px}
     <span class="k rev">⟦gladymar.antetitulo⟧</span><h1 class="t2 rev">⟦gladymar.titulo⟧</h1>
     <p class="rev">⟦gladymar.parrafos.0⟧</p><p class="rev">⟦gladymar.parrafos.1⟧</p><p class="rev">⟦gladymar.parrafos.2⟧</p>
   </div>
+  <div class="texto"><h2 class="sub2 rev">⟦gladymar.historia.titulo⟧</h2></div>
+  <ol class="hitos"><li class="rev"><b>⟦gladymar.historia.hitos.0.anio⟧</b><span>⟦gladymar.historia.hitos.0.texto⟧</span></li><li class="rev"><b>⟦gladymar.historia.hitos.1.anio⟧</b><span>⟦gladymar.historia.hitos.1.texto⟧</span></li><li class="rev"><b>⟦gladymar.historia.hitos.2.anio⟧</b><span>⟦gladymar.historia.hitos.2.texto⟧</span></li><li class="rev"><b>⟦gladymar.historia.hitos.3.anio⟧</b><span>⟦gladymar.historia.hitos.3.texto⟧</span></li></ol>
   <h2 class="sub2 rev" style="max-width:700px;margin-inline:auto">⟦gladymar.fabrica.titulo⟧</h2>
-  <div class="fab"><figure class="rev"><img src="/img/fabrica-laboratorio-900.webp" alt="⟦gladymar.fabrica.pasos.0.nombre⟧" loading="lazy" decoding="async"><figcaption><i>01</i><b>⟦gladymar.fabrica.pasos.0.nombre⟧</b>⟦gladymar.fabrica.pasos.0.texto⟧</figcaption></figure><figure class="rev"><img src="/img/fabrica-linea-900.webp" alt="⟦gladymar.fabrica.pasos.1.nombre⟧" loading="lazy" decoding="async"><figcaption><i>02</i><b>⟦gladymar.fabrica.pasos.1.nombre⟧</b>⟦gladymar.fabrica.pasos.1.texto⟧</figcaption></figure><figure class="rev"><img src="/img/fabrica-mano-900.webp" alt="⟦gladymar.fabrica.pasos.2.nombre⟧" loading="lazy" decoding="async"><figcaption><i>03</i><b>⟦gladymar.fabrica.pasos.2.nombre⟧</b>⟦gladymar.fabrica.pasos.2.texto⟧</figcaption></figure></div>
+  <div class="fab"><figure class="rev"><img src="/img/f16-1-900.webp" alt="⟦gladymar.fabrica.pasos.0.nombre⟧" loading="lazy" decoding="async"><figcaption><i>01</i><b>⟦gladymar.fabrica.pasos.0.nombre⟧</b>⟦gladymar.fabrica.pasos.0.texto⟧</figcaption></figure><figure class="rev"><img src="/img/fabrica-mano-900.webp" alt="⟦gladymar.fabrica.pasos.1.nombre⟧" loading="lazy" decoding="async"><figcaption><i>02</i><b>⟦gladymar.fabrica.pasos.1.nombre⟧</b>⟦gladymar.fabrica.pasos.1.texto⟧</figcaption></figure><figure class="rev"><img src="/img/fabrica-linea-900.webp" alt="⟦gladymar.fabrica.pasos.2.nombre⟧" loading="lazy" decoding="async"><figcaption><i>03</i><b>⟦gladymar.fabrica.pasos.2.nombre⟧</b>⟦gladymar.fabrica.pasos.2.texto⟧</figcaption></figure><figure class="rev"><img src="/img/showroom-plus-900.webp" alt="⟦gladymar.fabrica.pasos.3.nombre⟧" loading="lazy" decoding="async"><figcaption><i>04</i><b>⟦gladymar.fabrica.pasos.3.nombre⟧</b>⟦gladymar.fabrica.pasos.3.texto⟧</figcaption></figure></div>
   <div class="texto" style="padding-top:clamp(40px,7vh,72px)"><h2 class="sub2 rev" style="margin-top:0">Calidad</h2><p class="rev">⟦gladymar.calidad⟧</p></div>
   <div class="mv rev" style="max-width:900px;margin-inline:auto"><div><b>Misión</b><p>⟦gladymar.mision⟧</p></div><div><b>Visión</b><p>⟦gladymar.vision⟧</p></div></div>
-  <div class="texto"><h2 class="sub2 rev">Nuestro equipo</h2><p class="rev">⟦gladymar.equipo⟧</p></div>
-  <div class="eq" style="max-width:900px;margin:0 auto clamp(70px,10vh,120px)"><img class="rev" src="/img/equipo-petra-900.webp" alt="El equipo de Gladymar" loading="lazy" decoding="async"><img class="rev" src="/img/gente-evento-900.webp" alt="El equipo de Gladymar" loading="lazy" decoding="async"></div>
+  <div class="texto"><h2 class="sub2 rev">⟦gladymar.casacor.titulo⟧</h2><p class="rev">⟦gladymar.casacor.texto⟧</p></div>
+  <div class="cc" style="max-width:1100px;margin:0 auto clamp(70px,10vh,120px)"><figure class="rev"><img src="/img/casacor-fuente-1200.webp" alt="La fuente del Jardín del Achachairú" loading="lazy" decoding="async"><figcaption>La fuente del Jardín del Achachairú</figcaption></figure><figure class="rev"><img src="/img/casacor-salon-1200.webp" alt="El salón" loading="lazy" decoding="async"><figcaption>El salón</figcaption></figure><figure class="rev"><img src="/img/casacor-terraza-1200.webp" alt="La terraza" loading="lazy" decoding="async"><figcaption>La terraza</figcaption></figure><figure class="rev"><img src="/img/casacor-beso-de-miel-1200.webp" alt="Beso de Miel" loading="lazy" decoding="async"><figcaption>Beso de Miel</figcaption></figure><figure class="rev"><img src="/img/equipo-evento-expo-1000.webp" alt="En el escenario de CasaCor Bolivia" loading="lazy" decoding="async"><figcaption>En el escenario de CasaCor Bolivia</figcaption></figure></div>
   </div>
 </section>
 
@@ -475,7 +498,7 @@ figcaption{font-size:14px;color:var(--suave);margin-top:10px}
 
 <div class="visor" id="visor" hidden role="dialog" aria-modal="true" aria-label="Catálogo">
   <header><b id="v-tit"></b><a id="v-pdf" target="_blank" rel="noopener">Descargar PDF</a><button type="button" id="v-x" aria-label="Cerrar" title="Cerrar"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></header>
-  <div class="hoja"><img id="v-img" alt=""></div>
+  <div class="hoja" id="v-hoja"></div>
   <div class="pie"><button type="button" id="v-ant" aria-label="Página anterior">‹</button><span id="v-n"></span><button type="button" id="v-sig" aria-label="Página siguiente">›</button></div>
 </div>
 
@@ -694,7 +717,7 @@ function lista() {
       <div><b>${e(f.p.nombre)}</b><small>${e(f.v.acabado)}, ${f.p.formato.replace(" cm", "")}, ${num(f.m2)} m²</small>
       <div class="qt"><button data-menos="${f.i}" aria-label="Una caja menos">−</button><span>${f.it.cajas} cajas</span><button data-mas="${f.i}" aria-label="Una caja más">+</button></div></div>
       <button class="quitar" data-quitar="${f.i}">Quitar</button></div>`).join("")
-    : `<p class="vacio">Su lista está vacía. Abra una pieza en <a href="#productos">Productos</a>, calcule sus cajas y agréguela.</p>`;
+    : `<div class="vacio"><p>Su lista está vacía. Abra una pieza, calcule sus cajas y agréguela.</p><p style="margin-top:18px"><a class="bt" href="#productos">Ver productos</a></p></div>`;
   document.querySelectorAll("[data-mas]").forEach((b) => (b.onclick = () => { st.items[b.dataset.mas].cajas++; guardar(st); lista(); }));
   document.querySelectorAll("[data-menos]").forEach((b) => (b.onclick = () => { const it = st.items[b.dataset.menos]; if (it.cajas > 1) { it.cajas--; guardar(st); lista(); } }));
   document.querySelectorAll("[data-quitar]").forEach((b) => (b.onclick = () => { st.items.splice(+b.dataset.quitar, 1); guardar(st); lista(); }));
@@ -730,8 +753,12 @@ const contacto = `<div><small>WhatsApp</small><a class="wa" href="${wa(C.whatsap
   <div><small>Fábrica</small><span>${e(C.direccion)}</span><div class="redes">
     <a class="red" href="${e(O.redes.facebook)}" target="_blank" rel="noopener" aria-label="Facebook de Gladymar"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M24 12.07C24 5.4 18.63 0 12 0S0 5.4 0 12.07C0 18.1 4.39 23.1 10.13 24v-8.44H7.08v-3.49h3.05V9.41c0-3.02 1.79-4.69 4.53-4.69 1.31 0 2.68.24 2.68.24v2.97h-1.51c-1.49 0-1.96.93-1.96 1.89v2.26h3.33l-.53 3.49h-2.8V24C19.61 23.1 24 18.1 24 12.07z"/></svg></a>
     <a class="red" href="${e(O.redes.instagram)}" target="_blank" rel="noopener" aria-label="Instagram de Gladymar"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5"/><circle cx="12" cy="12" r="4.3"/><circle cx="17.6" cy="6.4" r="1.2" fill="currentColor" stroke="none"/></svg></a></div></div>`;
-document.getElementById("contacto-p").innerHTML = contacto;
-document.getElementById("contacto-d").innerHTML = contacto;
+const MAS_REDES = { youtube: ["YouTube", '<svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2 31.6 31.6 0 0 0 0 12a31.6 31.6 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31.6 31.6 0 0 0 24 12a31.6 31.6 0 0 0-.5-5.8zM9.6 15.6V8.4l6.3 3.6-6.3 3.6z"/></svg>'],
+  tiktok: ["TikTok", '<svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M16.6 2h-3.3v13.3a2.9 2.9 0 1 1-2.9-2.9c.3 0 .6 0 .9.1V9.1a6.3 6.3 0 1 0 5.3 6.2V8.6a7.7 7.7 0 0 0 4.4 1.4V6.7a4.4 4.4 0 0 1-4.4-4.4z"/></svg>'],
+  linkedin: ["LinkedIn", '<svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9.5h4V21H3zM9.5 9.5h3.8v1.6h.1c.5-1 1.8-2 3.8-2 4 0 4.8 2.6 4.8 6V21h-4v-5.2c0-1.2 0-2.8-1.7-2.8s-2 1.3-2 2.7V21h-4z"/></svg>'] };
+const masRedes = Object.entries(MAS_REDES).filter(([k]) => O.redes[k]).map(([k, [n, svg]]) => `<a class="red" href="${e(O.redes[k])}" target="_blank" rel="noopener" aria-label="${n} de Gladymar">${svg}</a>`).join("");
+document.getElementById("contacto-p").innerHTML = contacto.replace('</div></div>', masRedes + '</div></div>');
+document.getElementById("contacto-d").innerHTML = contacto.replace('</div></div>', masRedes + '</div></div>');
 
 // ROOMVO: el mismo script que usa gladymar.com.bo; si no carga (dominio todavía no autorizado), su página del simulador.
 // Se pide recién al entrar a Diseña (roadmap: que Roomvo no le pese a la página), nunca en el inicio.
@@ -741,28 +768,37 @@ function abrirRoomvo() { if (window.roomvo && typeof window.roomvo.startStandalo
 document.getElementById("roomvo").onclick = abrirRoomvo;
 const ad = $("#ad"), corte = $("#corte"); corte.oninput = () => ad.style.setProperty("--x", corte.value + "%");
 
-// DISEÑA: un espacio a la vez.
-document.querySelectorAll("#disena .tabs button").forEach((b) => (b.onclick = () => {
-  document.querySelectorAll("#disena .tabs button").forEach((x) => x.setAttribute("aria-selected", String(x === b)));
-  document.querySelectorAll("#disena .esp").forEach((g) => (g.hidden = g.dataset.esp !== b.dataset.esp));
-}));
 
 // VISOR DE CATÁLOGOS: el índice se pide recién cuando alguien abre uno.
 (() => {
   const V = $("#visor"); let C = null, vc = null, vp = 1, cargado = null;
   const cargarI = () => cargado || (cargado = fetch("/catalogos/indice.json").then((r) => { if (!r.ok) throw new Error(r.status); return r.json(); }).then((d) => (C = d)));
-  const ver = () => { $("#v-img").src = vc.paginas[vp - 1]; $("#v-n").textContent = `${vp} / ${vc.paginas.length}`; };
+  const H = $("#v-hoja"); let obs = null, ap = 0, tocado = false;
+  // Si la persona se mueve mientras cargan las páginas, el salto final no la devuelve a la página pedida.
+  ["wheel", "touchstart", "pointerdown"].forEach((t) => H.addEventListener(t, () => (tocado = true), { passive: true }));
+  const contar = () => ($("#v-n").textContent = `${vp} / ${vc.paginas.length}`);
+  const ir = (n, suave) => { const im = H.children[n - 1]; if (im) H.scrollTo({ top: im.offsetTop - 4, behavior: suave ? "smooth" : "auto" }); };
+  const ver = () => ir(vp, true);
   const abrir = (id, pag) => cargarI().then(() => { vc = C.find((x) => String(x.id) === String(id)); if (!vc) return;
-    vp = Math.min(+pag || 1, vc.paginas.length); $("#v-tit").textContent = vc.titulo; $("#v-pdf").href = vc.pdf; V.hidden = false; document.body.style.overflow = "hidden"; ver(); })
+    vp = Math.min(+pag || 1, vc.paginas.length); $("#v-tit").textContent = vc.titulo; $("#v-pdf").href = vc.pdf;
+    // Todas las páginas una debajo de otra; el navegador baja solo las que se van acercando (loading="lazy").
+    // Hasta la página pedida se bajan ya: así sus alturas son las reales y el salto cae justo en esa página.
+    H.innerHTML = vc.paginas.map((u, i) => `<img src="${u}" alt="${e(vc.titulo)}, página ${i + 1}" loading="${i < vp + 1 ? "eager" : "lazy"}" decoding="async">`).join("");
+    if (obs) obs.disconnect();
+    obs = new IntersectionObserver((xs) => xs.forEach((x) => { if (x.isIntersecting) { vp = [...H.children].indexOf(x.target) + 1; contar(); } }), { root: H, rootMargin: "-45% 0px -45% 0px" });
+    [...H.children].forEach((im) => obs.observe(im));
+    V.hidden = false; document.body.style.overflow = "hidden"; contar();
+    // La página pedida se guarda aparte: mientras cargan, el contador cambia vp con lo que pasa por la pantalla.
+    const destino = vp, antes = [...H.children].slice(0, destino), tok = ++ap; tocado = false;
+    requestAnimationFrame(() => ir(destino));
+    Promise.all(antes.map((im) => (im.complete ? 0 : new Promise((ok) => { im.onload = im.onerror = ok; })))).then(() => { if (tok === ap && !tocado && !V.hidden) { ir(destino); vp = destino; contar(); } }); })
     .catch((err) => { console.error("catálogos: no se pudo leer el índice", err); toast("No se pudo abrir el catálogo"); });
-  const cerrar = () => { V.hidden = true; document.body.style.overflow = ""; };
+  const cerrar = () => { ap++; V.hidden = true; document.body.style.overflow = ""; if (obs) obs.disconnect(); H.innerHTML = ""; };
   document.addEventListener("click", (ev) => { const b = ev.target.closest("[data-hojear]"); if (b) abrir(b.dataset.hojear, b.dataset.pag); });
   $("#v-x").onclick = cerrar;
-  $("#v-ant").onclick = () => { if (vp > 1) { vp--; ver(); } };
-  $("#v-sig").onclick = () => { if (vc && vp < vc.paginas.length) { vp++; ver(); } };
+  $("#v-ant").onclick = () => { tocado = true; if (vp > 1) { vp--; ver(); } };
+  $("#v-sig").onclick = () => { tocado = true; if (vc && vp < vc.paginas.length) { vp++; ver(); } };
   document.addEventListener("keydown", (ev) => { if (V.hidden) return; if (ev.key === "Escape") cerrar(); if (ev.key === "ArrowLeft") $("#v-ant").click(); if (ev.key === "ArrowRight") $("#v-sig").click(); });
-  let x0 = null; V.addEventListener("touchstart", (ev) => (x0 = ev.touches[0].clientX), { passive: true });
-  V.addEventListener("touchend", (ev) => { if (x0 === null) return; const d = ev.changedTouches[0].clientX - x0; if (Math.abs(d) > 50) $(d < 0 ? "#v-sig" : "#v-ant").click(); x0 = null; });
 })();
 
 // DÓNDE COMPRAR: ciudades, tiendas con dirección, horario, teléfono y WhatsApp, y el mapa de la elegida.
@@ -809,7 +845,7 @@ document.querySelectorAll("#disena .tabs button").forEach((b) => (b.onclick = ()
 
 // VISTAS: cada entrada del menú muestra solo su sección (roadmap: "únicamente lo que el usuario decidió ver").
 (() => {
-  const VISTAS = { inicio: ["inicio", "legado", "innovacion", "h-productos", "h-disena", "voz", "h-donde"], productos: ["productos"], catalogos: ["catalogos"],
+  const VISTAS = { inicio: ["inicio", "novedad", "origen", "h-productos", "h-disena", "voz", "legado", "h-donde"], productos: ["productos"], catalogos: ["catalogos"],
     disena: ["disena"], gladymar: ["gladymar"], donde: ["donde"], cotizar: ["cotizar"] };
   const deSec = {}; for (const [v, xs] of Object.entries(VISTAS)) xs.forEach((x) => (deSec[x] = v));
   // Las líneas (#l-eleganza…) viven dentro de Productos: un enlace a una línea abre esa vista y baja hasta ella.

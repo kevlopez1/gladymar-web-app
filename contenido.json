@@ -2,27 +2,30 @@
   "_nota": "Textos de la web. Se editan desde el panel (/panel). Los campos marcados como provisorios esperan el texto final.",
   "menu": [
     "Productos",
+    "Simular",
     "Catálogos",
-    "Diseña",
     "Gladymar",
     "Dónde comprar"
   ],
   "inicio": {
     "hero": {
-      "titulo": "Diseño que inspira.",
+      "titulo": "Más que cerámicas, fabricamos emociones.",
       "bajada": "Pisos y revestimientos hechos en Bolivia desde 1984.",
       "boton": "Ver productos"
     },
-    "legado": {
-      "antetitulo": "Desde 1984",
-      "titulo": "Tres generaciones.",
-      "texto": "Don Cristóbal Roda Daza y Gladys Vaca El Hage fundaron Gladymar en Santa Cruz en 1984. Desde entonces, tres generaciones de una misma familia hacen los pisos y revestimientos que acompañan las obras de todo el país.",
-      "boton": "Nuestra historia"
+    "novedad": {
+      "antetitulo": "Nueva colección",
+      "titulo": "Dimensión Viva.",
+      "texto": "La colección 2026 de Gladymar. Hojee el catálogo completo y elija la pieza para su obra.",
+      "boton": "Ver el catálogo",
+      "_provisorio": "La portada muestra la campaña del momento (reunión del 25/11): cambiar por Black Friday, Kaizen u otra cuando corresponda."
     },
-    "innovacion": {
-      "antetitulo": "Innovación",
-      "titulo": "Innovación que transforma espacios.",
-      "texto": "Cada colección se prueba en nuestro laboratorio y cada pieza se revisa antes de entrar a la caja."
+    "origen": {
+      "antetitulo": "El origen",
+      "titulo": "El renacimiento de Kaiser.",
+      "texto": "Los pisos rústicos en tonos de terracota vuelven a Gladymar.",
+      "boton": "Ver el catálogo",
+      "_provisorio": "Texto de ejemplo: Gladymar escribe el definitivo (reunión del 25/11)."
     },
     "productos": {
       "antetitulo": "Productos",
@@ -31,15 +34,21 @@
       "boton": "Ver todos los productos"
     },
     "disena": {
-      "antetitulo": "Diseña",
-      "titulo": "Imagine su espacio.",
-      "texto": "Ambientes para inspirarse, CasaCor Bolivia y el simulador para probar el piso en la foto de su casa.",
-      "boton": "Ir a Diseña"
+      "antetitulo": "Simular",
+      "titulo": "Diseñe su espacio con un clic.",
+      "texto": "Pruebe nuestros pisos en la foto de su casa con el simulador de ambientes Gladymar.",
+      "boton": "Ir al simulador"
     },
     "voz": {
       "cita": "Superficies diseñadas no solo para verse, sino para sentirse.",
       "firma": "Colección Dimensión Viva",
       "_provisorio": "Gladymar entrega el texto final de la voz experta (roadmap, 'Qué entrega Gladymar')."
+    },
+    "legado": {
+      "antetitulo": "Desde 1984",
+      "titulo": "Tres generaciones.",
+      "texto": "Don Cristóbal Roda Daza y Gladys Vaca El Hage fundaron Gladymar en Santa Cruz en 1984. Desde entonces, tres generaciones de una misma familia hacen los pisos y revestimientos que acompañan las obras de todo el país.",
+      "boton": "Nuestra historia"
     },
     "donde": {
       "antetitulo": "Dónde comprar",
@@ -111,46 +120,21 @@
     "bajada": "Hojee cada catálogo en la pantalla o descargue el PDF original."
   },
   "disena": {
-    "titulo": "Diseña",
-    "bajada": "Ideas por espacio, lo que mostramos en CasaCor Bolivia y su piso nuevo en la foto de su casa.",
-    "espacios": {
-      "Sala": [
-        "taj-mahal",
-        "oro-bianco",
-        "toronto-white"
+    "titulo": "Simular",
+    "bajada": "Vea cómo queda un piso Gladymar en su casa antes de elegirlo.",
+    "simulador": {
+      "titulo": "¿Qué es el Simulador de Ambientes Gladymar?",
+      "texto": "Una herramienta para ver nuestros pisos aplicados en un ambiente real: el suyo o uno de ejemplo.",
+      "pasos": [
+        "Suba la foto de su ambiente o elija uno de ejemplo.",
+        "Elija el piso Gladymar que quiere probar.",
+        "Véalo aplicado y compárelo con otros."
       ],
-      "Dormitorio": [
-        "onix-aura",
-        "urban-graffito-2"
-      ],
-      "Cocina y comedor": [
-        "ebano-venato",
-        "rovere-toscano"
-      ],
-      "Terraza": [
-        "atlas-grey-2",
-        "moon-white",
-        "urban-graffito"
-      ],
-      "Comercial": [
-        "calacatta-silver",
-        "onix-royal",
-        "portland-soft",
-        "basalto-gris"
-      ]
-    },
-    "casacor": {
-      "titulo": "CasaCor Bolivia",
-      "texto": "El Jardín del Achachairú, de Adriana Cirbián y Bruna Añez, y nuestra noche en CasaCor."
+      "boton": "Probar con la foto de mi casa"
     },
     "antes": {
       "titulo": "Antes y después",
       "texto": "Deslice para ver la misma sala con otro piso."
-    },
-    "roomvo": {
-      "titulo": "Pruébelo en su casa",
-      "texto": "Suba una foto de su ambiente y vea cómo queda con nuestros pisos.",
-      "boton": "Probar con la foto de mi casa"
     }
   },
   "gladymar": {
@@ -162,26 +146,55 @@
       "Hoy Cerámica Gladymar S.A. forma parte del Grupo Industrial Roda y la tercera generación de la familia sigue haciendo pisos y revestimientos para las obras de todo el país."
     ],
     "fabrica": {
-      "titulo": "Cómo se hace una pieza",
+      "titulo": "Cómo nace una pieza",
       "pasos": [
         {
+          "nombre": "Diseño",
+          "texto": "Cada colección empieza en un dibujo y en una idea de cómo se va a vivir."
+        },
+        {
           "nombre": "Laboratorio",
-          "texto": "Se prueban la pasta y el esmalte de cada colección."
+          "texto": "Se prueban la pasta, el esmalte y el color de cada pieza."
         },
         {
-          "nombre": "Línea",
-          "texto": "Prensado, esmaltado y horno, controlados desde el tablero de la línea."
+          "nombre": "Producción",
+          "texto": "Prensado, esmaltado y horno: la pieza sale lista para durar."
         },
         {
-          "nombre": "Revisión",
-          "texto": "Cada pieza se mira antes de entrar a la caja."
+          "nombre": "Punto de venta",
+          "texto": "Y llega a nuestras tiendas, donde se ve y se toca antes de elegir."
         }
       ]
     },
     "calidad": "Trabajamos con un Sistema de Gestión de Calidad que revisamos de forma continua en todos nuestros procesos.",
     "mision": "Ofrecer productos cerámicos, servicio y asesoramiento para crear estilo, belleza y confort en cada ambiente.",
     "vision": "Mantener el liderazgo nacional y ser reconocidos en el exterior por la calidad de nuestras piezas.",
-    "equipo": "La gente de Gladymar, en la fábrica, en el showroom y con sus clientes."
+    "historia": {
+      "titulo": "Nuestra historia",
+      "hitos": [
+        {
+          "anio": "1984",
+          "texto": "Inauguración de la fábrica en Santa Cruz."
+        },
+        {
+          "anio": "1987",
+          "texto": "Línea de esmaltado."
+        },
+        {
+          "anio": "1993",
+          "texto": "Ampliación de la producción."
+        },
+        {
+          "anio": "2026",
+          "texto": "Colección Dimensión Viva."
+        }
+      ],
+      "_provisorio": "Hitos dichos en la reunión del 25/11; Gladymar manda su línea de tiempo completa."
+    },
+    "casacor": {
+      "titulo": "CasaCor Bolivia",
+      "texto": "Acompañamos CasaCor Bolivia desde hace años. En 2025, el Jardín del Achachairú, de Adriana Cirbián y Bruna Añez."
+    }
   },
   "donde": {
     "titulo": "Dónde comprar",
