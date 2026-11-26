@@ -938,13 +938,32 @@ const ad = $("#ad"), corte = $("#corte"); corte.oninput = () => ad.style.setProp
       : exacto ? `Encontré <b>${res.length}</b> ${res.length === 1 ? "opción" : "opciones"}: ${e(lo)}. Toque una para ver su ficha o su catálogo.`
       : `No encontré exactamente ${e(lo)}. Le muestro <b>${res.length}</b> ${res.length === 1 ? "opción parecida" : "opciones parecidas"}: ${e(describir(F, sin))}.`;
     G.innerHTML = ""; vistos = 0; pintarMas(); R.hidden = false; resto.hidden = true;
+    // Los resultados reemplazan a las líneas y la página se acorta: si la persona estaba más abajo, el navegador la
+    // dejaba en el pie. Se la lleva al principio de los resultados.
+    const arriba = R.getBoundingClientRect().top + scrollY - 90;
+    if (scrollY > arriba) scrollTo({ top: arriba, behavior: "instant" });
   }
   let reloj = null;
   const crecer = () => { q.style.height = "auto"; q.style.height = Math.min(q.scrollHeight, 150) + "px"; };
   q.addEventListener("focus", () => indice().catch(() => {}), { once: true });
+  // Con el teclado del teléfono abierto, la barra se apoya justo encima del teclado (si no, queda tapada detrás).
+  const vv = window.visualViewport;
+  if (vv) {
+    const sobreTeclado = () => { const tapa = Math.max(0, innerHeight - vv.height - vv.offsetTop); f.style.bottom = tapa > 60 && document.activeElement === q ? `${tapa + 8}px` : ""; }; // solo con la caja en foco: un zoom con dos dedos no la mueve
+    vv.addEventListener("resize", sobreTeclado); vv.addEventListener("scroll", sobreTeclado);
+  }
   // Sin foco, la barra vuelve a una línea (una frase larga no tapa los resultados); al tocarla, se abre entera.
   q.addEventListener("blur", () => { q.style.height = ""; f.classList.add("corta"); });
   q.addEventListener("focus", () => { f.classList.remove("corta"); crecer(); });
+  // iOS, al tocar una caja de texto fija abajo, corre la página sola hacia el pie para "mostrarla". Se la devuelve
+  // a donde estaba: la barra ya se apoya sobre el teclado por su cuenta.
+  q.addEventListener("focus", () => {
+    const y = scrollY, hasta = Date.now() + 700; let suyo = false;
+    const corta = () => (suyo = true); // si la persona mueve la página ella misma, no se le pelea
+    addEventListener("wheel", corta, { once: true, passive: true }); addEventListener("touchmove", corta, { once: true, passive: true });
+    const volver = () => { if (suyo) return; if (Math.abs(scrollY - y) > 40 && R.hidden) scrollTo({ top: y, behavior: "instant" }); if (Date.now() < hasta) requestAnimationFrame(volver); };
+    requestAnimationFrame(volver);
+  });
   q.addEventListener("input", () => { env.disabled = !q.value.trim(); crecer(); clearTimeout(reloj); reloj = setTimeout(() => buscar(q.value), 320); });
   q.addEventListener("keydown", (ev) => { if (ev.key === "Enter" && !ev.shiftKey) { ev.preventDefault(); f.requestSubmit ? f.requestSubmit() : f.dispatchEvent(new Event("submit")); } });
   f.addEventListener("submit", (ev) => { ev.preventDefault(); clearTimeout(reloj); ultima = ""; q.blur();
@@ -1067,7 +1086,13 @@ const ad = $("#ad"), corte = $("#corte"); corte.oninput = () => ad.style.setProp
     if (!navigator.geolocation) { nota.textContent = "Este navegador no comparte la ubicación. Elija su ciudad."; return; }
     nota.textContent = "Buscando su ubicación…";
     navigator.geolocation.getCurrentPosition((pos) => { est.yo = { lat: pos.coords.latitude, lon: pos.coords.longitude }; est.ciudad = ""; est.sel = null; pintar(); },
-      () => { nota.textContent = "No se pudo obtener su ubicación. Elija su ciudad."; }, { timeout: 10000, maximumAge: 600000 });
+      (err) => {
+        // Se dice POR QUÉ: sin permiso hay que activarlo en el teléfono; si no, puede ser señal o tiempo.
+        console.error("dónde comprar: ubicación", err && err.code, err && err.message);
+        nota.textContent = err && err.code === 1
+          ? "Su navegador no dio permiso para usar la ubicación. Actívelo en la configuración del teléfono (Ubicación del navegador) o elija su ciudad."
+          : "No se pudo obtener su ubicación en este momento. Pruebe de nuevo o elija su ciudad.";
+      }, { enableHighAccuracy: false, timeout: 15000, maximumAge: 600000 });
   }
   pintar();
 })();
