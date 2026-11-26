@@ -165,16 +165,19 @@ html.menu.sobre .marca .lc{display:block}html.menu.sobre .marca .lb{display:none
 /* VISTAS INTERNAS */
 .vista{padding:clamp(110px,16vh,170px) 0 clamp(70px,10vh,120px)}
 .cab{max-width:760px;margin-bottom:clamp(48px,8vh,90px)}
-/* BUSCADOR "describa lo que busca": una caja flotante, como la de un chat, que acompaña al bajar por Productos. */
+/* BUSCADOR "describa lo que busca": una barra de chat flotante, fija abajo de la pantalla mientras se está en
+   Productos, de vidrio semitransparente. */
 #productos .cab{margin-bottom:clamp(28px,4vh,44px)}.ia-lin{margin:clamp(40px,7vh,72px) 0 clamp(48px,8vh,90px)}
 .oculto{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .ia-k{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:600;color:var(--tinta);margin:0 0 12px}.ia-k svg{color:var(--rojo,#C8102E)}
-.ia{position:sticky;top:84px;z-index:6;display:flex;align-items:flex-end;gap:10px;max-width:760px;padding:10px 10px 10px 22px;background:#fff;border:1px solid rgba(17,17,17,.09);border-radius:28px;box-shadow:0 1px 2px rgba(17,17,17,.04),0 14px 44px rgba(17,17,17,.09);transition:box-shadow .35s,border-color .35s}
-.ia:focus-within{border-color:rgba(17,17,17,.16);box-shadow:0 1px 2px rgba(17,17,17,.05),0 18px 56px rgba(17,17,17,.13)}
+.ia{position:fixed;left:50%;bottom:calc(18px + env(safe-area-inset-bottom));transform:translateX(-50%);z-index:28;width:min(760px,calc(100% - 32px));display:flex;align-items:flex-end;gap:10px;padding:9px 9px 9px 22px;background:rgba(255,255,255,.62);-webkit-backdrop-filter:blur(20px) saturate(1.8);backdrop-filter:blur(20px) saturate(1.8);border:1px solid rgba(17,17,17,.08);border-radius:28px;box-shadow:0 1px 2px rgba(17,17,17,.05),0 16px 48px rgba(17,17,17,.14);animation:ia-sube .6s var(--ritmo) .2s both;transition:box-shadow .35s,background .35s}
+.ia:focus-within{background:rgba(255,255,255,.86);box-shadow:0 1px 2px rgba(17,17,17,.06),0 20px 60px rgba(17,17,17,.18)}
+@keyframes ia-sube{from{opacity:0;transform:translate(-50%,16px)}}
+html[data-vista="productos"] .pie-p{padding-bottom:calc(110px + env(safe-area-inset-bottom))}html[data-vista="productos"] .toast{bottom:calc(104px + env(safe-area-inset-bottom))}
 .ia textarea{flex:1;min-width:0;border:0;outline:0;resize:none;background:none;font:inherit;font-size:17px;line-height:1.45;color:var(--tinta);padding:9px 0;max-height:150px}
-.ia textarea::placeholder{color:#8a8580}
+.ia textarea::placeholder{color:#6f6a65}
 .ia-env{flex:none;width:42px;height:42px;border-radius:50%;border:0;display:grid;place-items:center;background:#111;color:#fff;cursor:pointer;transition:background .25s,opacity .25s,transform .25s var(--ritmo)}
-.ia-env:disabled{background:#e7e4df;color:#fff;cursor:default}.ia-env:not(:disabled):hover{transform:scale(1.05)}
+.ia-env:disabled{background:rgba(17,17,17,.12);color:#fff;cursor:default}.ia-env:not(:disabled):hover{transform:scale(1.05)}
 .ia-ej{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;max-width:760px}
 .ia-ej button{font:inherit;font-size:14px;color:var(--tinta);background:none;border:1px solid rgba(17,17,17,.12);border-radius:999px;padding:8px 14px;cursor:pointer;transition:background .25s,border-color .25s}
 .ia-ej button:hover{background:#f4f2ef;border-color:rgba(17,17,17,.2)}
@@ -187,8 +190,8 @@ html.menu.sobre .marca .lc{display:block}html.menu.sobre .marca .lb{display:none
 .ia-pie{display:flex;flex-wrap:wrap;align-items:center;gap:22px;margin-top:36px}
 .ia-mas{font:inherit;font-size:15px;font-weight:600;border:1px solid rgba(17,17,17,.15);background:none;border-radius:999px;padding:11px 22px;cursor:pointer}
 @keyframes ia-in{from{opacity:0;transform:translateY(10px)}}
-@media (max-width:900px){.ia-ej{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin-inline:-20px;padding-inline:20px}.ia-ej::-webkit-scrollbar{display:none}.ia-ej button{flex:none}.ia{top:72px;padding:8px 8px 8px 18px;border-radius:24px}.ia textarea{font-size:16px}.ia-env{width:38px;height:38px}.ia-g{grid-template-columns:1fr 1fr;gap:22px 14px}.ia-msg{font-size:16px}}
-@media (prefers-reduced-motion:reduce){.ia-g button{animation:none}}
+@media (max-width:900px){.ia-ej{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin-inline:-20px;padding-inline:20px}.ia-ej::-webkit-scrollbar{display:none}.ia-ej button{flex:none}.ia{bottom:calc(12px + env(safe-area-inset-bottom));width:calc(100% - 24px);padding:7px 7px 7px 18px;border-radius:24px}.ia textarea{font-size:16px}.ia-env{width:38px;height:38px}.ia-g{grid-template-columns:1fr 1fr;gap:22px 14px}.ia-msg{font-size:16px}}
+@media (prefers-reduced-motion:reduce){.ia-g button,.ia{animation:none}}
 .marcas{display:flex;flex-wrap:wrap;gap:10px 30px;margin-top:30px;font-size:15px;font-weight:600;color:var(--taupe)}
 .marcas a{color:var(--taupe);text-decoration:none;border-bottom:1px solid transparent;transition:color .2s,border-color .2s}.marcas a:hover{color:var(--rojo);border-color:var(--rojo)}
 .linea{display:grid;grid-template-columns:1.15fr 1fr;gap:clamp(28px,5vw,80px);align-items:center;padding:clamp(36px,6vh,64px) 0}
@@ -932,10 +935,11 @@ const ad = $("#ad"), corte = $("#corte"); corte.oninput = () => ad.style.setProp
   q.addEventListener("focus", () => indice().catch(() => {}), { once: true });
   q.addEventListener("input", () => { env.disabled = !q.value.trim(); crecer(); clearTimeout(reloj); reloj = setTimeout(() => buscar(q.value), 320); });
   q.addEventListener("keydown", (ev) => { if (ev.key === "Enter" && !ev.shiftKey) { ev.preventDefault(); f.requestSubmit ? f.requestSubmit() : f.dispatchEvent(new Event("submit")); } });
-  f.addEventListener("submit", (ev) => { ev.preventDefault(); clearTimeout(reloj); ultima = ""; buscar(q.value); q.blur(); R.scrollIntoView({ behavior: "smooth", block: "start" }); });
+  f.addEventListener("submit", (ev) => { ev.preventDefault(); clearTimeout(reloj); ultima = ""; q.blur();
+    buscar(q.value).then(() => { if (!R.hidden) scrollTo({ top: R.getBoundingClientRect().top + scrollY - 90, behavior: "smooth" }); }); });
   $("#ia-ej").addEventListener("click", (ev) => { const b = ev.target.closest("button"); if (!b) return; q.value = b.textContent; env.disabled = false; crecer(); f.dispatchEvent(new Event("submit", { cancelable: true })); });
   mas.onclick = pintarMas;
-  $("#ia-x").onclick = () => { q.value = ""; env.disabled = true; crecer(); limpiar(); f.scrollIntoView({ behavior: "smooth", block: "center" }); };
+  $("#ia-x").onclick = () => { q.value = ""; env.disabled = true; crecer(); limpiar(); $("#ia-ej").scrollIntoView({ behavior: "smooth", block: "center" }); };
   // El texto de la caja va mostrando ejemplos mientras está vacía y sin foco, como si alguien los escribiera.
   const base = q.placeholder, ejs = [...$("#ia-ej").children].map((b) => b.textContent);
   if (ejs.length && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
