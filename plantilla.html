@@ -170,12 +170,12 @@ html.menu.sobre .marca .lc{display:block}html.menu.sobre .marca .lb{display:none
 #productos .cab{margin-bottom:clamp(28px,4vh,44px)}.ia-lin{margin:clamp(40px,7vh,72px) 0 clamp(48px,8vh,90px)}
 .oculto{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .ia-k{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:600;color:var(--tinta);margin:0 0 12px}.ia-k svg{color:var(--rojo,#C8102E)}
-.ia{position:fixed;left:50%;bottom:calc(18px + env(safe-area-inset-bottom));transform:translateX(-50%);z-index:28;width:min(760px,calc(100% - 32px));display:flex;align-items:flex-end;gap:10px;padding:9px 9px 9px 22px;background:rgba(255,255,255,.62);-webkit-backdrop-filter:blur(20px) saturate(1.8);backdrop-filter:blur(20px) saturate(1.8);border:1px solid rgba(17,17,17,.08);border-radius:28px;box-shadow:0 1px 2px rgba(17,17,17,.05),0 16px 48px rgba(17,17,17,.14);animation:ia-sube .6s var(--ritmo) .2s both;transition:box-shadow .35s,background .35s}
+.ia{position:fixed;left:50%;bottom:calc(40px + env(safe-area-inset-bottom));transform:translateX(-50%);z-index:28;width:min(760px,calc(100% - 32px));display:flex;align-items:flex-end;gap:10px;padding:9px 9px 9px 22px;background:rgba(255,255,255,.62);-webkit-backdrop-filter:blur(20px) saturate(1.8);backdrop-filter:blur(20px) saturate(1.8);border:1px solid rgba(17,17,17,.08);border-radius:28px;box-shadow:0 1px 2px rgba(17,17,17,.05),0 16px 48px rgba(17,17,17,.14);animation:ia-sube .6s var(--ritmo) .2s both;transition:box-shadow .35s,background .35s}
 .ia:focus-within{background:rgba(255,255,255,.86);box-shadow:0 1px 2px rgba(17,17,17,.06),0 20px 60px rgba(17,17,17,.18)}
 @keyframes ia-sube{from{opacity:0;transform:translate(-50%,16px)}}
-html[data-vista="productos"] .pie-p{padding-bottom:calc(110px + env(safe-area-inset-bottom))}html[data-vista="productos"] .toast{bottom:calc(104px + env(safe-area-inset-bottom))}
+html[data-vista="productos"] .pie-p{padding-bottom:calc(134px + env(safe-area-inset-bottom))}html[data-vista="productos"] .toast{bottom:calc(126px + env(safe-area-inset-bottom))}
 .ia textarea{flex:1;min-width:0;border:0;outline:0;resize:none;background:none;font:inherit;font-size:17px;line-height:1.45;color:var(--tinta);padding:9px 0;max-height:150px}
-.ia textarea::placeholder{color:#6f6a65}
+.ia textarea::placeholder{color:#6f6a65}.ia.corta textarea{height:calc(1.45em + 18px);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .ia-env{flex:none;width:42px;height:42px;border-radius:50%;border:0;display:grid;place-items:center;background:#111;color:#fff;cursor:pointer;transition:background .25s,opacity .25s,transform .25s var(--ritmo)}
 .ia-env:disabled{background:rgba(17,17,17,.12);color:#fff;cursor:default}.ia-env:not(:disabled):hover{transform:scale(1.05)}
 .ia-ej{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;max-width:760px}
@@ -190,7 +190,7 @@ html[data-vista="productos"] .pie-p{padding-bottom:calc(110px + env(safe-area-in
 .ia-pie{display:flex;flex-wrap:wrap;align-items:center;gap:22px;margin-top:36px}
 .ia-mas{font:inherit;font-size:15px;font-weight:600;border:1px solid rgba(17,17,17,.15);background:none;border-radius:999px;padding:11px 22px;cursor:pointer}
 @keyframes ia-in{from{opacity:0;transform:translateY(10px)}}
-@media (max-width:900px){.ia-ej{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin-inline:-20px;padding-inline:20px}.ia-ej::-webkit-scrollbar{display:none}.ia-ej button{flex:none}.ia{bottom:calc(12px + env(safe-area-inset-bottom));width:calc(100% - 24px);padding:7px 7px 7px 18px;border-radius:24px}.ia textarea{font-size:16px}.ia-env{width:38px;height:38px}.ia-g{grid-template-columns:1fr 1fr;gap:22px 14px}.ia-msg{font-size:16px}}
+@media (max-width:900px){.ia-ej{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin-inline:-20px;padding-inline:20px}.ia-ej::-webkit-scrollbar{display:none}.ia-ej button{flex:none}.ia{bottom:calc(30px + env(safe-area-inset-bottom));width:calc(100% - 24px);padding:7px 7px 7px 18px;border-radius:24px}.ia textarea{font-size:16px}.ia-env{width:38px;height:38px}.ia-g{grid-template-columns:1fr 1fr;gap:22px 14px}.ia-msg{font-size:16px}}
 @media (prefers-reduced-motion:reduce){.ia-g button,.ia{animation:none}}
 .marcas{display:flex;flex-wrap:wrap;gap:10px 30px;margin-top:30px;font-size:15px;font-weight:600;color:var(--taupe)}
 .marcas a{color:var(--taupe);text-decoration:none;border-bottom:1px solid transparent;transition:color .2s,border-color .2s}.marcas a:hover{color:var(--rojo);border-color:var(--rojo)}
@@ -838,7 +838,7 @@ const ad = $("#ad"), corte = $("#corte"); corte.oninput = () => ad.style.setProp
       sanitario: lista("sanitario sanitarios inodoro inodoros taza tazas lavamanos lavatorio lavatorios bacha bachas lavaplatos urinario urinarios"),
       complemento: lista("complemento complementos accesorio accesorios desague desagues zocalo zocalos perfil perfiles guardacanto guardacantos led") },
     col: { negro: lista("negro negra negros negras oscuro oscura oscuros oscuras black"), blanco: lista("blanco blanca blancos blancas white"),
-      gris: lista("gris grises plomo plomizo grey gray"), beige: lista("beige crema cremas marfil arena hueso claro clara claros claras"),
+      gris: lista("gris grises plomo plomizo grey gray"), beige: lista("beige crema cremas marfil arena hueso"),
       marron: lista("marron marrones cafe chocolate brown"), rojo: lista("rojo roja rojos rojas terracota"), azul: lista("azul azules celeste celestes"),
       verde: lista("verde verdes"), dorado: lista("dorado dorada dorados oro"), rosa: lista("rosa rosado rosada rosados") },
     l: { marmol: lista("marmol marmoles marmolado marmolada marmoleado marmoleada"), madera: lista("madera maderas amaderado amaderada parquet"),
@@ -867,6 +867,8 @@ const ad = $("#ad"), corte = $("#corte"); corte.oninput = () => ad.style.setProp
       if (VINIL.includes(w)) { F.marca.add("Vinilforte"); F.t.add("piso"); }
       else if (LAMI.includes(w)) { F.marca.add("Durafloor"); F.t.add("piso"); }
       else if (EXT.includes(w)) F.ext = true;
+      else if (/^clar[oa]s?$/.test(w)) { F.col.add("blanco"); F.col.add("beige"); }
+      else if (/^(bano|banos|cocina|cocinas)$/.test(w)) F.lugar = true;
       else if ((k = busca(w, DIC.t))) F.t.add(k);
       else if ((k = busca(w, DIC.col))) F.col.add(k);
       else if ((k = busca(w, DIC.l))) F.l.add(k);
@@ -885,7 +887,7 @@ const ad = $("#ad"), corte = $("#corte"); corte.oninput = () => ad.style.setProp
     if (!sin.has("ac") && !hay(F.ac, x.ac)) return false;
     if (!sin.has("ext") && F.ext && !x.ext) return false;
     if (!sin.has("fmt") && F.fmt) { const m = medidas(x.f); if (F.fmt === "grande" ? !(Math.max(0, ...m) >= 90) : !(m.length >= 2 && ((m[0] === F.fmt[0] && m[1] === F.fmt[1]) || (m[0] === F.fmt[1] && m[1] === F.fmt[0])))) return false; }
-    if (!sin.has("libres") && F.libres.length && !F.libres.every((w) => x.h.includes(w) || x.h.includes(w.replace(/e?s$/, "")))) return false;
+    if (!sin.has("libres") && F.libresFiltran && F.libres.length && !F.libres.every((w) => x.h.includes(w) || x.h.includes(w.replace(/e?s$/, "")))) return false;
     return true;
   }
   const y = (xs) => (xs.length < 2 ? xs.join("") : xs.slice(0, -1).join(", ") + " o " + xs[xs.length - 1]);
@@ -897,7 +899,7 @@ const ad = $("#ad"), corte = $("#corte"); corte.oninput = () => ad.style.setProp
     if (F.ac.size && !sin.has("ac")) p.push("con acabado " + y([...F.ac].map((k) => ({ brillo: "brillante" })[k] || k)));
     if (F.ext && !sin.has("ext")) p.push("para exterior");
     if (F.fmt && !sin.has("fmt")) p.push(F.fmt === "grande" ? "en gran formato" : `de ${F.fmt[0]} × ${F.fmt[1]}`);
-    if (F.libres.length && !sin.has("libres")) p.push("con «" + F.libres.join(" ") + "»");
+    if (F.libres.length && F.libresFiltran && !sin.has("libres")) p.push("con «" + F.libres.join(" ") + "»");
     return p.join(" ");
   }
   const POR_PAG = 24; let res = [], vistos = 0, ultima = "";
@@ -914,6 +916,11 @@ const ad = $("#ad"), corte = $("#corte"); corte.oninput = () => ad.style.setProp
     try { await indice(); } catch (err) { M.textContent = "No se pudo cargar el buscador. Pruebe de nuevo en un momento."; G.innerHTML = ""; mas.hidden = true; R.hidden = false; ultima = ""; return; }
     if (texto !== ultima) return; // escribió algo más mientras cargaba
     const F = entender(texto);
+    // "Algo para el baño / la cocina" sin decir qué: sanitarios y griferías. Con un tipo dicho, el lugar no filtra.
+    if (F.lugar && !F.t.size && !F.marca.size) { F.t.add("sanitario"); F.t.add("griferia"); }
+    // Con tipo, color, aspecto, etc., las palabras sueltas ("nuevo", "living") solo ordenan; sin nada de eso, filtran.
+    const conFaceta = F.t.size || F.col.size || F.l.size || F.ac.size || F.ext || F.fmt || F.marca.size;
+    F.libresFiltran = !conFaceta;
     // Si no hay nada exacto, se afloja de a un filtro (lo menos importante primero) y se avisa.
     const ORDEN = ["ac", "fmt", "ext", "libres", "l", "marca", "col", "t"], sin = new Set();
     res = IDX.filter((x) => pasa(x, F, sin));
@@ -921,6 +928,8 @@ const ad = $("#ad"), corte = $("#corte"); corte.oninput = () => ad.style.setProp
     // Lo parecido tiene que conservar algo de lo pedido: si hubo que soltar todo, no se encontró nada.
     const pidio = ORDEN.filter((k) => (F[k] instanceof Set ? F[k].size : Array.isArray(F[k]) ? F[k].length : F[k]));
     if (!pidio.length || pidio.every((k) => sin.has(k))) res = [];
+    // Una palabra suelta que es el NOMBRE de una pieza ("bottega blanco") la elige, si con lo demás hay alguna.
+    if (!F.libresFiltran && F.libres.length) { const n = (x) => norm(x.n); const porNombre = res.filter((x) => F.libres.some((w) => n(x).includes(w))); if (porNombre.length) res = porNombre; }
     // Primero las piezas con ficha; después, las que nombran lo que se escribió.
     const puntos = (x) => (x.id ? 4 : 0) + (F.col.size && !x.cf ? 2 : 0) + F.libres.filter((w) => x.h.includes(w)).length * 2 + (F.l.size && x.l.some((l) => F.l.has(l)) ? 1 : 0);
     res = res.map((x, i) => [x, puntos(x), i]).sort((a, b) => b[1] - a[1] || a[2] - b[2]).map((a) => a[0]);
@@ -933,6 +942,9 @@ const ad = $("#ad"), corte = $("#corte"); corte.oninput = () => ad.style.setProp
   let reloj = null;
   const crecer = () => { q.style.height = "auto"; q.style.height = Math.min(q.scrollHeight, 150) + "px"; };
   q.addEventListener("focus", () => indice().catch(() => {}), { once: true });
+  // Sin foco, la barra vuelve a una línea (una frase larga no tapa los resultados); al tocarla, se abre entera.
+  q.addEventListener("blur", () => { q.style.height = ""; f.classList.add("corta"); });
+  q.addEventListener("focus", () => { f.classList.remove("corta"); crecer(); });
   q.addEventListener("input", () => { env.disabled = !q.value.trim(); crecer(); clearTimeout(reloj); reloj = setTimeout(() => buscar(q.value), 320); });
   q.addEventListener("keydown", (ev) => { if (ev.key === "Enter" && !ev.shiftKey) { ev.preventDefault(); f.requestSubmit ? f.requestSubmit() : f.dispatchEvent(new Event("submit")); } });
   f.addEventListener("submit", (ev) => { ev.preventDefault(); clearTimeout(reloj); ultima = ""; q.blur();
