@@ -4,7 +4,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow">
 <meta name="theme-color" content="#FFFFFF">
-<meta name="description" content="Gladymar: pisos y revestimientos hechos en Bolivia desde 1984. Productos, catálogos, ideas para su espacio y dónde comprar.">
+<meta name="description" content="Gladymar: pisos y revestimientos hechos en Bolivia desde 1984. Productos, catálogos, ideas para tu espacio y dónde comprar.">
 <meta property="og:title" content="Gladymar, pisos y revestimientos">
 <meta property="og:description" content="Pisos y revestimientos hechos en Bolivia desde 1984.">
 <meta property="og:image" content="/img/og.jpg">
@@ -501,7 +501,7 @@ figcaption{font-size:14px;color:var(--suave);margin-top:10px}
     <div class="ad" id="ad" style="margin-top:36px"><img src="/img/antes-1400.webp" alt="La sala antes" loading="lazy"><img class="des" src="/img/sala-1400.webp" alt="La sala con otro piso" loading="lazy">
       <span class="et" style="left:16px">Antes</span><span class="et" style="right:16px">Después</span><span class="linea-c"></span>
       <span class="tir"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l-6 6 6 6M15 6l6 6-6 6"/></svg></span>
-      <input type="range" id="corte" min="0" max="100" value="50" aria-label="Deslice para comparar el antes y el después"></div>
+      <input type="range" id="corte" min="0" max="100" value="50" aria-label="Deslizá para comparar el antes y el después"></div>
   </div>
 </div></section>
 
@@ -530,7 +530,7 @@ figcaption{font-size:14px;color:var(--suave);margin-top:10px}
   <div class="pedir bloque rev"><div><h2 class="t3">⟦donde.formulario.titulo⟧</h2><p class="lead" style="font-size:17px">⟦donde.formulario.texto⟧</p><div class="app-b"><img src="/img/logo.png" alt="" width="44" height="44"><p>⟦donde.app⟧</p>
   <span><a href="https://primebusiness.live/demo/gladymar-app">Google Play</a><a href="https://primebusiness.live/demo/gladymar-app">App Store</a></span></div></div><div><form class="form" novalidate>
   <label>Nombre<input name="nombre" autocomplete="name" maxlength="80" required></label>
-  <label>Ciudad<select name="ciudad" required><option value="">Elija su ciudad</option><option>Santa Cruz</option><option>La Paz</option><option>Cochabamba</option><option>Sucre</option><option>Tarija</option><option>Oruro</option><option>Potosí</option></select></label>
+  <label>Ciudad<select name="ciudad" required><option value="">Elegí tu ciudad</option><option>Santa Cruz</option><option>La Paz</option><option>Cochabamba</option><option>Sucre</option><option>Tarija</option><option>Oruro</option><option>Potosí</option></select></label>
   <label class="ancho">Producto de interés<input name="producto" maxlength="160" placeholder="Por ejemplo: porcelanato 60 × 60 para la sala"></label>
   <label class="ancho">Teléfono o WhatsApp<input name="tel" inputmode="tel" autocomplete="tel" maxlength="20" required placeholder="7xx xx xxx"></label>
   <p class="aviso ancho" role="status"></p>
@@ -540,10 +540,10 @@ figcaption{font-size:14px;color:var(--suave);margin-top:10px}
 </div></section>
 
 <section class="vista" id="cotizar"><div class="env">
-  <div class="cab rev"><h1 class="t1">Cotizar</h1><p class="lead">Su lista de pisos, con las cajas y los metros que lleva. Envíela a la tienda de su ciudad y un asesor le manda la proforma con precio.</p></div>
+  <div class="cab rev"><h1 class="t1">Cotizar</h1><p class="lead">Tu lista de pisos, con las cajas y los metros que lleva. Mandala a la tienda de tu ciudad y un asesor te manda la proforma con precio.</p></div>
   <div class="pedir"><div id="lista-cot"></div><div><form class="form" novalidate>
   <label>Nombre<input name="nombre" autocomplete="name" maxlength="80" required></label>
-  <label>Ciudad<select name="ciudad" required><option value="">Elija su ciudad</option><option>Santa Cruz</option><option>La Paz</option><option>Cochabamba</option><option>Sucre</option><option>Tarija</option><option>Oruro</option><option>Potosí</option></select></label>
+  <label>Ciudad<select name="ciudad" required><option value="">Elegí tu ciudad</option><option>Santa Cruz</option><option>La Paz</option><option>Cochabamba</option><option>Sucre</option><option>Tarija</option><option>Oruro</option><option>Potosí</option></select></label>
   <label class="ancho">Producto de interés<input name="producto" maxlength="160" placeholder="Por ejemplo: porcelanato 60 × 60 para la sala"></label>
   <label class="ancho">Teléfono o WhatsApp<input name="tel" inputmode="tel" autocomplete="tel" maxlength="20" required placeholder="7xx xx xxx"></label>
   <p class="aviso ancho" role="status"></p>
@@ -653,8 +653,8 @@ function abrirWhatsApp(texto) {
 function copiar(texto, nodo, donde) {
   // Si el texto está oculto (la web no lo muestra), aparece solo cuando hay que copiarlo a mano.
   const sel = () => { if (!nodo) return; nodo.hidden = false; const r = document.createRange(); r.selectNodeContents(nodo); const s = getSelection(); s.removeAllRanges(); s.addRange(r); };
-  try { navigator.clipboard.writeText(texto).then(() => toast("Copiado", donde)).catch(() => { sel(); toast("Texto seleccionado: cópielo", donde); }); }
-  catch (e) { sel(); toast("Texto seleccionado: cópielo", donde); }
+  try { navigator.clipboard.writeText(texto).then(() => toast("Copiado", donde)).catch(() => { sel(); toast("Texto seleccionado: copialo", donde); }); }
+  catch (e) { sel(); toast("Texto seleccionado: copialo", donde); }
 }
 function compartirPieza(p, donde) {
   const url = location.href.split("#")[0] + "#p-" + p.id;
@@ -668,7 +668,7 @@ function compartirPieza(p, donde) {
 function calcHTML(c) {
   return `<div class="calc">
     <div class="modo" role="group" aria-label="Cómo calcular"><button type="button" data-modo="m2" aria-pressed="${c.modo === "m2"}">Metros cuadrados</button><button type="button" data-modo="med" aria-pressed="${c.modo === "med"}">Largo × ancho</button></div>
-    <div class="campos c-m2" ${c.modo === "m2" ? "" : "hidden"}><label for="c-m2">Metros cuadrados de su ambiente</label><input id="c-m2" type="text" inputmode="decimal" autocomplete="off" value="${aTexto(c.m2)}"></div>
+    <div class="campos c-m2" ${c.modo === "m2" ? "" : "hidden"}><label for="c-m2">Metros cuadrados de tu ambiente</label><input id="c-m2" type="text" inputmode="decimal" autocomplete="off" value="${aTexto(c.m2)}"></div>
     <div class="campos c-med" ${c.modo === "med" ? "" : "hidden"}><div class="campo"><label for="c-largo">Largo (m)</label><input id="c-largo" type="text" inputmode="decimal" autocomplete="off" value="${aTexto(c.largo)}"></div><span class="por">×</span><div class="campo"><label for="c-ancho">Ancho (m)</label><input id="c-ancho" type="text" inputmode="decimal" autocomplete="off" value="${aTexto(c.ancho)}"></div></div>
     <label class="extra"><input type="checkbox" id="c-extra" ${c.extra ? "checked" : ""}> Sumar 10% por cortes o colocación en diagonal</label>
     <div class="calc-r" id="c-res" aria-live="polite"></div></div>`;
@@ -679,7 +679,7 @@ function calcBind(raiz, c, p, precioV, alCambiar) {
     const m2 = calcM2(c), cj = m2 > 0 ? cajasDe(m2, p) : 0, r = cj * p.m2caja;
     $("#c-res", raiz).innerHTML = cj
       ? `<div><b>${cj}</b><span>cajas</span></div><div><b>${num(r)}</b><span>m² que lleva</span></div>${precioV ? `<div><b>${bs(cent(r * precioV()))}</b><span>subtotal</span></div>` : ""}`
-      : `<p>Escriba sus medidas para calcular las cajas.</p>`;
+      : `<p>Escribí tus medidas para calcular las cajas.</p>`;
     alCambiar(cj);
   };
   raiz.querySelectorAll("[data-modo]").forEach((b) => (b.onclick = () => {
@@ -729,8 +729,8 @@ function pintarFicha(id) {
     $("#fondo").onclick = (ev) => { if (ev.target.id === "fondo") cerrarFicha(); };
     capa.querySelectorAll(".var:not(:disabled)").forEach((b) => (b.onclick = () => { v = p.variantes.find((x) => x.cod === b.dataset.cod); pinta(); }));
     let cajas = 0;
-    calcBind(capa, calc, p, null, (cj) => { cajas = cj; const b = $("#agregar"); b.disabled = !cj; b.textContent = cj ? `Agregar ${cj} cajas a mi lista` : "Escriba sus medidas"; });
-    $("#agregar").onclick = () => { if (!cajas) return; agregar(st, p, v, cajas); cerrarFicha(); lista(); toast(`${p.nombre}: ${cajas} cajas en su lista`); };
+    calcBind(capa, calc, p, null, (cj) => { cajas = cj; const b = $("#agregar"); b.disabled = !cj; b.textContent = cj ? `Agregar ${cj} cajas a mi lista` : "Escribí tus medidas"; });
+    $("#agregar").onclick = () => { if (!cajas) return; agregar(st, p, v, cajas); cerrarFicha(); lista(); toast(`${p.nombre}: ${cajas} cajas en tu lista`); };
     $("#probar").onclick = abrirRoomvo;
     $("#compartir").onclick = () => compartirPieza(p);
   };
@@ -773,7 +773,7 @@ function lista() {
       <div><b>${e(f.p.nombre)}</b><small>${e(f.v.acabado)}, ${f.p.formato.replace(" cm", "")}, ${num(f.m2)} m²</small>
       <div class="qt"><button data-menos="${f.i}" aria-label="Una caja menos">−</button><span>${f.it.cajas} cajas</span><button data-mas="${f.i}" aria-label="Una caja más">+</button></div></div>
       <button class="quitar" data-quitar="${f.i}">Quitar</button></div>`).join("")
-    : `<div class="vacio"><p>Su lista está vacía. Abra una pieza, calcule sus cajas y agréguela.</p><p style="margin-top:18px"><a class="bt" href="#productos">Ver productos</a></p></div>`;
+    : `<div class="vacio"><p>Tu lista está vacía. Abrí una pieza, calculá tus cajas y agregala.</p><p style="margin-top:18px"><a class="bt" href="#productos">Ver productos</a></p></div>`;
   document.querySelectorAll("[data-mas]").forEach((b) => (b.onclick = () => { st.items[b.dataset.mas].cajas++; guardar(st); lista(); }));
   document.querySelectorAll("[data-menos]").forEach((b) => (b.onclick = () => { const it = st.items[b.dataset.menos]; if (it.cajas > 1) { it.cajas--; guardar(st); lista(); } }));
   document.querySelectorAll("[data-quitar]").forEach((b) => (b.onclick = () => { st.items.splice(+b.dataset.quitar, 1); guardar(st); lista(); }));
@@ -789,8 +789,8 @@ document.querySelectorAll(".form").forEach((f) => {
     ev.preventDefault();
     const d = Object.fromEntries(new FormData(f)), tel = String(d.tel || "").replace(/\D/g, ""), av = f.querySelector(".aviso");
     const items = enCot ? resumen() : [];
-    if (!String(d.nombre || "").trim() || !d.ciudad || tel.length < 8) { av.textContent = "Escriba su nombre, elija su ciudad y deje un teléfono o WhatsApp de 8 dígitos."; return; }
-    if (enCot && !items.length && !String(d.producto || "").trim()) { av.textContent = "Agregue una pieza a su lista o escriba qué producto le interesa."; return; }
+    if (!String(d.nombre || "").trim() || !d.ciudad || tel.length < 8) { av.textContent = "Escribí tu nombre, elegí tu ciudad y dejá un teléfono o WhatsApp de 8 dígitos."; return; }
+    if (enCot && !items.length && !String(d.producto || "").trim()) { av.textContent = "Agregá una pieza a tu lista o escribí qué producto te interesa."; return; }
     av.textContent = "";
     const t = tiendaDe(d.ciudad) || tiendaDe("Santa Cruz");
     const msg = `Hola, soy ${d.nombre.trim()}. Quiero una proforma.\n` + (items.length ? items.map((x) => "• " + x).join("\n") + "\n" : "") +
@@ -913,7 +913,7 @@ const ad = $("#ad"), corte = $("#corte"); corte.oninput = () => ad.style.setProp
   async function buscar(texto) {
     texto = texto.trim(); if (texto === ultima) return; ultima = texto;
     if (!texto) { limpiar(); return; }
-    try { await indice(); } catch (err) { M.textContent = "No se pudo cargar el buscador. Pruebe de nuevo en un momento."; G.innerHTML = ""; mas.hidden = true; R.hidden = false; ultima = ""; return; }
+    try { await indice(); } catch (err) { M.textContent = "No se pudo cargar el buscador. Probá de nuevo en un ratito."; G.innerHTML = ""; mas.hidden = true; R.hidden = false; ultima = ""; return; }
     if (texto !== ultima) return; // escribió algo más mientras cargaba
     const F = entender(texto);
     // "Algo para el baño / la cocina" sin decir qué: sanitarios y griferías. Con un tipo dicho, el lugar no filtra.
@@ -934,9 +934,9 @@ const ad = $("#ad"), corte = $("#corte"); corte.oninput = () => ad.style.setProp
     const puntos = (x) => (x.id ? 4 : 0) + (F.col.size && !x.cf ? 2 : 0) + F.libres.filter((w) => x.h.includes(w)).length * 2 + (F.l.size && x.l.some((l) => F.l.has(l)) ? 1 : 0);
     res = res.map((x, i) => [x, puntos(x), i]).sort((a, b) => b[1] - a[1] || a[2] - b[2]).map((a) => a[0]);
     const exacto = !sin.size, lo = describir(F, new Set());
-    M.innerHTML = !res.length ? `No encontré productos para «${e(texto)}». Pruebe con el tipo, el color o el aspecto, por ejemplo «porcelanato gris tipo cemento».`
-      : exacto ? `Encontré <b>${res.length}</b> ${res.length === 1 ? "opción" : "opciones"}: ${e(lo)}. Toque una para ver su ficha o su catálogo.`
-      : `No encontré exactamente ${e(lo)}. Le muestro <b>${res.length}</b> ${res.length === 1 ? "opción parecida" : "opciones parecidas"}: ${e(describir(F, sin))}.`;
+    M.innerHTML = !res.length ? `No encontré productos para «${e(texto)}». Probá con el tipo, el color o el aspecto, por ejemplo «porcelanato gris tipo cemento».`
+      : exacto ? `Encontré <b>${res.length}</b> ${res.length === 1 ? "opción" : "opciones"}: ${e(lo)}. Tocá una para ver su ficha o su catálogo.`
+      : `No encontré exactamente ${e(lo)}. Te muestro <b>${res.length}</b> ${res.length === 1 ? "opción parecida" : "opciones parecidas"}: ${e(describir(F, sin))}.`;
     G.innerHTML = ""; vistos = 0; pintarMas(); R.hidden = false; resto.hidden = true;
     // Los resultados reemplazan a las líneas y la página se acorta: si la persona estaba más abajo, el navegador la
     // dejaba en el pie. Se la lleva al principio de los resultados.
@@ -1083,15 +1083,15 @@ const ad = $("#ad"), corte = $("#corte"); corte.oninput = () => ad.style.setProp
   }
   function cerca() {
     const nota = $("#mapa-nota");
-    if (!navigator.geolocation) { nota.textContent = "Este navegador no comparte la ubicación. Elija su ciudad."; return; }
-    nota.textContent = "Buscando su ubicación…";
+    if (!navigator.geolocation) { nota.textContent = "Este navegador no comparte la ubicación. Elegí tu ciudad."; return; }
+    nota.textContent = "Buscando tu ubicación…";
     navigator.geolocation.getCurrentPosition((pos) => { est.yo = { lat: pos.coords.latitude, lon: pos.coords.longitude }; est.ciudad = ""; est.sel = null; pintar(); },
       (err) => {
         // Se dice POR QUÉ: sin permiso hay que activarlo en el teléfono; si no, puede ser señal o tiempo.
         console.error("dónde comprar: ubicación", err && err.code, err && err.message);
         nota.textContent = err && err.code === 1
-          ? "Su navegador no dio permiso para usar la ubicación. Actívelo en la configuración del teléfono (Ubicación del navegador) o elija su ciudad."
-          : "No se pudo obtener su ubicación en este momento. Pruebe de nuevo o elija su ciudad.";
+          ? "Tu navegador no dio permiso para usar la ubicación. Activalo en la configuración del teléfono (Ubicación del navegador) o elegí tu ciudad."
+          : "No se pudo obtener tu ubicación en este momento. Probá de nuevo o elegí tu ciudad.";
       }, { enableHighAccuracy: false, timeout: 15000, maximumAge: 600000 });
   }
   pintar();
