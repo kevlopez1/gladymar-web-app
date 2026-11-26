@@ -65,6 +65,17 @@
   "productos": {
     "titulo": "Productos",
     "bajada": "Nuestras líneas nacionales, con sus formatos y acabados. Elija una pieza, calcule sus cajas y pida su proforma a un asesor.",
+    "buscador": {
+      "titulo": "Encuentre su producto",
+      "caja": "Describa lo que busca",
+      "ejemplos": [
+        "Porcelanato negro para la sala",
+        "Piso tipo mármol, brillante",
+        "Algo que parezca madera",
+        "Para exterior, antideslizante"
+      ],
+      "limpiar": "Ver todas las líneas"
+    },
     "calcular": "Calcular metros y cajas",
     "elija": "Elija una pieza para calcular cuántas cajas necesita.",
     "calc_titulo": "¿Cuántas cajas necesita?",
